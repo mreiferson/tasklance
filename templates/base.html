@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<title>{% block title %}pm{% endblock %}</title>
+	<script type="text/javascript" language="javascript" src="/site_media/js/jquery.min.js"></script>
+	<script type="text/javascript" language="javascript" src="/site_media/js/jquery-ui.min.js"></script>
+	<style type="text/css">
+	body {
+		font-size: 62.5%;
+		font-family: "Lucida Grande", Tahoma, sans-serif;
+		margin: 0 !important;
+		padding: 0 !important;
+	}
+	
+	body * {
+		margin: 0;
+		padding: 0;
+	}
+	
+	a img {
+		border: none;
+	}
+
+	a {
+		text-decoration: none;
+	}
+
+	a:link, a:visited, a:active {
+		color: #39c;
+	}
+
+	a:hover {
+		color: #6cf;
+	}
+	
+	#header {
+		padding: 5px;
+		font-weight: bold;
+		background: #06c;
+		color: #fff;
+	}
+	
+	#header a:link, #header a:visited, #header a:active {
+		color: #fff;
+	}
+	
+	#header a:hover {
+		color: #6cf;
+	}
+
+	#projects h1 {
+		font-size: 1.5em;
+		color: #000;
+	}
+
+	#projects h2 {
+		font-size: 1.25em;
+		color: #555;
+		margin-top: 0.5em;
+	}
+
+	#projects li {
+		font-size: 1.1em;
+		font-weight: normal;
+		height: 18px;
+	}
+
+	#projects {
+		margin-left: 20px;
+	}
+
+	.categories {
+		margin-left: 20px;
+	}
+
+	.todos {
+		margin-left: 20px;
+	}
+	
+	.handle {
+		cursor: pointer;
+	}
+
+	.todo.complete {
+		color: #aaa;
+	}
+	
+	.todos {
+		list-style: none;
+	}
+	
+	.todos .created {
+		color: #aaa;
+	}
+	
+	.todos .control {
+		position: relative;
+		top: 0;
+		left: 0;
+	}
+	
+	.todos .item {
+		position: relative;
+		top: -18px;
+		left: 45px;
+	}
+	</style>
+</head>
+<body>
+	<div id="header" style="margin-bottom: 10px;">
+		<a href="/">Home</a> - 
+		<a href="/pm/overview">Overview</a> - 
+		<a href="/pm/addproject">Add Project</a> - 
+		<a href="/pm/addcategory">Add Category</a> - 
+		<a href="/pm/addtodo">Add Todo</a>
+	</div>
+	<div id="content">
+		{% block content %}{% endblock %}
+	</div>
+</body>
+</html>

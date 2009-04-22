@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block title %}Add Todo - {{ block.super }}{% endblock %}
+
+{% block content %}
+<form action="{% url pm_addtodo %}" method="POST">
+	{{ form.as_p }}
+	<input type="submit" value="Submit">
+</form>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block title %}Add Project - {{ block.super }}{% endblock %}
+
+{% block content %}
+<form action="{% url pm_addproject %}" method="POST">
+	{{ form.as_p }}
+	<input type="submit" value="Submit">
+</form>
+{% endblock %}
