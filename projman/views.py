@@ -1,15 +1,14 @@
 from django.http import HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404
-from django.db import connection
-from django.core import serializers
 from django.utils import simplejson
 from forms import *
 
 def overview(request):
 	projects = Project.objects.all()
-	todo_form = TodoForm(request.POST if request.POST else None)
+	todo_form = TodoForm()
 	
 	return render_to_response('overview.html', { 'projects': projects, 'todo_form': todo_form })
+
 
 def addproject(request):
 	projects = Project.objects.all()
@@ -20,9 +19,9 @@ def addproject(request):
 			project.save()
 	else:
 		project = ProjectForm()
-		
-	return render_to_response('addproject.html', { 'form': project, 'projects': projects })
 	
+	return render_to_response('addproject.html', { 'form': project, 'projects': projects })
+
 
 def addcategory(request):
 	categories = Category.objects.all()
@@ -35,7 +34,7 @@ def addcategory(request):
 		category = CategoryForm()
 		
 	return render_to_response('addcategory.html', { 'form': category, 'categories': categories })
-	
+
 	
 def addtodo(request):
 	if request.POST:
@@ -45,13 +44,15 @@ def addtodo(request):
 			return HttpResponse(simplejson.dumps({ 'id': todo.id, 'created': todo.created }))
 		
 	raise Http404(repr(f.errors) if f else None)
-	
+
+
 def completetodo(request, id, complete):
 	todo = get_object_or_404(Todo, pk=id)
 	todo.complete = int(complete)
 	todo.save()
 	return HttpResponse()
-	
+
+
 def prioritize(request, id):
 	if request.POST:
 		category = get_object_or_404(Category, pk=id)
