@@ -14,6 +14,6 @@ urlpatterns = patterns('',
 	url(r'^addtodo/$', views.addtodo, name='pm_addtodo'),
 	url(r'^deltodo/(?P<object_id>\d+)/$', delete_object,
 		{ 'model': Todo, 'post_delete_redirect': '/', 'template_name': 'todo_confirm_delete.html' }, name='pm_deltodo'),
-	url(r'^completetodo/(?P<id>\d+)/(?P<complete>\d+)/$', views.completetodo, name='pm_completetodo'),
+	url(r'^completetodo/(?P<id>\d+)/(?P<complete>[01]+)/$', views.completetodo, name='pm_completetodo'),
 	url(r'^prioritize/(?P<id>\d+)/$', views.prioritize, name='pm_prioritize'),
 )
