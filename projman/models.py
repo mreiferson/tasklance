@@ -24,10 +24,14 @@ class Todo(models.Model):
 	item = models.CharField(max_length=255)
 	complete = models.BooleanField(default=False)
 	priority = models.PositiveIntegerField(default=0)
-	created = models.DateTimeField('Date Created', default=datetime.now)
+	created = models.DateTimeField('Date Created', editable=False)
 	
 	class Meta:
 		ordering = ('priority',)
+		
+	def save(self):
+		self.created = datetime.now()
+		super(Todo, self).save()
 	
 	def __unicode__(self):
 		return self.item+' ('+self.category.project.name+' => '+self.category.name+')'
