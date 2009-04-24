@@ -17,7 +17,8 @@
 								<div class="control">
 									<span class="handle"><img src="/site_media/images/list_ordered.gif"/></span> 
 									<a href="javascript:;" class="deleteLink"><img src="/site_media/images/trash.gif"/></a>
-									<input type="checkbox" class="completeLink" {% if todo.complete %}checked{% endif %}>
+									<input type="checkbox" autocomplete="off" 
+										class="completeLink" {% if todo.complete %}checked{% endif %}>
 								</div>
 								<div class="item">
 									{{ todo.item }} <span class="created">{{ todo.created }}</span>
@@ -25,48 +26,16 @@
 							</li>
 						{% endfor %}
 					</ul>
+					<div class="addTodoContainer">
+						<a href="javascript:;" class="showAddTodoLink">Add Todo</a>
+					</div>
 				</div>
 				{% endfor %}
 			</div>
 		</div>
 	{% endfor %}
-	</ul>
 </div>
-<script type="text/javascript" language="javascript">
-jQuery(document).ready(function() {
-		jQuery('.deleteLink').click(function() {
-				var parent = jQuery(this).parent();
-				jQuery.post('/pm/deltodo/'+parent.attr('rel')+'/', {}, function () {
-						parent.slideUp('fast', function() {
-							parent.remove();
-						});
-					});
-			});
-			
-		jQuery('.completeLink').click(function() {
-				var parent = jQuery(this).parent();
-				var complete = (+jQuery(this).is(':checked'));
-				jQuery.post('/pm/completetodo/'+parent.attr('rel')+'/'+complete+'/', {}, function() {
-						if(complete) {
-							parent.addClass('complete');
-						} else {
-							parent.removeClass('complete');
-						}
-					});
-			});
-			
-		jQuery('.todos').sortable({
-			handle: '.handle',
-			update: function(event, ui) {
-				var categoryParent = jQuery(ui.item).parents('.category');
-				var order = jQuery.makeArray(
-								jQuery.map(
-									jQuery('li', categoryParent), 
-										function(n) { return jQuery(n).attr('rel'); }
-									));
-				jQuery.post('/pm/prioritize/'+categoryParent.attr('rel')+'/', { 'order': order.join(',') }, function() {});
-			}
-		});
-	});
-</script>
+<div id="addTodoTemplateContainer" style="display: none;">
+	{% include "addtodo.html" %}
+</div>
 {% endblock %}
