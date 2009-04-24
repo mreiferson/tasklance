@@ -1,12 +1,15 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404
-from forms import *
 from django.db import connection
+from django.core import serializers
+from django.utils import simplejson
+from forms import *
 
 def overview(request):
 	projects = Project.objects.all()
+	todo_form = TodoForm(request.POST if request.POST else None)
 	
-	return render_to_response('overview.html', { 'projects': projects })
+	return render_to_response('overview.html', { 'projects': projects, 'todo_form': todo_form })
 
 def addproject(request):
 	projects = Project.objects.all()
@@ -35,16 +38,13 @@ def addcategory(request):
 	
 	
 def addtodo(request):
-	todos = Todo.objects.all()
-
 	if request.POST:
-		todo = TodoForm(request.POST)
-		if todo.is_valid():
-			todo.save()
-	else:
-		todo = TodoForm()
-
-	return render_to_response('addtodo.html', { 'form': todo, 'projects': todos })
+		f = TodoForm(request.POST)
+		if f.is_valid():
+			todo = f.save()
+			return HttpResponse(simplejson.dumps({ 'id': todo.id, 'created': todo.created }))
+		
+	raise Http404(repr(f.errors) if f else None)
 	
 def completetodo(request, id, complete):
 	todo = get_object_or_404(Todo, pk=id)

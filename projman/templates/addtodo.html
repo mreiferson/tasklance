@@ -1,10 +1,7 @@
-{% extends "base.html" %}
-
-{% block title %}Add Todo - {{ block.super }}{% endblock %}
-
-{% block content %}
-<form action="{% url pm_addtodo %}" method="POST">
-	{{ form.as_p }}
-	<input type="submit" value="Submit">
+<form autocomplete="off">
+	<input type="hidden" name="category" value="">
+	<input type="hidden" name="priority" value="">
+	{{ todo_form.item.errors }}
+	{{ todo_form.item }}
+	<input type="button" value="Add">
 </form>
-{% endblock %}
