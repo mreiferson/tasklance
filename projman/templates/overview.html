@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load show_todos %}
 
 {% block title %}Add Project - {{ block.super }}{% endblock %}
 
@@ -12,23 +13,14 @@
 				<div id="category{{ category.id }}" rel="{{ category.id }}" class="category">
 					<h2><a href="{% url pm_delcategory category.id %}">X</a> {{ category.name }}</h2>
 					<ul class="todos">
-						{% for todo in category.todo_set.all %}
-							<li id="todo{{ todo.id }}" rel="{{ todo.id }}" class="todo {% if todo.complete %}complete{% endif %}">
-								<div class="control">
-									<span class="handle"><img src="/site_media/images/list_ordered.gif"/></span> 
-									<a href="javascript:;" class="deleteLink"><img src="/site_media/images/trash.gif"/></a>
-									<input type="checkbox" autocomplete="off" 
-										class="completeLink" {% if todo.complete %}checked{% endif %}>
-								</div>
-								<div class="item">
-									{{ todo.item }} <span class="created">{{ todo.created }}</span>
-								</div>
-							</li>
-						{% endfor %}
+						{% show_todos category %}
 					</ul>
 					<div class="addTodoContainer">
 						<a href="javascript:;" class="showAddTodoLink">Add Todo</a>
 					</div>
+					<ul class="todos todos_completed">
+						{% show_todos category 1 %}
+					</ul>
 				</div>
 				{% endfor %}
 			</div>

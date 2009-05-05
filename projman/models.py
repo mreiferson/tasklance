@@ -1,5 +1,7 @@
 from django.db import models
+from django.contrib.auth.models import User
 from datetime import datetime
+
 
 class Project(models.Model):
 	name = models.CharField(max_length=255)
@@ -7,6 +9,7 @@ class Project(models.Model):
 	
 	def __unicode__(self):
 		return self.name
+
 
 class Category(models.Model):
 	project = models.ForeignKey(Project)
@@ -19,12 +22,15 @@ class Category(models.Model):
 	def __unicode__(self):
 		return self.name+' ('+self.project.name+')'
 
+
 class Todo(models.Model):
 	category = models.ForeignKey(Category)
+	user = models.ForeignKey(User)
 	item = models.CharField(max_length=255)
 	complete = models.BooleanField(default=False)
 	priority = models.PositiveIntegerField(default=0)
-	created = models.DateTimeField('Date Created', editable=False)
+	created = models.DateTimeField('Creation Stamp', editable=False)
+	completed = models.DateTimeField('Completion Stamp', null=True, editable=False)
 	
 	class Meta:
 		ordering = ('priority',)
@@ -35,6 +41,7 @@ class Todo(models.Model):
 	
 	def __unicode__(self):
 		return self.item+' ('+self.category.project.name+' => '+self.category.name+')'
+
 		
 class Dependency(models.Model):
 	todo_a = models.ForeignKey(Todo, related_name='depends_on')
