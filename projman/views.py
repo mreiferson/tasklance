@@ -1,40 +1,37 @@
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from django.utils import simplejson
 from forms import *
+from django.contrib.auth.decorators import login_required
 
-
+@login_required
 def overview(request):
 	projects = Project.objects.all()
 	todo_form = TodoForm()
+	project_form = ProjectForm()
+	category_form = CategoryForm()
 	
-	return render_to_response('overview.html', { 'projects': projects, 'todo_form': todo_form })
+	return render_to_response('overview.html', { 'projects': projects, 'todo_form': todo_form, 'project_form': project_form, 'category_form': category_form })
 
 
 def addproject(request):
-	projects = Project.objects.all()
-	
 	if request.POST:
-		project = ProjectForm(request.POST)
-		if project.is_valid():
-			project.save()
-	else:
-		project = ProjectForm()
-	
-	return render_to_response('addproject.html', { 'form': project, 'projects': projects })
+		f = ProjectForm(request.POST)
+		if f.is_valid():
+			project = f.save()
+			return HttpResponse(simplejson.dumps({ 'id': project.id, 'name': project.name }))
+		
+	raise Http404(repr(f.errors) if f else None)
 
 
 def addcategory(request):
-	categories = Category.objects.all()
-	
 	if request.POST:
-		category = CategoryForm(request.POST)
-		if category.is_valid():
-			category.save()
-	else:
-		category = CategoryForm()
+		f = CategoryForm(request.POST)
+		if f.is_valid():
+			category = f.save()
+			return HttpResponse(simplejson.dumps({ 'id': category.id, 'project_id': category.project.id, 'name': category.name }))
 		
-	return render_to_response('addcategory.html', { 'form': category, 'categories': categories })
+	raise Http404(repr(f.errors) if f else None)
 
 	
 def addtodo(request):
@@ -42,7 +39,7 @@ def addtodo(request):
 		f = TodoForm(request.POST)
 		if f.is_valid():
 			todo = f.save()
-			return HttpResponse(simplejson.dumps({ 'id': todo.id, 'created': todo.created }))
+			return HttpResponse(simplejson.dumps({ 'id': todo.id, 'created': todo.created, 'item': todo.item }))
 		
 	raise Http404(repr(f.errors) if f else None)
 

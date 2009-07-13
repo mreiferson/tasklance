@@ -1,4 +1,5 @@
-<form action="{% url pm_addproject %}" method="POST">
-	{{ form.as_p }}
-	<input type="submit" value="Submit">
+<form autocomplete="off">
+	{{ project_form.name.errors }}
+	{{ project_form.name }}
+	<input type="button" value="Add">
 </form>

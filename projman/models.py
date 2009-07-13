@@ -5,8 +5,12 @@ from datetime import datetime
 
 class Project(models.Model):
 	name = models.CharField(max_length=255)
-	created = models.DateTimeField('Date Created', default=datetime.now)
+	created = models.DateTimeField('Date Created', editable=False)
 	
+	def save(self):
+		self.created = datetime.now()
+		super(Project, self).save()
+		
 	def __unicode__(self):
 		return self.name
 
@@ -14,7 +18,11 @@ class Project(models.Model):
 class Category(models.Model):
 	project = models.ForeignKey(Project)
 	name = models.CharField(max_length=255)
-	created = models.DateTimeField('Date Created', default=datetime.now)
+	created = models.DateTimeField('Date Created', editable=False)
+	
+	def save(self):
+		self.created = datetime.now()
+		super(Category, self).save()
 	
 	class Meta:
 		verbose_name_plural = 'categories'

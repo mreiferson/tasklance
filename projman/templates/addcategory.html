@@ -1,10 +1,7 @@
-{% extends "base.html" %}
-
-{% block title %}Add Category - {{ block.super }}{% endblock %}
-
-{% block content %}
-<form action="{% url pm_addcategory %}" method="POST">
-	{{ form.as_p }}
-	<input type="submit" value="Submit">
+<form autocomplete="off">
+	{{ category_form.project.errors }}
+	{{ category_form.name.errors }}
+	{{ category_form.project }}
+	{{ category_form.name }}
+	<input type="button" value="Add">
 </form>
-{% endblock %}
