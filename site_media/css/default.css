@@ -64,7 +64,13 @@ a:hover {
 }
 
 #projects {
-	margin-left: 20px;
+	width: 800px;
+}
+
+#manage {
+	margin-left: 10px;
+	border: 1px solid #ddd;
+	width: 280px;
 }
 
 .categories {
@@ -107,7 +113,17 @@ a:hover {
 	left: 45px;
 }
 
-.addTodoContainer {
+#overviewContainer {
+	width: 100%;
+}
+
+.addProjectContainer, .addCategoryContainer, .addTodoContainer {
 	background: #f4f4f4;
 	padding: 5px;
+}
+
+.addHeader {
+	font-weight: bold;
+	margin-bottom: 5px;
+	border-bottom: 1px dotted #aaa;
 }

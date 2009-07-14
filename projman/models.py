@@ -3,7 +3,20 @@ from django.contrib.auth.models import User
 from datetime import datetime
 
 
+class Account(models.Model):
+	name = models.CharField(max_length=255)
+	created = models.DateTimeField('Date Created', editable=False)
+	
+	def save(self):
+		self.created = datetime.now()
+		super(Account, self).save()
+	
+	def __unicode__(self):
+		return self.name
+
+
 class Project(models.Model):
+	account = models.ForeignKey(Account)
 	name = models.CharField(max_length=255)
 	created = models.DateTimeField('Date Created', editable=False)
 	
@@ -33,7 +46,6 @@ class Category(models.Model):
 
 class Todo(models.Model):
 	category = models.ForeignKey(Category)
-	user = models.ForeignKey(User)
 	item = models.CharField(max_length=255)
 	complete = models.BooleanField(default=False)
 	priority = models.PositiveIntegerField(default=0)

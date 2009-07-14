@@ -3,15 +3,18 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.utils import simplejson
 from forms import *
 from django.contrib.auth.decorators import login_required
+from django.template import RequestContext
 
-@login_required
+
 def overview(request):
 	projects = Project.objects.all()
 	todo_form = TodoForm()
 	project_form = ProjectForm()
 	category_form = CategoryForm()
 	
-	return render_to_response('overview.html', { 'projects': projects, 'todo_form': todo_form, 'project_form': project_form, 'category_form': category_form })
+	return render_to_response('overview.html', { 'projects': projects, 
+		'todo_form': todo_form, 'project_form': project_form, 
+		'category_form': category_form }, context_instance=RequestContext(request))
 
 
 def addproject(request):
@@ -19,7 +22,8 @@ def addproject(request):
 		f = ProjectForm(request.POST)
 		if f.is_valid():
 			project = f.save()
-			return HttpResponse(simplejson.dumps({ 'id': project.id, 'name': project.name }))
+			return HttpResponse(simplejson.dumps({ 'id': project.id, 
+				'name': project.name }))
 		
 	raise Http404(repr(f.errors) if f else None)
 
@@ -29,7 +33,8 @@ def addcategory(request):
 		f = CategoryForm(request.POST)
 		if f.is_valid():
 			category = f.save()
-			return HttpResponse(simplejson.dumps({ 'id': category.id, 'project_id': category.project.id, 'name': category.name }))
+			return HttpResponse(simplejson.dumps({ 'id': category.id, 
+				'project_id': category.project.id, 'name': category.name }))
 		
 	raise Http404(repr(f.errors) if f else None)
 
@@ -39,7 +44,8 @@ def addtodo(request):
 		f = TodoForm(request.POST)
 		if f.is_valid():
 			todo = f.save()
-			return HttpResponse(simplejson.dumps({ 'id': todo.id, 'created': todo.created, 'item': todo.item }))
+			return HttpResponse(simplejson.dumps({ 'id': todo.id, 
+				'created': todo.created, 'item': todo.item }))
 		
 	raise Http404(repr(f.errors) if f else None)
 
