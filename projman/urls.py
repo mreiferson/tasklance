@@ -5,6 +5,8 @@ from django.views.generic.create_update import delete_object
 
 urlpatterns = patterns('',
 	url(r'^overview/$', views.overview, name='pm_overview'),
+	url(r'^view/(?P<account_id>\d+)/$', views.view, name='pm_view'),
+	url(r'^create/$', views.create, name='pm_create'),
 	url(r'^addproject/$', views.addproject, name='pm_addproject'),
 	url(r'^delproject/(?P<object_id>\d+)/$', delete_object, 
 		{ 'model': Project, 'post_delete_redirect': '/pm/overview', 'template_name': 'project_confirm_delete.html' }, name='pm_delproject'),

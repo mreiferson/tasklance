@@ -1,5 +1,5 @@
 {% for todo in todos %}
-	<li id="todo{{ todo.id }}" rel="{{ todo.id }}" class="todo {% if todo.complete %}complete{% endif %}">
+	<li id="todo{{ todo.id }}" rel="{{ todo.id }}" class="todo{% if todo.complete %} complete{% endif %}">
 		<div class="control">
 			{% if not todo.complete %}
 			<span class="handle"><img src="/site_media/images/list_ordered.gif"/></span> 

@@ -4,17 +4,52 @@ from django.utils import simplejson
 from forms import *
 from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm;
 
 
+@login_required
 def overview(request):
-	projects = Project.objects.all()
-	todo_form = TodoForm()
-	project_form = ProjectForm()
-	category_form = CategoryForm()
+	accounts = Account.objects.filter(useraccount__user__exact=request.user)
 	
-	return render_to_response('overview.html', { 'projects': projects, 
-		'todo_form': todo_form, 'project_form': project_form, 
-		'category_form': category_form }, context_instance=RequestContext(request))
+	return render_to_response('overview.html', { 'accounts': accounts },
+		context_instance=RequestContext(request))
+
+
+@login_required
+def view(request, account_id):
+	account = get_object_or_404(Account, pk=account_id)
+	if account.useraccount_set.filter(user__exact=request.user) != []:
+		projects = account.project_set.all()
+		todo_form = TodoForm()
+		project_form = ProjectForm()
+		category_form = CategoryForm()
+		
+		return render_to_response('view.html', { 'projects': projects, 
+			'todo_form': todo_form, 'project_form': project_form, 
+			'category_form': category_form }, context_instance=RequestContext(request))
+	else:
+		return HttpResponseRedirect('/login')
+
+
+def create(request):
+	usercreation_form = UserCreationForm(prefix='user')
+	account_form = AccountForm(prefix='acct')
+	
+	if request.POST:
+		usercreation_form = UserCreationForm(request.POST, prefix='user')
+		account_form = AccountForm(request.POST, prefix='acct')
+		if usercreation_form.is_valid() and account_form.is_valid():
+			user = usercreation_form.save()
+			account = account_form.save()
+			useraccount = UserAccount()
+			useraccount.user = user
+			useraccount.account = account
+			useraccount.save()
+			
+			return HttpResponseRedirect('/login')
+	
+	return render_to_response('create.html', { 'usercreation_form': usercreation_form,
+		'account_form': account_form }, context_instance=RequestContext(request))
 
 
 def addproject(request):
@@ -45,7 +80,7 @@ def addtodo(request):
 		if f.is_valid():
 			todo = f.save()
 			return HttpResponse(simplejson.dumps({ 'id': todo.id, 
-				'created': todo.created, 'item': todo.item }))
+				'created': todo.created.strftime('%Y-%m-%d %H:%M:%S'), 'item': todo.item }))
 		
 	raise Http404(repr(f.errors) if f else None)
 
@@ -65,4 +100,5 @@ def prioritize(request, id):
 			if(todo.category.id == category.id):
 				todo.priority = i
 				todo.save()
+	
 	return HttpResponse()

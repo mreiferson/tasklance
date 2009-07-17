@@ -7,23 +7,9 @@ from django.template import RequestContext
 
 
 def index(request):
-	register_form = UserCreationForm()
 	login_form = AuthenticationForm()
 	
-	return render_to_response('index.html', { 'register_form': register_form, 
-		'login_form': login_form }, context_instance=RequestContext(request))
-
-
-def register(request):
-	f = UserCreationForm()
-	
-	if request.POST:
-		f = UserCreationForm(request.POST)
-		if f.is_valid():
-			user = f.save()
-			return HttpResponseRedirect('/login')
-	
-	return render_to_response('register.html', { 'register_form': f },
+	return render_to_response('index.html', { 'login_form': login_form },
 		context_instance=RequestContext(request))
 
 
@@ -39,6 +25,7 @@ def login(request):
 				
 	return render_to_response('login.html', { 'login_form': f },
 		context_instance=RequestContext(request))
+
 		
 def logout(request):
 	auth.logout(request)

@@ -48,11 +48,13 @@ $(document).ready(function() {
 							.addClass('todo')
 							.append($('<div>').addClass('control')
 										.append($('<span>').addClass('handle').append($('<img>').attr('src', '/site_media/images/list_ordered.gif')))
+										.append(' ')
 										.append($('<a>').attr('href', 'javascript:;').addClass('deleteLink').append($('<img>').attr('src', '/site_media/images/trash.gif')))
+										.append(' ')
 										.append($('<input>').attr({ 'type': 'checkbox', 'autocomplete': 'off' }).addClass('completeLink'))
 										)
 							.append($('<div>').addClass('item').append(response.item).append(' ').append($('<span>').addClass('created').text(response.created)))
-							.appendTo('category'+category_id+' .todos:first');
+							.appendTo('#category'+category_id+' .todos:first');
 						
 						f.get(0).reset();
 					}, 'json');
@@ -83,6 +85,7 @@ $(document).ready(function() {
 					$('<div>')
 						.addClass('category')
 						.attr('id', 'category'+response.id)
+						.attr('rel', response.id)
 						.append($('<h2>').append($('<a>').attr('href', '/pm/delcategory/'+response.id).text('X')).append(' '+response.name))
 						.append($('<div>').addClass('todos'))
 						.append($('<div>').addClass('addTodoContainer').append($('<a>').attr('href', 'javascript:;').addClass('showAddTodoLink').text('Add Todo').click(showAddTodo)))

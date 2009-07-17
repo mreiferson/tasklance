@@ -8,7 +8,8 @@ class Account(models.Model):
 	created = models.DateTimeField('Date Created', editable=False)
 	
 	def save(self):
-		self.created = datetime.now()
+		if self.created == None:
+			self.created = datetime.now()
 		super(Account, self).save()
 	
 	def __unicode__(self):
@@ -21,7 +22,8 @@ class Project(models.Model):
 	created = models.DateTimeField('Date Created', editable=False)
 	
 	def save(self):
-		self.created = datetime.now()
+		if self.created == None:
+			self.created = datetime.now()
 		super(Project, self).save()
 		
 	def __unicode__(self):
@@ -33,12 +35,13 @@ class Category(models.Model):
 	name = models.CharField(max_length=255)
 	created = models.DateTimeField('Date Created', editable=False)
 	
-	def save(self):
-		self.created = datetime.now()
-		super(Category, self).save()
-	
 	class Meta:
 		verbose_name_plural = 'categories'
+	
+	def save(self):
+		if self.created == None:
+			self.created = datetime.now()
+		super(Category, self).save()
 	
 	def __unicode__(self):
 		return self.name+' ('+self.project.name+')'
@@ -56,7 +59,8 @@ class Todo(models.Model):
 		ordering = ('priority',)
 		
 	def save(self):
-		self.created = datetime.now()
+		if self.created == None:
+			self.created = datetime.now()
 		super(Todo, self).save()
 	
 	def __unicode__(self):
@@ -72,3 +76,11 @@ class Dependency(models.Model):
 	
 	def __unicode__(self):
 		return self.todo_a.__unicode__()+' ? '+self.todo_b.__unicode__();
+		
+
+class UserAccount(models.Model):
+	user = models.ForeignKey(User)
+	account = models.ForeignKey(Account)
+	
+	def __unicode__(self):
+		return self.user.username+':'+self.account.name
