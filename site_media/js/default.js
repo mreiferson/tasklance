@@ -67,7 +67,6 @@ var toggleCompleteTodo = function() {
 		var complete = (+$(this).is(':checked'));
 		var category = parent.parents('.category');
 		$.post('/pm/completetodo/'+parent.attr('rel')+'/'+complete+'/', {}, function() {
-				debugger;
 				if(complete) {
 					$('.handle', parent).remove();
 					parent.addClass('complete').appendTo($('.todos_completed', category));
@@ -79,6 +78,7 @@ var toggleCompleteTodo = function() {
 	};
 
 var deleteTodo = function() {
+		debugger;
 		var parent = $(this).parents('.todo');
 		$.post('/pm/deltodo/'+parent.attr('rel')+'/', {}, function () {
 				parent.slideUp('fast', function() {
@@ -100,7 +100,7 @@ var addTodo = function(f) {
 								.append($('<div>').addClass('icons')
 									.append($('<span>').addClass('handle').append($('<img>').attr('src', '/site_media/images/list_ordered.gif')))
 									.append(' ')
-									.append($('<a>').attr('href', 'javascript:;').addClass('deleteLink').append($('<img>').attr('src', '/site_media/images/trash.gif').click(deleteTodo)))
+									.append($('<a>').attr('href', 'javascript:;').addClass('deleteLink').append($('<img>').attr('src', '/site_media/images/trash.gif')).click(deleteTodo))
 									.append(' '))
 								.append($('<div>').addClass('completeInput')
 									.append($('<input>').attr({ 'type': 'checkbox', 'autocomplete': 'off' }).addClass('completeLink').click(toggleCompleteTodo))
@@ -128,6 +128,8 @@ var showAddTodo = function() {
 		$(':input[name=category]', f).val(category_id);
 		$(':input[name=priority]', f).val($('.todo', $(this).parents('.category')).length);
 		$(':button', f).click(function() { addTodo(f); });
+		
+		$(':input[type=text]', f).focus();
 	};
 
 function onKeyPress(e, keycode, fnc, param) {

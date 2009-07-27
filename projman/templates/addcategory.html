@@ -1,5 +1,9 @@
 <form autocomplete="off">
-	{{ category_form.project }}
-	{{ category_form.name }}
+	<select name="{{ category_form.project.name }}" style="width: 75px;">
+	{% for choice_val, choice_label in category_form.project.field.choices %}
+		<option value="{{ choice_val }}">{{ choice_label }}</option>
+	{% endfor %}
+	</select>
+	<input type="text" name="{{ category_form.name.name }}" style="width: 150px;"/>
 	<input type="button" value="Add"/>
 </form>

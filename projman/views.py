@@ -112,7 +112,7 @@ def completetodo(request, id, complete):
 	todo.complete = int(complete)
 	todo.save()
 	
-	return HttpResponse(simplejson.dumps({ 'id': todo.id, 'complete': todo.complete }))
+	return HttpResponse(simplejson.dumps({ 'id': todo.id, 'complete': todo.complete, 'date': (todo.complete and todo.completed or todo.created).strftime('%Y-%m-%d %H:%M:%S') }))
 
 
 def prioritize(request, id):

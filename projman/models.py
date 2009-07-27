@@ -59,7 +59,7 @@ class Todo(models.Model):
 	completed = models.DateTimeField('Completion Stamp', null=True, editable=False)
 	
 	class Meta:
-		ordering = ('priority',)
+		ordering = ('priority', 'created')
 		
 	def save(self):
 		if self.created == None:
