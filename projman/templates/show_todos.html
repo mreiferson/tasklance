@@ -7,12 +7,12 @@
 				{% endif %}
 				<a href="javascript:;" class="deleteLink"><img src="/site_media/images/trash.gif"/></a>
 			</div>
-			<div class="complete">
+			<div class="completeInput">
 				<input type="checkbox" autocomplete="off" class="completeLink" {% if todo.complete %}checked{% endif %}>
 			</div>
 		</div>
 		<div class="item">
-			{{ todo.item }} <span class="created">{{ todo.created }}</span>
+			{{ todo.item }} <span class="created">({{ todo.created }})</span>
 		</div>
 	</li>
 {% endfor %}

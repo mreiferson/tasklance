@@ -24,7 +24,7 @@ def view(request, account_id):
 		project_form = ProjectForm()
 		category_form = CategoryForm()
 		
-		return render_to_response('view.html', { 'projects': projects, 
+		return render_to_response('view.html', { 'account': account, 'projects': projects, 
 			'todo_form': todo_form, 'project_form': project_form, 
 			'category_form': category_form }, context_instance=RequestContext(request))
 	else:

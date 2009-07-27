@@ -11,11 +11,13 @@
 				{% for project in projects %}
 					<div id="project{{ project.id }}" class="project">
 						<h1><a href="{% url pm_delproject project.id %}">X</a> {{ project.name }}</h1>
+						<div class="projectDescription">{{ project.description }}</div>
 						<div class="categories">
 							{% for category in project.category_set.all %}
 							<div id="category{{ category.id }}" rel="{{ category.id }}" class="category">
 								<h2><a href="{% url pm_delcategory category.id %}">X</a> {{ category.name }}</h2>
-								<ul class="todos">
+								<div class="categoryDescription">{{ category.description }}</div>
+								<ul class="todos todos_active">
 									{% show_todos category %}
 								</ul>
 								<div class="addTodoContainer">

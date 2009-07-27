@@ -1,24 +1,7 @@
 $(document).ready(function() {
-	$('.deleteLink').click(function() {
-			var parent = $(this).parents('.todo');
-			$.post('/pm/deltodo/'+parent.attr('rel')+'/', {}, function () {
-					parent.slideUp('fast', function() {
-						parent.remove();
-					});
-				});
-		});
+	$('.deleteLink').click(deleteTodo);
 		
-	$('.completeLink').click(function() {
-			var parent = $(this).parents('.todo');
-			var complete = (+$(this).is(':checked'));
-			$.post('/pm/completetodo/'+parent.attr('rel')+'/'+complete+'/', {}, function() {
-					if(complete) {
-						parent.addClass('complete');
-					} else {
-						parent.removeClass('complete');
-					}
-				});
-		});
+	$('.completeLink').click(toggleCompleteTodo);
 		
 	$('.todos').sortable({
 			handle: '.handle',
@@ -70,6 +53,30 @@ $(document).ready(function() {
 		});
 });
 
+var toggleCompleteTodo = function() {
+		var parent = $(this).parents('.todo');
+		var complete = (+$(this).is(':checked'));
+		var category = parent.parents('.category');
+		$.post('/pm/completetodo/'+parent.attr('rel')+'/'+complete+'/', {}, function() {
+				if(complete) {
+					$('.handle', parent).remove();
+					parent.addClass('complete').appendTo($('.todos_completed', category));
+				} else {
+					$('.icons', parent).prepend($('<span>').addClass('handle').append($('<img>').attr('src', '/site_media/images/list_ordered.gif')));
+					parent.removeClass('complete').appendTo($('.todos_active', category));
+				}
+			});
+	};
+
+var deleteTodo = function() {
+		var parent = $(this).parents('.todo');
+		$.post('/pm/deltodo/'+parent.attr('rel')+'/', {}, function () {
+				parent.slideUp('fast', function() {
+					parent.remove();
+				});
+			});
+	};
+
 var addTodo = function(f) {
 		f = $(f);
 		var category_id = $(f).parents('.category').attr('rel');
@@ -83,13 +90,13 @@ var addTodo = function(f) {
 								.append($('<div>').addClass('icons')
 									.append($('<span>').addClass('handle').append($('<img>').attr('src', '/site_media/images/list_ordered.gif')))
 									.append(' ')
-									.append($('<a>').attr('href', 'javascript:;').addClass('deleteLink').append($('<img>').attr('src', '/site_media/images/trash.gif')))
+									.append($('<a>').attr('href', 'javascript:;').addClass('deleteLink').append($('<img>').attr('src', '/site_media/images/trash.gif').click(deleteTodo)))
 									.append(' '))
-								.append($('<div>').addClass('complete')
-									.append($('<input>').attr({ 'type': 'checkbox', 'autocomplete': 'off' }).addClass('completeLink'))
+								.append($('<div>').addClass('completeInput')
+									.append($('<input>').attr({ 'type': 'checkbox', 'autocomplete': 'off' }).addClass('completeLink').click(toggleCompleteTodo))
 									)
 								)
-					.append($('<div>').addClass('item').append(response.item).append(' ').append($('<span>').addClass('created').text(response.created)))
+					.append($('<div>').addClass('item').append(response.item).append(' ').append($('<span>').addClass('created').text('('+response.created+')')))
 					.appendTo('#category'+category_id+' .todos:first');
 				
 				f.get(0).reset();
@@ -110,7 +117,7 @@ var showAddTodo = function() {
 		
 		$(':input[name=category]', f).val(category_id);
 		$(':input[name=priority]', f).val($('.todo', $(this).parents('.category')).length);
-		$(':button', f).click(addTodo);
+		$(':button', f).click(function() { addTodo(f); });
 	};
 
 function onKeyPress(e, keycode, fnc, param) {

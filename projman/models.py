@@ -5,6 +5,7 @@ from datetime import datetime
 
 class Account(models.Model):
 	name = models.CharField(max_length=255)
+	description = models.CharField(max_length=255)
 	created = models.DateTimeField('Date Created', editable=False)
 	
 	def save(self):
@@ -19,6 +20,7 @@ class Account(models.Model):
 class Project(models.Model):
 	account = models.ForeignKey(Account)
 	name = models.CharField(max_length=255)
+	description = models.CharField(max_length=255)
 	created = models.DateTimeField('Date Created', editable=False)
 	
 	def save(self):
@@ -33,6 +35,7 @@ class Project(models.Model):
 class Category(models.Model):
 	project = models.ForeignKey(Project)
 	name = models.CharField(max_length=255)
+	description = models.CharField(max_length=255)
 	created = models.DateTimeField('Date Created', editable=False)
 	
 	class Meta:

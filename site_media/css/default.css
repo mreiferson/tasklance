@@ -1,6 +1,6 @@
 body {
 	font-size: 62.5%;
-	font-family: "Lucida Grande", Tahoma, sans-serif;
+	font-family: Tahoma, sans-serif;
 	margin: 0 !important;
 	padding: 0 !important;
 }
@@ -46,6 +46,19 @@ a:hover {
 	margin: 0 auto;
 }
 
+.accountDescription {
+	color: #888;
+}
+
+.projectDescription {
+	color: #888;
+}
+
+.categoryDescription {
+	color: #888;
+	margin-bottom: 5px;
+}
+
 #projects h1 {
 	font-size: 1.5em;
 	color: #000;
@@ -65,6 +78,10 @@ a:hover {
 
 #projects {
 	width: 800px;
+}
+
+.project {
+	margin-bottom: 1em;
 }
 
 #manage {
@@ -87,6 +104,7 @@ a:hover {
 
 .todo.complete {
 	color: #aaa;
+	padding-left: 13px;
 }
 
 .todos {
@@ -103,25 +121,22 @@ a:hover {
 	left: 0;
 }
 
-.todos_completed .control {
-	left: 14px;
+.todos_completed {
+	margin-top: 5px;
 }
 
 .todos .icons {
 	float: left;
-	padding-top: 1px;
-	padding-right: 2px;
+	padding-right: 3px;
 }
 
-.todos .complete {
+.todos .completeInput {
 	float: left;
 	padding-right: 4px;
 }
 
 .todos .item {
-	/*position: relative;
-	top: -18px;
-	left: 45px;*/
+
 }
 
 #overviewContainer {

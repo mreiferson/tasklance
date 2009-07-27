@@ -1,6 +1,6 @@
 <form autocomplete="off">
-	{{ project_form.errors }}
-	{{ project_form.account }}
-	{{ project_form.name }}
-	<input type="button" value="Add">
+	<input type="hidden" name="account" value="{{ account.id }}"/>
+	<label for="name">Name:</label> <input type="text" name="{{ project_form.name.name }}" style="width: 196px;"/>
+	<input type="button" value="Add"/>
+	<label for="description">Description:</label> <input type="text" name="{{ project_form.description.name }}" style="width: 209px;"/>
 </form>
