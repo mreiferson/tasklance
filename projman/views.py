@@ -63,6 +63,17 @@ def addproject(request):
 	raise Http404(repr(f.errors) if f else None)
 
 
+def updateproject(request, project_id):
+	if request.POST:
+		project = get_object_or_404(Project, pk=project_id)
+		project.description = request.POST['description']
+		project.save()
+		
+		return HttpResponse(simplejson.dumps({ 'id': project.id, 'description': project.description }))
+	
+	raise Http404(None)
+
+
 def addcategory(request):
 	if request.POST:
 		f = CategoryForm(request.POST)
@@ -72,6 +83,17 @@ def addcategory(request):
 				'project_id': category.project.id, 'name': category.name }))
 		
 	raise Http404(repr(f.errors) if f else None)
+	
+
+def updatecategory(request, category_id):
+	if request.POST:
+		category = get_object_or_404(Category, pk=category_id)
+		category.description = request.POST['description']
+		category.save()
+		
+		return HttpResponse(simplejson.dumps({ 'id': category.id, 'description': category.description }))
+			
+	raise Http404(None)
 
 	
 def addtodo(request):
@@ -89,7 +111,8 @@ def completetodo(request, id, complete):
 	todo = get_object_or_404(Todo, pk=id)
 	todo.complete = int(complete)
 	todo.save()
-	return HttpResponse()
+	
+	return HttpResponse(simplejson.dumps({ 'id': todo.id, 'complete': todo.complete }))
 
 
 def prioritize(request, id):
@@ -101,4 +124,4 @@ def prioritize(request, id):
 				todo.priority = i
 				todo.save()
 	
-	return HttpResponse()
+	return HttpResponse(simplejson.dumps({ 'id': category.id, 'order': request.POST['order'].split(',') }))

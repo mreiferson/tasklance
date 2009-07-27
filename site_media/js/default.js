@@ -2,6 +2,14 @@ $(document).ready(function() {
 	$('.deleteLink').click(deleteTodo);
 		
 	$('.completeLink').click(toggleCompleteTodo);
+	
+	$('.projectDescription, .categoryDescription').editable({'submit': 'Update', 'cancel': 'Cancel', 'editClass': 'descriptionEdit', 'onSubmit': function(content) {
+			if(content.current != content.previous) {
+				var parent = $(this).parent();
+				var type = parent.attr('class');
+				$.post('/pm/update'+type+'/'+parent.attr('rel')+'/', { 'description': content.current }, function() {}, 'json');
+			}
+		} });
 		
 	$('.todos').sortable({
 			handle: '.handle',
@@ -13,7 +21,7 @@ $(document).ready(function() {
 										function(n) { return $(n).attr('rel'); }
 									));
 
-				$.post('/pm/prioritize/'+categoryParent.attr('rel')+'/', { 'order': order.join(',') }, function() {});
+				$.post('/pm/prioritize/'+categoryParent.attr('rel')+'/', { 'order': order.join(',') }, function() {}, 'json');
 			}
 		});
 			
@@ -25,6 +33,7 @@ $(document).ready(function() {
 					$('<div>')
 						.addClass('project')
 						.attr('id', 'project'+response.id)
+						.attr('rel', response.id)
 						.append($('<h1>').append($('<a>').attr('href', '/pm/delproject/'+response.id).text('X')).append(' '+response.name))
 						.append($('<div>').addClass('categories'))
 						.appendTo('#projects');
@@ -58,6 +67,7 @@ var toggleCompleteTodo = function() {
 		var complete = (+$(this).is(':checked'));
 		var category = parent.parents('.category');
 		$.post('/pm/completetodo/'+parent.attr('rel')+'/'+complete+'/', {}, function() {
+				debugger;
 				if(complete) {
 					$('.handle', parent).remove();
 					parent.addClass('complete').appendTo($('.todos_completed', category));
@@ -65,7 +75,7 @@ var toggleCompleteTodo = function() {
 					$('.icons', parent).prepend($('<span>').addClass('handle').append($('<img>').attr('src', '/site_media/images/list_ordered.gif')));
 					parent.removeClass('complete').appendTo($('.todos_active', category));
 				}
-			});
+			}, 'json');
 	};
 
 var deleteTodo = function() {
@@ -74,7 +84,7 @@ var deleteTodo = function() {
 				parent.slideUp('fast', function() {
 					parent.remove();
 				});
-			});
+			}, 'json');
 	};
 
 var addTodo = function(f) {

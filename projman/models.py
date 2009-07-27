@@ -64,6 +64,12 @@ class Todo(models.Model):
 	def save(self):
 		if self.created == None:
 			self.created = datetime.now()
+			
+		if self.complete:
+			self.completed = datetime.now()
+		else:
+			self.completed = None
+			
 		super(Todo, self).save()
 	
 	def __unicode__(self):

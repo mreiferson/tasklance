@@ -9,7 +9,7 @@
 		<td valign="top">
 			<div id="projects">
 				{% for project in projects %}
-					<div id="project{{ project.id }}" class="project">
+					<div id="project{{ project.id }}" rel="{{ project.id }}" class="project">
 						<h1><a href="{% url pm_delproject project.id %}">X</a> {{ project.name }}</h1>
 						<div class="projectDescription">{{ project.description }}</div>
 						<div class="categories">

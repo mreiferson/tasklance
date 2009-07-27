@@ -153,3 +153,7 @@ a:hover {
 	margin-bottom: 5px;
 	border-bottom: 1px dotted #aaa;
 }
+
+.descriptionEdit {
+	width: 500px;
+}
