@@ -107,10 +107,21 @@ a:hover {
 	left: 14px;
 }
 
+.todos .icons {
+	float: left;
+	padding-top: 1px;
+	padding-right: 2px;
+}
+
+.todos .complete {
+	float: left;
+	padding-right: 4px;
+}
+
 .todos .item {
-	position: relative;
+	/*position: relative;
 	top: -18px;
-	left: 45px;
+	left: 45px;*/
 }
 
 #overviewContainer {

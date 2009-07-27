@@ -33,34 +33,7 @@ $(document).ready(function() {
 				$.post('/pm/prioritize/'+categoryParent.attr('rel')+'/', { 'order': order.join(',') }, function() {});
 			}
 		});
-	
-	var showAddTodo = function() {
-			var f = $('#addTodoTemplateContainer > form').clone();
-			f.appendTo($(this).parent());
-			var category_id = $(this).parents('.category').attr('rel');
-			$(':input[name=category]', f).val(category_id);
-			$(':input[name=priority]', f).val($('.todo', $(this).parents('.category')).length);
-			$(':button', f).click(function() {
-				$.post('/pm/addtodo/', f.serialize(), function(response) {
-						$('<li>')
-							.attr('id', 'todo'+response.id)
-							.attr('rel', response.id)
-							.addClass('todo')
-							.append($('<div>').addClass('control')
-										.append($('<span>').addClass('handle').append($('<img>').attr('src', '/site_media/images/list_ordered.gif')))
-										.append(' ')
-										.append($('<a>').attr('href', 'javascript:;').addClass('deleteLink').append($('<img>').attr('src', '/site_media/images/trash.gif')))
-										.append(' ')
-										.append($('<input>').attr({ 'type': 'checkbox', 'autocomplete': 'off' }).addClass('completeLink'))
-										)
-							.append($('<div>').addClass('item').append(response.item).append(' ').append($('<span>').addClass('created').text(response.created)))
-							.appendTo('#category'+category_id+' .todos:first');
-						
-						f.get(0).reset();
-					}, 'json');
-			});
-		};
-		
+			
 	$('.showAddTodoLink').click(showAddTodo);
 		
 	$('.addProjectContainer :button').click(function() {
@@ -96,3 +69,65 @@ $(document).ready(function() {
 				}, 'json');
 		});
 });
+
+var addTodo = function(f) {
+		f = $(f);
+		var category_id = $(f).parents('.category').attr('rel');
+		
+		$.post('/pm/addtodo/', f.serialize(), function(response) {
+				$('<li>')
+					.attr('id', 'todo'+response.id)
+					.attr('rel', response.id)
+					.addClass('todo')
+					.append($('<div>').addClass('control')
+								.append($('<div>').addClass('icons')
+									.append($('<span>').addClass('handle').append($('<img>').attr('src', '/site_media/images/list_ordered.gif')))
+									.append(' ')
+									.append($('<a>').attr('href', 'javascript:;').addClass('deleteLink').append($('<img>').attr('src', '/site_media/images/trash.gif')))
+									.append(' '))
+								.append($('<div>').addClass('complete')
+									.append($('<input>').attr({ 'type': 'checkbox', 'autocomplete': 'off' }).addClass('completeLink'))
+									)
+								)
+					.append($('<div>').addClass('item').append(response.item).append(' ').append($('<span>').addClass('created').text(response.created)))
+					.appendTo('#category'+category_id+' .todos:first');
+				
+				f.get(0).reset();
+			}, 'json');
+			
+		return false;
+	};
+	
+var showAddTodo = function() {
+		var f = $('#addTodoTemplateContainer > form').clone();
+		var div = $(this).parent();
+		var category_id = $(this).parents('.category').attr('rel');
+		
+		div.html(f).append(
+			$('<a>').attr('href', 'javascript:;').text('All Done!').appendTo(div).click(function() {
+				div.html($('<a>').attr('href', 'javascript:;').addClass('showAddTodoLink').text('Add Todo').click(showAddTodo));
+			}));
+		
+		$(':input[name=category]', f).val(category_id);
+		$(':input[name=priority]', f).val($('.todo', $(this).parents('.category')).length);
+		$(':button', f).click(addTodo);
+	};
+
+function onKeyPress(e, keycode, fnc, param) {
+	var pK = e.charCode || e.keyCode;
+
+	if(pK == keycode) {
+		fnc(param);
+		return false;
+	}
+
+	return true;
+}
+
+function entFunc(e, fnc, param) {
+	return onKeyPress(e, 13, fnc, param);
+}
+
+function entSub(e, frm) {
+	return entFunc(e, function() { frm.submit(); });
+}
