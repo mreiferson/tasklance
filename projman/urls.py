@@ -19,9 +19,9 @@ urlpatterns = patterns('',
 		{ 'model': Category, 'post_delete_redirect': '/pm/overview', 'template_name': 'category_confirm_delete.html' }, name='pm_delcategory'),
 	
 	url(r'^addtodo/$', views.addtodo, name='pm_addtodo'),
-	url(r'^deltodo/(?P<object_id>\d+)/$', delete_object,
-		{ 'model': Todo, 'post_delete_redirect': '/pm/overview', 'template_name': 'todo_confirm_delete.html' }, name='pm_deltodo'),
-	url(r'^completetodo/(?P<id>\d+)/(?P<complete>[01]+)/$', views.completetodo, name='pm_completetodo'),
+	url(r'^deletetodo/(?P<todo_id>\d+)/$', views.deletetodo, name='pm_deletetodo'),
+	url(r'^completetodo/(?P<todo_id>\d+)/(?P<complete>[01]+)/$', views.completetodo, name='pm_completetodo'),
+	url(r'^updatetodo/(?P<todo_id>\d+)/$', views.updatetodo, name='pm_updatetodo'),
 	
 	url(r'^prioritize/(?P<id>\d+)/$', views.prioritize, name='pm_prioritize'),
 )

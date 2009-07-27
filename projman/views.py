@@ -35,7 +35,7 @@ def create(request):
 	usercreation_form = UserCreationForm(prefix='user')
 	account_form = AccountForm(prefix='acct')
 	
-	if request.POST:
+	if request.method == 'POST':
 		usercreation_form = UserCreationForm(request.POST, prefix='user')
 		account_form = AccountForm(request.POST, prefix='acct')
 		if usercreation_form.is_valid() and account_form.is_valid():
@@ -53,7 +53,7 @@ def create(request):
 
 
 def addproject(request):
-	if request.POST:
+	if request.method == 'POST':
 		f = ProjectForm(request.POST)
 		if f.is_valid():
 			project = f.save()
@@ -64,7 +64,7 @@ def addproject(request):
 
 
 def updateproject(request, project_id):
-	if request.POST:
+	if request.method == 'POST':
 		project = get_object_or_404(Project, pk=project_id)
 		project.description = request.POST['description']
 		project.save()
@@ -75,7 +75,7 @@ def updateproject(request, project_id):
 
 
 def addcategory(request):
-	if request.POST:
+	if request.method == 'POST':
 		f = CategoryForm(request.POST)
 		if f.is_valid():
 			category = f.save()
@@ -86,7 +86,7 @@ def addcategory(request):
 	
 
 def updatecategory(request, category_id):
-	if request.POST:
+	if request.method == 'POST':
 		category = get_object_or_404(Category, pk=category_id)
 		category.description = request.POST['description']
 		category.save()
@@ -97,7 +97,7 @@ def updatecategory(request, category_id):
 
 	
 def addtodo(request):
-	if request.POST:
+	if request.method == 'POST':
 		f = TodoForm(request.POST)
 		if f.is_valid():
 			todo = f.save()
@@ -105,18 +105,43 @@ def addtodo(request):
 				'created': todo.created.strftime('%Y-%m-%d %H:%M:%S'), 'item': todo.item }))
 		
 	raise Http404(repr(f.errors) if f else None)
-
-
-def completetodo(request, id, complete):
-	todo = get_object_or_404(Todo, pk=id)
-	todo.complete = int(complete)
-	todo.save()
 	
-	return HttpResponse(simplejson.dumps({ 'id': todo.id, 'complete': todo.complete, 'date': (todo.complete and todo.completed or todo.created).strftime('%Y-%m-%d %H:%M:%S') }))
+
+def deletetodo(request, todo_id):
+	if request.method == 'POST':
+		todo = get_object_or_404(Todo, pk=todo_id)
+		todo.delete()
+		
+		return HttpResponse(simplejson.dumps({ 'return': True }))
+			
+	raise Http404(None)
+
+
+def completetodo(request, todo_id, complete):
+	if request.method == 'POST':
+		todo = get_object_or_404(Todo, pk=todo_id)
+		todo.complete = int(complete)
+		todo.save()
+		
+		return HttpResponse(simplejson.dumps({ 'id': todo.id, 'complete': todo.complete, 'date': (todo.complete and todo.completed or todo.created).strftime('%Y-%m-%d %H:%M:%S') }))
+	
+	raise Http404(None)
+	
+
+def updatetodo(request, todo_id):
+	if request.method == 'POST':
+		todo = get_object_or_404(Todo, pk=todo_id)
+		category = get_object_or_404(Category, pk=request.POST['category_id'])
+		todo.category = category
+		todo.save()
+		
+		return HttpResponse(simplejson.dumps({ 'id': todo.id, 'category': todo.category.id }))
+	
+	raise Http404(None)
 
 
 def prioritize(request, id):
-	if request.POST:
+	if request.method == 'POST':
 		category = get_object_or_404(Category, pk=id)
 		for i, todo_id in enumerate(request.POST['order'].split(',')):
 			todo = get_object_or_404(Todo, pk=todo_id)

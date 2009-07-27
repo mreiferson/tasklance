@@ -13,15 +13,23 @@ $(document).ready(function() {
 		
 	$('.todos').sortable({
 			handle: '.handle',
+			connectWith: '.todos_active',
+			receive: function(event, ui) {
+				var category = $(ui.item).parents('.category');
+				$.post('/pm/updatetodo/'+$(ui.item).attr('rel')+'/', { 'category_id': category.attr('rel') }, function() {}, 'json');
+			},
+			remove: function(event, ui) {
+			},
 			update: function(event, ui) {
-				var categoryParent = $(ui.item).parents('.category');
+				var category = $(ui.item).parents('.category');
+				var activeTodos = $('.todos_active', category);
 				var order = $.makeArray(
 								$.map(
-									$('li', categoryParent), 
+									$('li', activeTodos), 
 										function(n) { return $(n).attr('rel'); }
 									));
 
-				$.post('/pm/prioritize/'+categoryParent.attr('rel')+'/', { 'order': order.join(',') }, function() {}, 'json');
+				$.post('/pm/prioritize/'+category.attr('rel')+'/', { 'order': order.join(',') }, function() {}, 'json');
 			}
 		});
 			
@@ -78,9 +86,8 @@ var toggleCompleteTodo = function() {
 	};
 
 var deleteTodo = function() {
-		debugger;
 		var parent = $(this).parents('.todo');
-		$.post('/pm/deltodo/'+parent.attr('rel')+'/', {}, function () {
+		$.post('/pm/deletetodo/'+parent.attr('rel')+'/', {}, function () {
 				parent.slideUp('fast', function() {
 					parent.remove();
 				});
