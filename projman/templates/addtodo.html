@@ -1,4 +1,4 @@
-<form autocomplete="off">
+<form autocomplete="off" onkeypress="return entFunc(event, addTodo, this);">
 	<input type="hidden" name="category" value="">
 	<input type="hidden" name="priority" value="">
 	{{ todo_form.item.errors }}
