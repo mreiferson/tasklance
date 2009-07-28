@@ -1,5 +1,6 @@
 Login:
 <form method="POST" action="{% url login %}">
 	{{ login_form.as_p }}
+	<input type="checkbox" name="remember" value="1"/> Remember Me<br/>
 	<input type="submit" value="Login">
 </form>
