@@ -139,6 +139,10 @@ a:hover {
 
 }
 
+.todos .placeholder {
+	color: #ccc;
+}
+
 #overviewContainer {
 	width: 100%;
 }

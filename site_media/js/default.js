@@ -17,8 +17,10 @@ $(document).ready(function() {
 			receive: function(event, ui) {
 				var category = $(ui.item).parents('.category');
 				$.post('/pm/updatetodo/'+$(ui.item).attr('rel')+'/', { 'category_id': category.attr('rel') }, function() {}, 'json');
+				checkForPlaceholder($('.todos_active', category));
 			},
 			remove: function(event, ui) {
+				checkForPlaceholder($(this));
 			},
 			update: function(event, ui) {
 				var category = $(ui.item).parents('.category');
@@ -70,33 +72,47 @@ $(document).ready(function() {
 		});
 });
 
+var checkForPlaceholder = function(target) {
+		if($('.todo', target).length) {
+			$('.placeholder', target).fadeOut('fast', function() { $(this).remove(); });
+		} else {
+			$('<li>').addClass('placeholder').text('Add some tasks!').appendTo(target);
+		}
+	};
+
 var toggleCompleteTodo = function() {
 		var parent = $(this).parents('.todo');
 		var complete = (+$(this).is(':checked'));
 		var category = parent.parents('.category');
 		$.post('/pm/completetodo/'+parent.attr('rel')+'/'+complete+'/', {}, function() {
 				if(complete) {
-					$('.handle', parent).remove();
-					parent.addClass('complete').appendTo($('.todos_completed', category));
+					parent.slideUp('fast', function() {
+						$(this).hide();
+						$('.handle', this).remove();
+						$(this).addClass('complete').appendTo($('.todos_completed', category)).fadeIn('fast');
+					});
 				} else {
-					$('.icons', parent).prepend($('<span>').addClass('handle').append($('<img>').attr('src', '/site_media/images/list_ordered.gif')));
-					parent.removeClass('complete').appendTo($('.todos_active', category));
+					parent.slideUp('fast', function() {
+						$(this).hide();
+						$('.icons', this).prepend($('<span>').addClass('handle').append($('<img>').attr('src', '/site_media/images/list_ordered.gif')));
+						$(this).removeClass('complete').appendTo($('.todos_active', category)).fadeIn('fast');
+					});
 				}
 			}, 'json');
 	};
 
 var deleteTodo = function() {
 		var parent = $(this).parents('.todo');
+		var todos = parent.parent();
 		$.post('/pm/deletetodo/'+parent.attr('rel')+'/', {}, function () {
-				parent.slideUp('fast', function() {
-					parent.remove();
-				});
+				parent.slideUp('fast', function() { parent.remove(); checkForPlaceholder(todos); });
 			}, 'json');
 	};
 
 var addTodo = function(f) {
 		f = $(f);
-		var category_id = $(f).parents('.category').attr('rel');
+		var category = $(f).parents('.category');
+		var category_id = category.attr('rel');
 		
 		$.post('/pm/addtodo/', f.serialize(), function(response) {
 				$('<li>')
@@ -114,9 +130,13 @@ var addTodo = function(f) {
 									)
 								)
 					.append($('<div>').addClass('item').append(response.item).append(' ').append($('<span>').addClass('created').text('('+response.created+')')))
-					.appendTo('#category'+category_id+' .todos:first');
+					.hide()
+					.appendTo('#category'+category_id+' .todos:first')
+					.fadeIn('fast');
 				
 				f.get(0).reset();
+				
+				checkForPlaceholder($('.todos_active', category));
 			}, 'json');
 			
 		return false;
@@ -128,15 +148,32 @@ var showAddTodo = function() {
 		var category_id = $(this).parents('.category').attr('rel');
 		
 		div.html(f).append(
-			$('<a>').attr('href', 'javascript:;').text('All Done!').appendTo(div).click(function() {
-				div.html($('<a>').attr('href', 'javascript:;').addClass('showAddTodoLink').text('Add Todo').click(showAddTodo));
-			}));
+			$('<a>').attr('href', 'javascript:;').text('All Done!').appendTo(div).click(hideAddTodo));
 		
 		$(':input[name=category]', f).val(category_id);
 		$(':input[name=priority]', f).val($('.todo', $(this).parents('.category')).length);
 		$(':button', f).click(function() { addTodo(f); });
 		
 		$(':input[type=text]', f).focus();
+	};
+
+var hideAddTodo = function() {
+		$(this).parents('.addTodoContainer').html($('<a>').attr('href', 'javascript:;').addClass('showAddTodoLink').text('Add Todo').click(showAddTodo));
+	};
+
+var onKeyPress_addTodo = function(e, target) {
+		switch(e.charCode || e.keyCode) {
+			case 13:
+				addTodo(target);
+				return false;
+				break;
+			case 27:
+				$('a', $(target).parents('.addTodoContainer')).click();
+				return false;
+				break;
+		}
+		
+		return true;
 	};
 
 function onKeyPress(e, keycode, fnc, param) {

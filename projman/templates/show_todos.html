@@ -1,18 +1,22 @@
-{% for todo in todos %}
-	<li id="todo{{ todo.id }}" rel="{{ todo.id }}" class="todo{% if todo.complete %} complete{% endif %}">
-		<div class="control">
-			<div class="icons">
-				{% if not todo.complete %}
-				<span class="handle"><img src="/site_media/images/list_ordered.gif"/></span> 
-				{% endif %}
-				<a href="javascript:;" class="deleteLink"><img src="/site_media/images/trash.gif"/></a>
+{% if todos.count %}
+	{% for todo in todos %}
+		<li id="todo{{ todo.id }}" rel="{{ todo.id }}" class="todo{% if todo.complete %} complete{% endif %}">
+			<div class="control">
+				<div class="icons">
+					{% if not todo.complete %}
+					<span class="handle"><img src="/site_media/images/list_ordered.gif"/></span> 
+					{% endif %}
+					<a href="javascript:;" class="deleteLink"><img src="/site_media/images/trash.gif"/></a>
+				</div>
+				<div class="completeInput">
+					<input type="checkbox" autocomplete="off" class="completeLink" {% if todo.complete %}checked{% endif %}>
+				</div>
 			</div>
-			<div class="completeInput">
-				<input type="checkbox" autocomplete="off" class="completeLink" {% if todo.complete %}checked{% endif %}>
+			<div class="item">
+				{{ todo.item }} <span class="created">({{ todo.created|date:"Y-m-d g:ia" }})</span>
 			</div>
-		</div>
-		<div class="item">
-			{{ todo.item }} <span class="created">({{ todo.created|date:"Y-m-d g:ia" }})</span>
-		</div>
-	</li>
-{% endfor %}
+		</li>
+	{% endfor %}
+{% else %}
+	{% if not complete %}<li class="placeholder">Add some tasks!</li>{% endif %}
+{% endif %}

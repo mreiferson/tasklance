@@ -1,4 +1,4 @@
-<form autocomplete="off" onkeypress="return entFunc(event, addTodo, this);">
+<form autocomplete="off" onkeypress="return onKeyPress_addTodo(event, this);">
 	<input type="hidden" name="category" value=""/>
 	<input type="hidden" name="priority" value=""/>
 	<input type="text" name="{{ todo_form.item.name }}" style="width: 720px;"/>
