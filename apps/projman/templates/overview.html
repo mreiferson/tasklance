@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block title %}Overview - {{ block.super }}{% endblock %}
+
+{% block content %}
+	{% for account in accounts %}
+		<h1><a href=""><img src="/site_media/images/trash.gif"/></a> <a href="{% url pm_view account.id %}">{{ account.name }}</a></h1>
+		<div class="accountDescription">{{ account.description }}</div>
+	{% endfor %}
+{% endblock %}

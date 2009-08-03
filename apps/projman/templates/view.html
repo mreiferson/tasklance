@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load show_todos %}
+
+{% block title %}View Account - {{ block.super }}{% endblock %}
+
+{% block content %}
+<table cellspacing="0" id="overviewContainer">
+	<tr>
+		<td valign="top">
+			<div id="projects">
+				{% for project in projects %}
+					<div id="project{{ project.id }}" rel="{{ project.id }}" class="project">
+						<h1><a href="{% url pm_delproject project.id %}">X</a> {{ project.name }}</h1>
+						<div class="projectDescription">{{ project.description }}</div>
+						<div class="categories">
+							{% for category in project.category_set.all %}
+							<div id="category{{ category.id }}" rel="{{ category.id }}" class="category">
+								<h2><a href="{% url pm_delcategory category.id %}">X</a> {{ category.name }}</h2>
+								<div class="categoryDescription">{{ category.description }}</div>
+								<ul class="todos todos_active">
+									{% show_todos category %}
+								</ul>
+								<div class="addTodoContainer">
+									<a href="javascript:;" class="showAddTodoLink">Add Todo</a>
+								</div>
+								<ul class="todos todos_completed">
+									{% show_todos category 1 %}
+								</ul>
+							</div>
+							{% endfor %}
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		</td>
+		<td valign="top">
+			<div id="manage">
+				<div class="addProjectContainer">
+					<div class="addHeader">Add Project</div>
+					{% include "addproject.html" %}
+				</div>
+				<div class="addCategoryContainer">
+					<div class="addHeader">Add Category</div>
+					{% include "addcategory.html" %}
+				</div>
+			</div>
+		</td>
+	</tr>
+</table>
+<div id="addTodoTemplateContainer" style="display: none;">
+	{% include "addtodo.html" %}
+</div>
+{% endblock %}
