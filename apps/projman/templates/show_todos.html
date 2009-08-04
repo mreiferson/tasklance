@@ -1,6 +1,7 @@
 {% if todos.count %}
 	{% for todo in todos %}
 		<li id="todo{{ todo.id }}" rel="{{ todo.id }}" class="todo{% if todo.complete %} complete{% endif %}">
+			<div class="floatContainer">
 			<div class="control">
 				<div class="icons">
 					{% if not todo.complete %}
@@ -12,8 +13,8 @@
 					<input type="checkbox" autocomplete="off" class="completeLink" {% if todo.complete %}checked{% endif %}>
 				</div>
 			</div>
-			<div class="item">
-				{{ todo.item }} <span class="created">({{ todo.created|date:"Y-m-d g:ia" }})</span>
+			<div class="item">{{ todo.item }}</div>
+			<div class="created">({{ todo.created|date:"Y-m-d g:ia" }})</div>
 			</div>
 		</li>
 	{% endfor %}

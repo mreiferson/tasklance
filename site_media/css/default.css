@@ -26,6 +26,14 @@ a:hover {
 	color: #6cf;
 }
 
+.floatContainer:after {
+	content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
 #header {
 	padding: 5px;
 	font-weight: bold;
@@ -113,6 +121,7 @@ a:hover {
 
 .todos .created {
 	color: #ccc;
+	float: left;
 }
 
 .todos .control {
@@ -136,7 +145,8 @@ a:hover {
 }
 
 .todos .item {
-
+	float: left;
+	margin-right: 2px;
 }
 
 .todos .placeholder {

@@ -1,17 +1,4 @@
-$(document).ready(function() {
-	$('.deleteLink').click(deleteTodo);
-		
-	$('.completeLink').click(toggleCompleteTodo);
-	
-	$('.projectDescription, .categoryDescription').editable({'submit': 'Update', 'cancel': 'Cancel', 'editClass': 'descriptionEdit', 'onSubmit': function(content) {
-			if(content.current != content.previous) {
-				var parent = $(this).parent();
-				var type = parent.attr('class');
-				$.post('/pm/update'+type+'/'+parent.attr('rel')+'/', { 'description': content.current }, function() {}, 'json');
-			}
-		} });
-		
-	$('.todos').sortable({
+var sortableOptions = {
 			handle: '.handle',
 			connectWith: '.todos_active',
 			receive: function(event, ui) {
@@ -33,44 +20,15 @@ $(document).ready(function() {
 
 				$.post('/pm/prioritize/'+category.attr('rel')+'/', { 'order': order.join(',') }, function() {}, 'json');
 			}
-		});
-			
-	$('.showAddTodoLink').click(showAddTodo);
+		};
 		
-	$('.addProjectContainer :button').click(function() {
-			var f = $(this.form);
-			$.post('/pm/addproject/', f.serialize(), function(response) {
-					$('<div>')
-						.addClass('project')
-						.attr('id', 'project'+response.id)
-						.attr('rel', response.id)
-						.append($('<h1>').append($('<a>').attr('href', '/pm/delproject/'+response.id).text('X')).append(' '+response.name))
-						.append($('<div>').addClass('categories'))
-						.appendTo('#projects');
-					
-					$('.addCategoryContainer select').append($('<option>').attr('value', response.id).text(response.name));
-					
-					f.get(0).reset();
-				}, 'json');
-		});
-		
-	$('.addCategoryContainer :button').click(function() {
-			var f = $(this.form);
-			$.post('/pm/addcategory/', f.serialize(), function(response) {
-					$('<div>')
-						.addClass('category')
-						.attr('id', 'category'+response.id)
-						.attr('rel', response.id)
-						.append($('<h2>').append($('<a>').attr('href', '/pm/delcategory/'+response.id).text('X')).append(' '+response.name))
-						.append($('<div>').addClass('todos'))
-						.append($('<div>').addClass('addTodoContainer').append($('<a>').attr('href', 'javascript:;').addClass('showAddTodoLink').text('Add Todo').click(showAddTodo)))
-						.append($('<div>').addClass('todos').addClass('todos_completed'))
-						.appendTo('#project'+response.project_id+' .categories');
-						
-						f.get(0).reset();
-				}, 'json');
-		});
-});
+var editableOptions_description = { 'submit': 'Update', 'cancel': 'Cancel', 'editClass': 'descriptionEdit', 'onSubmit': function(content) {
+			if(content.current != content.previous) {
+				var parent = $(this).parent();
+				var type = parent.attr('class');
+				$.post('/pm/update'+type+'/'+parent.attr('rel')+'/', { 'description': content.current }, function() {}, 'json');
+			}
+		} };
 
 var checkForPlaceholder = function(target) {
 		if($('.todo', target).length) {
@@ -194,3 +152,53 @@ function entFunc(e, fnc, param) {
 function entSub(e, frm) {
 	return entFunc(e, function() { frm.submit(); });
 }
+
+$(document).ready(function() {
+	$('.deleteLink').click(deleteTodo);
+		
+	$('.completeLink').click(toggleCompleteTodo);
+	
+	$('.showAddTodoLink').click(showAddTodo);
+	
+	$('.projectDescription, .categoryDescription').editable(editableOptions_description);
+		
+	$('.todos').sortable(sortableOptions);
+		
+	$('.addProjectContainer :button').click(function() {
+			var f = $(this.form);
+			$.post('/pm/addproject/', f.serialize(), function(response) {
+					$('<div>')
+						.addClass('project')
+						.attr('id', 'project'+response.id)
+						.attr('rel', response.id)
+						.append($('<h1>').append($('<a>').attr('href', '/pm/delproject/'+response.id).text('X')).append(' '+response.name))
+						.append($('<div>').addClass('projectDescription').text(response.description).editable(editableOptions))
+						.append($('<div>').addClass('categories'))
+						.appendTo('#projects');
+					
+					$('.addCategoryContainer select').append($('<option>').attr('value', response.id).text(response.name));
+					
+					f.get(0).reset();
+				}, 'json');
+		});
+		
+	$('.addCategoryContainer :button').click(function() {
+			var f = $(this.form);
+			$.post('/pm/addcategory/', f.serialize(), function(response) {
+					var cat = $('<div>')
+						.addClass('category')
+						.attr('id', 'category'+response.id)
+						.attr('rel', response.id)
+						.append($('<h2>').append($('<a>').attr('href', '/pm/delcategory/'+response.id).text('X')).append(' '+response.name))
+						.append($('<div>').addClass('categoryDescription').text(response.description))
+						.append($('<div>').addClass('todos').addClass('todos_active').sortable(sortableOptions))
+						.append($('<div>').addClass('addTodoContainer').append($('<a>').attr('href', 'javascript:;').addClass('showAddTodoLink').text('Add Todo').click(showAddTodo)))
+						.append($('<div>').addClass('todos').addClass('todos_completed'))
+						.appendTo('#project'+response.project_id+' .categories');
+						
+					checkForPlaceholder($('.todos_active', cat));
+						
+					f.get(0).reset();
+				}, 'json');
+		});
+});

@@ -5,6 +5,7 @@ from forms import *
 from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm;
+from django.utils.dateformat import *
 
 
 @login_required
@@ -58,7 +59,7 @@ def addproject(request):
 		if f.is_valid():
 			project = f.save()
 			return HttpResponse(simplejson.dumps({ 'id': project.id, 
-				'name': project.name }))
+				'name': project.name, 'description': project.description }))
 		
 	raise Http404(repr(f.errors) if f else None)
 
@@ -80,7 +81,7 @@ def addcategory(request):
 		if f.is_valid():
 			category = f.save()
 			return HttpResponse(simplejson.dumps({ 'id': category.id, 
-				'project_id': category.project.id, 'name': category.name }))
+				'project_id': category.project.id, 'name': category.name, 'description': category.description }))
 		
 	raise Http404(repr(f.errors) if f else None)
 	
@@ -101,8 +102,9 @@ def addtodo(request):
 		f = TodoForm(request.POST)
 		if f.is_valid():
 			todo = f.save()
+			df = DateFormat(todo.created)
 			return HttpResponse(simplejson.dumps({ 'id': todo.id, 
-				'created': todo.created.strftime('%Y-%m-%d %H:%M:%S'), 'item': todo.item }))
+				'created': df.format('Y-m-d g:ia'), 'item': todo.item }))
 		
 	raise Http404(repr(f.errors) if f else None)
 	
