@@ -42,7 +42,7 @@ a:hover {
 	color: #aaa;
 	font-family: Arial;
 	font-size: 12px;
-	padding: 0 5px 0 20px;
+	padding: 0 5px 0 10px;
 	margin-bottom: 10px;
 }
 
@@ -66,7 +66,7 @@ a:hover {
 
 #content {
 	width: 1080px;
-	margin: 0 auto;
+	margin: 0 auto 10px auto;
 	padding: 10px;
 	background: #fff;
 	border: 1px solid #666;
