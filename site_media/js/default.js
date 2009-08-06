@@ -22,7 +22,7 @@ var sortableOptions = {
 			}
 		};
 		
-var editableOptions_description = { 'submit': 'Update', 'cancel': 'Cancel', 'editClass': 'descriptionEdit', 'onSubmit': function(content) {
+var editableOptions_description = { 'editBy': 'dblclick', 'submit': 'Update', 'cancel': 'Cancel', 'editClass': 'descriptionEdit', 'onSubmit': function(content) {
 			if(content.current != content.previous) {
 				var parent = $(this).parent();
 				var type = parent.attr('class');
