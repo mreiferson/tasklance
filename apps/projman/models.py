@@ -66,7 +66,8 @@ class Todo(models.Model):
 			self.created = datetime.now()
 			
 		if self.complete:
-			self.completed = datetime.now()
+			if self.completed == None:
+				self.completed = datetime.now()
 		else:
 			self.completed = None
 			

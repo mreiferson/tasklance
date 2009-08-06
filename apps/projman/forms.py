@@ -16,3 +16,6 @@ class ProjectForm(forms.ModelForm):
 class TodoForm(forms.ModelForm):
 	class Meta:
 		model = Todo
+		
+class LoadForm(forms.Form):
+	file = forms.FileField()

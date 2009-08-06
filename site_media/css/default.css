@@ -3,6 +3,7 @@ body {
 	font-family: Tahoma, sans-serif;
 	margin: 0 !important;
 	padding: 0 !important;
+	background: #999;
 }
 
 body * {
@@ -15,7 +16,7 @@ a img {
 }
 
 a {
-	text-decoration: none;
+	/*text-decoration: none;*/
 }
 
 a:link, a:visited, a:active {
@@ -52,6 +53,9 @@ a:hover {
 #content {
 	width: 1080px;
 	margin: 0 auto;
+	padding: 10px;
+	background: #fff;
+	border: 1px solid #666;
 }
 
 .accountDescription {
@@ -68,13 +72,15 @@ a:hover {
 }
 
 #projects h1 {
-	font-size: 1.5em;
-	color: #000;
+	font-size: 2em;
+	font-weight: bold;
+	color: #3179F0;
 }
 
 #projects h2 {
-	font-size: 1.25em;
-	color: #555;
+	font-size: 1.5em;
+	font-weight: bold;
+	color: #039;
 	margin-top: 0.5em;
 }
 
@@ -82,10 +88,11 @@ a:hover {
 	font-size: 1.1em;
 	font-weight: normal;
 	height: 18px;
+	clear: both;
 }
 
 #projects {
-	width: 800px;
+	width: 785px;
 }
 
 .project {
@@ -108,6 +115,19 @@ a:hover {
 
 .handle {
 	cursor: pointer;
+}
+
+
+.todos_active {
+	font-size: 12px;
+}
+
+.todos_active .completeInput {
+	padding-top: 2px;
+}
+
+.todos_completed {
+	font-size: 10px;
 }
 
 .todo.complete {
@@ -149,6 +169,14 @@ a:hover {
 	margin-right: 2px;
 }
 
+.todos_active .item {
+	width: 560px;
+}
+
+.todos_completed .item {
+	width: 580px;
+}
+
 .todos .placeholder {
 	color: #ccc;
 }
@@ -157,8 +185,15 @@ a:hover {
 	width: 100%;
 }
 
-.addProjectContainer, .addCategoryContainer, .addTodoContainer {
+#manage {
 	background: #f4f4f4;
+}
+
+.addTodoContainer {
+	background: #f4f4f4;
+}
+
+.addProjectContainer, .addCategoryContainer, .addTodoContainer, .loadContainer, .categoryLinks {
 	padding: 5px;
 }
 
@@ -170,4 +205,20 @@ a:hover {
 
 .descriptionEdit {
 	width: 500px;
+}
+
+.categoryLinks ul {
+	margin-left: 20px;
+}
+
+.categoryLinks li {
+	line-height: 1.3em;
+}
+
+.categoryLinks li.projectLink {
+	font-weight: bold;
+}
+
+.categoryLinks li.categoryLink {
+	font-weight: normal;
 }

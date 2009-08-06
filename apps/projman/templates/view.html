@@ -9,24 +9,26 @@
 		<td valign="top">
 			<div id="projects">
 				{% for project in projects %}
+					<a name="project{{ project.id }}"></a>
 					<div id="project{{ project.id }}" rel="{{ project.id }}" class="project">
-						<h1><a href="{% url pm_delproject project.id %}">X</a> {{ project.name }}</h1>
+						<h1><a href="{% url pm_delproject project.id %}"><img src="/site_media/images/report_delete.gif" alt="Delete Project"/></a> {{ project.name }}</h1>
 						<div class="projectDescription">{{ project.description }}</div>
 						<div class="categories">
 							{% for category in project.category_set.all %}
-							<div id="category{{ category.id }}" rel="{{ category.id }}" class="category">
-								<h2><a href="{% url pm_delcategory category.id %}">X</a> {{ category.name }}</h2>
-								<div class="categoryDescription">{{ category.description }}</div>
-								<ul class="todos todos_active">
-									{% show_todos category %}
-								</ul>
-								<div class="addTodoContainer">
-									<a href="javascript:;" class="showAddTodoLink">Add Todo</a>
+								<a name="category{{ category.id }}"></a>
+								<div id="category{{ category.id }}" rel="{{ category.id }}" class="category">
+									<h2><a href="{% url pm_delcategory category.id %}"><img src="/site_media/images/folder_delete.gif" alt="Delete Category"/></a> {{ category.name }}</h2>
+									<div class="categoryDescription">{{ category.description }}</div>
+									<ul class="todos todos_active">
+										{% show_todos category %}
+									</ul>
+									<div class="addTodoContainer">
+										<a href="javascript:;" class="showAddTodoLink">Add Todo</a>
+									</div>
+									<ul class="todos todos_completed">
+										{% show_todos category 1 %}
+									</ul>
 								</div>
-								<ul class="todos todos_completed">
-									{% show_todos category 1 %}
-								</ul>
-							</div>
 							{% endfor %}
 						</div>
 					</div>
@@ -42,6 +44,24 @@
 				<div class="addCategoryContainer">
 					<div class="addHeader">Add Category</div>
 					{% include "addcategory.html" %}
+				</div>
+				<div class="loadContainer">
+					<div class="addHeader">Load From XML</div>
+					{% include "load.html" %}
+				</div>
+				<div class="categoryLinks">
+					<div class="addHeader">Quick Links</div>
+					<ul>
+					{% for project in projects %}
+						<li class="projectLink">{{ project.name }}
+							<ul>
+							{% for category in project.category_set.all %}
+								<li class="categoryLink"><a href="#category{{ category.id }}">{{ category.name }}</a></li>
+							{% endfor %}
+							</ul>
+						</li>
+					{% endfor %}
+					</ul>
 				</div>
 			</div>
 		</td>

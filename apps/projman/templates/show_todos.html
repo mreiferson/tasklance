@@ -14,7 +14,7 @@
 				</div>
 			</div>
 			<div class="item">{{ todo.item }}</div>
-			<div class="created">({{ todo.created|date:"Y-m-d g:ia" }})</div>
+			<div class="created">({% if todo.complete %}{{ todo.completed|date:"Y-m-d g:ia" }}{% else %}{{ todo.created|date:"Y-m-d g:ia" }}{% endif %})</div>
 			</div>
 		</li>
 	{% endfor %}
