@@ -1,9 +1,14 @@
 body {
-	font-size: 62.5%;
-	font-family: Verdana, Arial, sans-serif;
+	font-size: 10px;
+	font-family: Verdana, sans-serif;
 	margin: 0 !important;
 	padding: 0 !important;
 	background: #999;
+}
+
+h1.accountTitle {
+	font-size: 1.5em;
+	line-height: 1.3em;
 }
 
 body * {
@@ -140,7 +145,7 @@ a:hover {
 }
 
 .todos_active .completeInput {
-	padding-top: 2px;
+	padding-top: 0px;
 }
 
 .todos_completed {

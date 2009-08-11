@@ -1,0 +1,254 @@
+fieldset {
+	border: 2px solid #ddd;
+	margin: 0 auto 1em auto;
+	width: 425px;
+	background: #fafafa;
+}
+
+legend {
+	text-align: left;
+	margin-left: 15px;
+	padding: 5px 15px;
+	border: 2px solid #ccc;
+	color: #888;
+	background: #f4f4f4;
+	font-size: 14px;
+	font-weight: bold;
+	font-variant: small-caps;
+}
+
+form { display: inline; }
+
+form fieldset > div {
+	display: block;
+	clear: left;
+	width: 395px;
+	padding: 0 15px;
+	margin: 5px 0;
+	height: 1%;
+}
+
+form fieldset > div > div {
+	padding-top: 5px;
+	margin-left: 118px;
+	text-align: left;
+}
+
+form fieldset > div.description {
+	margin: 10px 0;
+	color: #444;
+}
+
+form fieldset > div.section {
+	margin: 10px 15px;
+	padding: 0 0 5px 0;
+	font-size: 12px;
+	font-weight: bold;
+	color: #36c;
+	border-bottom: 1px dotted #aaa;
+}
+
+form fieldset ul.errorlist {
+	margin-bottom: 5px;
+	font-weight: bold;
+	color: #c00;
+	background: #fff0f0;
+}
+
+form fieldset ul.errorlist li {
+	margin-left: 125px;
+	text-align: left;
+}
+
+form fieldset > div.submit {
+	text-align: right;
+}
+
+form fieldset > div.example {
+	margin: 0 0 5px 125px;
+	padding: 0;
+	text-align: left;
+	color: #999;
+	width: 275px;
+}
+
+form fieldset > div > label {
+	display: block;
+	float: left;
+	width: 100px;
+	padding: 3px 5px 2px 5px;
+	margin: 0 0 5px 0;
+	text-align: right;
+	font-size: 12px;
+	font-weight: bold;
+	color: #444;
+}
+
+input, .textarea {
+	padding-left: 4px;
+	padding-top: 1px;
+	padding-bottom: 1px;
+}
+
+select option {
+	padding-right: 6px;
+}
+
+.checkbox {
+	border: 0;
+	padding: 0;
+	margin: 0;
+	width: 13px;
+	height: 13px;
+}
+
+.text, .password, .select, .textarea {
+	font-family: Verdana;
+	font-size: 12px;
+	border: 2px solid #ddd;
+}
+
+/* remove auto scrollbar from ie and resize in safari */
+.textarea {
+	overflow: auto;
+	resize: none;
+}
+
+form fieldset  .text, form fieldset .password, form fieldset .textarea {
+	width: 262px;
+}
+
+form fieldset .select {
+	width: 270px;
+}
+
+.text:focus, .password:focus, .select:focus, .textarea:focus {
+	background-color: #eff;
+}
+
+.text:hover, .password:hover, .select:hover, .textarea:hover {
+	background-color: #ffc;
+}
+
+form .spacer {
+	height: 20px;
+}
+
+form .divider {
+	width: 80%;
+	margin: 10px auto;
+	border-bottom: 2px dotted #ccc;
+}
+
+form .cancel {
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+form .cancel:link {
+	color: #f00;
+}
+
+form .cancel:visited {
+	color: #f00;
+}
+
+form .cancel:active {
+	color: #f00;
+}
+
+form .cancel:hover {
+	color: #fa2;
+}
+
+button::-moz-focus-inner { border: 0; }
+
+.button {
+    margin: 2px;
+    background-color: #fafafa;
+    background-repeat: repeat-x;
+	background-position: top left;
+	border-style: solid;
+	border-width: 1px;
+    border-color: #ccc #888 #888 #ccc;
+    font-size: 12px;
+    font-family: Verdana;
+    line-height: 130%;
+    text-decoration: none;
+    font-weight: bold;
+    color: #666;
+    cursor: pointer;
+	background-image: url(/site_media/images/navtab.gif);
+    padding: 5px 10px 6px 7px; /* Links */
+}
+
+button.button {
+    width: auto;
+    overflow: visible;
+    padding: 4px 10px 3px 7px; /* IE6 */
+}
+
+button[type].button {
+    padding: 5px 10px 5px 7px; /* Firefox */
+    line-height: 17px; /* Safari */
+}
+
+*:first-child+html button[type].button {
+    padding: 4px 10px 3px 7px; /* IE7 */
+}
+
+.button img {
+    margin: 0 3px -3px 0 !important;
+    padding: 0;
+    border: none;
+    width: 16px;
+    height: 16px;
+}
+
+.button:hover {
+    background: #dff4ff;
+    border-color: #ABD7E9 #50A9CF #50A9CF #ABD7E9;
+    color: #336699;
+}
+
+.button:active {
+    background: #dff4ff;
+    border-color: #76BCDA #ABD7E9 #ABD7E9 #76BCDA;
+    color: #336699;
+}
+
+.positive {
+	background: #E9FCE9;
+	border-color: #9FF29F #34BA1D #34BA1D #9FF29F;
+    color: #529214;
+}
+
+.positive:hover {
+    background: #D0F9D0;
+    border-color: #9FF29F #34BA1D #34BA1D #9FF29F;
+    color: #529214;
+}
+
+.positive:active {
+    background: #D0F9D0;
+    border-color: #34BA1D #9FF29F #9FF29F #34BA1D;
+    color: #529214;
+}
+
+.negative {
+    background: #FFF0F0;
+    border-color: #FFD7D7 #FFB3B3 #FFB3B3 #FFD7D7;
+    color: #d12f19;
+}
+
+.negative:hover {
+    background: #FFE6E6;
+    border-color: #FFD7D7 #FFB3B3 #FFB3B3 #FFD7D7;
+    color: #d12f19;
+}
+
+.negative:active {
+    background: #FFE6E6;
+    border-color: #FFB3B3 #FFD7D7 #FFD7D7 #FFB3B3;
+    color: #d12f19;
+}
