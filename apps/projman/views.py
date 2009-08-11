@@ -8,6 +8,7 @@ from django.contrib.auth.forms import UserCreationForm,	AuthenticationForm;
 from django.utils.dateformat import	*
 from xml.etree import ElementTree as etree
 from django.core.urlresolvers import reverse
+from django.views.generic.create_update import delete_object
 
 
 @login_required
@@ -33,6 +34,20 @@ def	view(request, account_id):
 			'category_form': category_form, 'load_form': load_form }, context_instance=RequestContext(request))
 	else:
 		return HttpResponseRedirect('/login')
+
+
+def delete_object_referer(request, object_id, **kwargs):
+	backup = reverse('pm_overview')
+	
+	if request.method == 'POST':
+		post_delete_redirect = request.POST.get('post_delete_redirect', backup)
+	else:
+		post_delete_redirect = request.META.get('HTTP_REFERER', backup)
+		
+	return delete_object(request, object_id=object_id, 
+		post_delete_redirect=post_delete_redirect, 
+		extra_context={ 'post_delete_redirect': post_delete_redirect }, 
+		**kwargs)
 
 
 def	create(request):

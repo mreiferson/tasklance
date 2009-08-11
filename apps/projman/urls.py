@@ -1,5 +1,4 @@
 from django.conf.urls.defaults import *
-from django.views.generic.create_update import delete_object
 from models import *
 import views
 
@@ -10,13 +9,13 @@ urlpatterns = patterns('',
 	
 	url(r'^addproject/$', views.addproject, name='pm_addproject'),
 	url(r'^updateproject/(?P<project_id>\d+)/$', views.updateproject, name='pm_updateproject'),
-	url(r'^delproject/(?P<object_id>\d+)/$', delete_object, 
-		{ 'model': Project, 'post_delete_redirect': '/pm/overview', 'template_name': 'project_confirm_delete.html' }, name='pm_delproject'),
+	url(r'^delproject/(?P<object_id>\d+)/$', views.delete_object_referer, 
+		{ 'model': Project, 'template_name': 'project_confirm_delete.html' }, name='pm_delproject'),
 	
 	url(r'^addcategory/$', views.addcategory, name='pm_addcategory'),
 	url(r'^updatecategory/(?P<category_id>\d+)/$', views.updatecategory, name='pm_updatecategory'),
-	url(r'^delcategory/(?P<object_id>\d+)/$', delete_object,
-		{ 'model': Category, 'post_delete_redirect': '/pm/overview', 'template_name': 'category_confirm_delete.html' }, name='pm_delcategory'),
+	url(r'^delcategory/(?P<object_id>\d+)/$', views.delete_object_referer,
+		{ 'model': Category, 'template_name': 'category_confirm_delete.html' }, name='pm_delcategory'),
 	
 	url(r'^addtodo/$', views.addtodo, name='pm_addtodo'),
 	url(r'^deletetodo/(?P<todo_id>\d+)/$', views.deletetodo, name='pm_deletetodo'),

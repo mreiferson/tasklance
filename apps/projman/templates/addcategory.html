@@ -1,9 +1,9 @@
 <form autocomplete="off">
-	<label for="category">Category:</label> <select name="{{ category_form.project.name }}" style="width: 221px;">
+	<label for="category">Category:</label> <select name="{{ category_form.project.name }}" style="width: 211px;">
 	{% for choice_val, choice_label in category_form.project.field.choices %}
 		<option value="{{ choice_val }}">{{ choice_label }}</option>
 	{% endfor %}
 	</select><br/>
-	<label for="name">Name:</label> <input type="text" name="{{ category_form.name.name }}" style="width: 234px;"/><br/>
-	<label for="description">Description:</label> <input type="text" name="{{ category_form.description.name }}" style="width: 173px;"/><input type="button" value="Add"/>
+	<label for="name">Name:</label> <input type="text" name="{{ category_form.name.name }}" style="width: 225px;"/><br/>
+	<label for="description">Description:</label> <input type="text" name="{{ category_form.description.name }}" style="width: 160px;"/><input type="button" value="Add"/>
 </form>
