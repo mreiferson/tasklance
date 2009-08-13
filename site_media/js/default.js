@@ -1,4 +1,4 @@
-var sortableOptions = {
+var sortableOptions_todos = {
 			handle: '.handle',
 			connectWith: '.todos_active',
 			receive: function(event, ui) {
@@ -22,11 +22,28 @@ var sortableOptions = {
 			}
 		};
 		
-var editableOptions_description = { 'editBy': 'dblclick', 'submit': 'Update', 'cancel': 'Cancel', 'editClass': 'descriptionEdit', 'onSubmit': function(content) {
+var sortableOptions_reorder = {
+			handle: '.handle',
+			receive: function(event, ui) {},
+			remove: function(event, ui) {},
+			update: function(event, ui) {
+				var parent = $(ui.item).parents('ul');
+				var type = parent.attr('rel');
+				var order = $('.'+type+'Link', parent);
+				$.each(order, function(i, el) {
+					var match = $('#'+type+$(el).attr('rel'));
+					$(match).parent().append(match);
+				});
+			}
+		};
+		
+var editableOptions = { 'editBy': 'dblclick', 'submit': 'Update', 'cancel': 'Cancel', 'editClass': 'descriptionEdit', 'onSubmit': function(content) {
 			if(content.current != content.previous) {
-				var parent = $(this).parent();
+				var parent = $(this).parents('div');
 				var type = parent.attr('class');
-				$.post('/pm/update'+type+'/'+parent.attr('rel')+'/', { 'description': content.current }, function() {}, 'json');
+				var params = {};
+				params[$(this).attr('rel')] = content.current;
+				$.post('/pm/update'+type+'/'+parent.attr('rel')+'/', params, function() {}, 'json');
 			}
 		} };
 
@@ -164,9 +181,11 @@ $(document).ready(function() {
 	
 	$('.showAddTodoLink').click(showAddTodo);
 	
-	$('.projectDescription, .categoryDescription').editable(editableOptions_description);
+	$('.projectDescription, .categoryDescription, .projectName, .categoryName').editable(editableOptions);
+	
+	$('.projectLinks, .categoryLinks').sortable(sortableOptions_reorder);
 		
-	$('.todos').sortable(sortableOptions);
+	$('.todos').sortable(sortableOptions_todos);
 		
 	$('.addProjectContainer :button').click(function() {
 			var f = $(this.form);
@@ -175,8 +194,8 @@ $(document).ready(function() {
 						.addClass('project')
 						.attr('id', 'project'+response.id)
 						.attr('rel', response.id)
-						.append($('<h1>').append($('<a>').attr('href', '/pm/delproject/'+response.id).append($('<img>').attr('src', '/site_media/images/report_delete.gif'))).append(' '+response.name))
-						.append($('<div>').addClass('projectDescription').text(response.description).editable(editableOptions_description))
+						.append($('<h1>').append($('<a>').attr('href', '/pm/delproject/'+response.id).append($('<img>').attr('src', '/site_media/images/report_delete.gif'))).append(' ').append($('<span>').addClass('projectName').attr('rel', 'name').text(response.name)))
+						.append($('<div>').addClass('projectDescription').attr('rel', 'description').text(response.description).editable(editableOptions))
 						.append($('<div>').addClass('categories'))
 						.appendTo('#projects');
 					

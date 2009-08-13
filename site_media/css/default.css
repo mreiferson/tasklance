@@ -87,24 +87,25 @@ a:hover {
 
 .categoryDescription {
 	color: #888;
-	margin-bottom: 5px;
+	margin-bottom: 8px;
 }
 
 #projects h1 {
 	font-size: 2em;
 	font-weight: bold;
 	color: #3179F0;
+	margin-bottom: 2px;
 }
 
 #projects h2 {
 	font-size: 1.5em;
 	font-weight: bold;
 	color: #039;
-	margin-top: 0.5em;
+	margin: 5px 0 2px 0;
 }
 
 #projects li {
-	padding-bottom: 4px;
+	padding-bottom: 6px;
 	clear: both;
 }
 
@@ -114,8 +115,8 @@ a:hover {
 
 .project {
 	margin-bottom: 1em;
-	border-top: 1px solid #888;
-	padding-top: 5px;
+	border-top: 2px solid #ddd;
+	padding-top: 2px;
 }
 
 .category {
@@ -215,7 +216,7 @@ a:hover {
 	background: #f4f4f4;
 }
 
-.addProjectContainer, .addCategoryContainer, .addTodoContainer, .loadContainer, .categoryLinks {
+.addProjectContainer, .addCategoryContainer, .addTodoContainer, .loadContainer, .links {
 	padding: 5px;
 }
 
@@ -229,18 +230,18 @@ a:hover {
 	width: 500px;
 }
 
-.categoryLinks ul {
+.links ul {
 	margin-left: 20px;
 }
 
-.categoryLinks li {
+.links li {
 	line-height: 1.3em;
 }
 
-.categoryLinks li.projectLink {
+.links li.projectLink {
 	font-weight: bold;
 }
 
-.categoryLinks li.categoryLink {
+.links li.categoryLink {
 	font-weight: normal;
 }

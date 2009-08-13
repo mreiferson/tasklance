@@ -85,10 +85,16 @@ def	addproject(request):
 def	updateproject(request, project_id):
 	if request.method == 'POST':
 		project	= get_object_or_404(Project, pk=project_id)
-		project.description	= request.POST['description']
+		
+		if 'description' in request.POST:
+			project.description = request.POST['description']
+		
+		if 'name' in request.POST:
+			project.name = request.POST['name']
+			
 		project.save()
 		
-		return HttpResponse(simplejson.dumps({ 'id': project.id, 'description':	project.description	}))
+		return HttpResponse(simplejson.dumps({ 'id': project.id, 'name': project.name, 'description': project.description }))
 	
 	raise Http404(None)
 
@@ -107,10 +113,16 @@ def	addcategory(request):
 def	updatecategory(request,	category_id):
 	if request.method == 'POST':
 		category = get_object_or_404(Category, pk=category_id)
-		category.description = request.POST['description']
+		
+		if 'description' in request.POST:
+			category.description = request.POST['description']
+		
+		if 'name' in request.POST:
+			category.name = request.POST['name']
+		
 		category.save()
 		
-		return HttpResponse(simplejson.dumps({ 'id': category.id, 'description': category.description }))
+		return HttpResponse(simplejson.dumps({ 'id': category.id, 'name': category.name, 'description': category.description }))
 			
 	raise Http404(None)
 
