@@ -12,28 +12,43 @@ var sortableOptions_todos = {
 			update: function(event, ui) {
 				var category = $(ui.item).parents('.category');
 				var activeTodos = $('.todos_active', category);
-				var order = $.makeArray(
-								$.map(
-									$('li', activeTodos), 
-										function(n) { return $(n).attr('rel'); }
-									));
+				var order = $.makeArray($.map($('li', activeTodos), 
+									function(n) { return $(n).attr('rel'); }
+								));
 
-				$.post('/pm/prioritize/'+category.attr('rel')+'/', { 'order': order.join(',') }, function() {}, 'json');
+				$.post('/pm/prioritize/'+category.attr('rel')+'/', { 'order': order.join(',') }, function(response) {}, 'json');
 			}
 		};
 		
 var sortableOptions_reorder = {
 			handle: '.handle',
-			receive: function(event, ui) {},
-			remove: function(event, ui) {},
+			receive: function(event, ui) {
+			},
+			remove: function(event, ui) {
+			},
 			update: function(event, ui) {
-				var parent = $(ui.item).parents('ul');
+				var parent = $(ui.item).parent();
 				var type = parent.attr('rel');
 				var order = $('.'+type+'Link', parent);
+				
 				$.each(order, function(i, el) {
 					var match = $('#'+type+$(el).attr('rel'));
 					$(match).parent().append(match);
 				});
+				
+				order = $.makeArray($.map(order, 
+								function(n) { return $(n).attr('rel'); }
+							));
+				
+				if(type == 'category') {
+					var parentId = $(ui.item).parents('.projectLink').attr('rel');
+					type = 'project';
+				} else if(type == 'project') {
+					var parentId = $('#account').attr('rel');
+					type = 'account'
+				}
+				
+				$.post('/pm/prioritize_'+type+'/'+parentId+'/', { 'order': order.join(',') }, function(response) {}, 'json');
 			}
 		};
 		
@@ -191,6 +206,7 @@ $(document).ready(function() {
 		
 	$('.addProjectContainer :button').click(function() {
 			var f = $(this.form);
+			$(':input[name=priority]', f).val($('.project').length);
 			$.post('/pm/addproject/', f.serialize(), function(response) {
 					$('<div>')
 						.addClass('project')
@@ -209,6 +225,7 @@ $(document).ready(function() {
 		
 	$('.addCategoryContainer :button').click(function() {
 			var f = $(this.form);
+			$(':input[name=priority]', f).val($('.category', $('#project'+$(':input[name=project]', f).val())).length);
 			$.post('/pm/addcategory/', f.serialize(), function(response) {
 					var cat = $('<div>')
 						.addClass('category')
@@ -216,7 +233,7 @@ $(document).ready(function() {
 						.attr('rel', response.id)
 						.append($('<h2>').append($('<a>').attr('href', '/pm/delcategory/'+response.id).append($('<img>').attr('src', '/site_media/images/folder_delete.gif'))).append(' '+response.name))
 						.append($('<div>').addClass('categoryDescription').text(response.description))
-						.append($('<div>').addClass('todos').addClass('todos_active').sortable(sortableOptions))
+						.append($('<div>').addClass('todos').addClass('todos_active').sortable(sortableOptions_todos))
 						.append($('<div>').addClass('addTodoContainer').append($('<a>').attr('href', 'javascript:;').addClass('showAddTodoLink').text('Add Todo').click(showAddTodo)))
 						.append($('<div>').addClass('todos').addClass('todos_completed'))
 						.appendTo('#project'+response.project_id+' .categories');
