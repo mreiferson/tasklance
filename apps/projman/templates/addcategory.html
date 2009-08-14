@@ -1,4 +1,5 @@
 <form autocomplete="off">
+	<input type="hidden" name="priority" value=""/>
 	<label for="category">Category:</label> <select name="{{ category_form.project.name }}" style="width: 211px;">
 	{% for choice_val, choice_label in category_form.project.field.choices %}
 		<option value="{{ choice_val }}">{{ choice_label }}</option>

@@ -219,10 +219,37 @@ def	load(request):
 def	prioritize(request,	id):
 	if request.method == 'POST':
 		category = get_object_or_404(Category, pk=id)
-		for	i, todo_id in enumerate(request.POST['order'].split(',')):
+		order = request.POST['order'].split(',')
+		for	i, todo_id in enumerate(order):
 			todo = get_object_or_404(Todo, pk=todo_id)
-			if(todo.category.id	== category.id):
+			if todo.category.id	== category.id:
 				todo.priority =	i
 				todo.save()
 	
-	return HttpResponse(simplejson.dumps({ 'id': category.id, 'order': request.POST['order'].split(',')	}))
+	return HttpResponse(simplejson.dumps({ 'id': category.id, 'order': order }))
+	
+
+def prioritize_project(request, id):
+	if request.method == 'POST':
+		project = get_object_or_404(Project, pk=id)
+		order = request.POST['order'].split(',')
+		for i, category_id in enumerate(order):
+			category = get_object_or_404(Category, pk=category_id)
+			if category.project.id == project.id:
+				category.priority = i
+				category.save()
+				
+	return HttpResponse(simplejson.dumps({ 'id': project.id, 'order': order	}))
+	
+
+def prioritize_account(request, id):
+	if request.method == 'POST':
+		account = get_object_or_404(Account, pk=id)
+		order = request.POST['order'].split(',')
+		for i, project_id in enumerate(order):
+			project = get_object_or_404(Project, pk=project_id)
+			if project.account.id == account.id:
+				project.priority = i
+				project.save()
+	
+	return HttpResponse(simplejson.dumps({ 'id': account.id, 'order': order	}))

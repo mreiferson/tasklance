@@ -7,32 +7,34 @@
 <table cellspacing="0" id="overviewContainer">
 	<tr>
 		<td valign="top">
-			<div id="projects">
-				{% for project in projects %}
-					<a name="project{{ project.id }}"></a>
-					<div id="project{{ project.id }}" rel="{{ project.id }}" class="project">
-						<h1><a href="{% url pm_delproject project.id %}"><img src="/site_media/images/report_delete.gif" alt="Delete Project"/></a> <span class="projectName" rel="name">{{ project.name }}</span></h1>
-						<div class="projectDescription" rel="description">{{ project.description }}</div>
-						<div class="categories">
-							{% for category in project.category_set.all %}
-								<a name="category{{ category.id }}"></a>
-								<div id="category{{ category.id }}" rel="{{ category.id }}" class="category">
-									<h2><a href="{% url pm_delcategory category.id %}"><img src="/site_media/images/folder_delete.gif" alt="Delete Category"/></a> <span class="categoryName" rel="name">{{ category.name }}</span></h2>
-									<div class="categoryDescription" rel="description">{{ category.description }}</div>
-									<ul class="todos todos_active">
-										{% show_todos category %}
-									</ul>
-									<div class="addTodoContainer">
-										<a href="javascript:;" class="showAddTodoLink">Add Todo</a>
+			<div id="account" rel="{{ account.id }}">
+				<div id="projects">
+					{% for project in projects %}
+						<a name="project{{ project.id }}"></a>
+						<div id="project{{ project.id }}" rel="{{ project.id }}" class="project">
+							<h1><a href="{% url pm_delproject project.id %}"><img src="/site_media/images/report_delete.gif" alt="Delete Project"/></a> <span class="projectName" rel="name">{{ project.name }}</span></h1>
+							<div class="projectDescription" rel="description">{{ project.description }}</div>
+							<div class="categories">
+								{% for category in project.category_set.all %}
+									<a name="category{{ category.id }}"></a>
+									<div id="category{{ category.id }}" rel="{{ category.id }}" class="category">
+										<h2><a href="{% url pm_delcategory category.id %}"><img src="/site_media/images/folder_delete.gif" alt="Delete Category"/></a> <span class="categoryName" rel="name">{{ category.name }}</span></h2>
+										<div class="categoryDescription" rel="description">{{ category.description }}</div>
+										<ul class="todos todos_active">
+											{% show_todos category %}
+										</ul>
+										<div class="addTodoContainer">
+											<a href="javascript:;" class="showAddTodoLink">Add Todo</a>
+										</div>
+										<ul class="todos todos_completed">
+											{% show_todos category 1 %}
+										</ul>
 									</div>
-									<ul class="todos todos_completed">
-										{% show_todos category 1 %}
-									</ul>
-								</div>
-							{% endfor %}
+								{% endfor %}
+							</div>
 						</div>
-					</div>
-				{% endfor %}
+					{% endfor %}
+				</div>
 			</div>
 		</td>
 		<td valign="top">

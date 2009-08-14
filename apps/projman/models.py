@@ -22,6 +22,10 @@ class Project(models.Model):
 	name = models.CharField(max_length=255)
 	description = models.CharField(max_length=255)
 	created = models.DateTimeField('Date Created', editable=False)
+	priority = models.PositiveIntegerField(default=0)
+	
+	class Meta:
+		ordering = ('priority', 'created')
 	
 	def save(self):
 		if self.created == None:
@@ -37,8 +41,10 @@ class Category(models.Model):
 	name = models.CharField(max_length=255)
 	description = models.CharField(max_length=255)
 	created = models.DateTimeField('Date Created', editable=False)
+	priority = models.PositiveIntegerField(default=0)
 	
 	class Meta:
+		ordering = ('priority', 'created')
 		verbose_name_plural = 'categories'
 	
 	def save(self):

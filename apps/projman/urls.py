@@ -23,5 +23,8 @@ urlpatterns = patterns('',
 	url(r'^updatetodo/(?P<todo_id>\d+)/$', views.updatetodo, name='pm_updatetodo'),
 	
 	url(r'^load/$', views.load, name='pm_load'),
+	
+	url(r'^prioritize_account/(?P<id>\d+)/$', views.prioritize_account, name='pm_prioritize_account'),
+	url(r'^prioritize_project/(?P<id>\d+)/$', views.prioritize_project, name='pm_prioritize_project'),
 	url(r'^prioritize/(?P<id>\d+)/$', views.prioritize, name='pm_prioritize'),
 )
