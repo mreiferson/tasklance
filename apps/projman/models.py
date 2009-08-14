@@ -61,6 +61,9 @@ class Todo(models.Model):
 	class Meta:
 		ordering = ('priority', 'created')
 		
+	def age(self):
+		return datetime.now() - self.created
+		
 	def save(self):
 		if self.created == None:
 			self.created = datetime.now()

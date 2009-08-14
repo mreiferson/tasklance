@@ -59,16 +59,18 @@ var toggleCompleteTodo = function() {
 		var parent = $(this).parents('.todo');
 		var complete = (+$(this).is(':checked'));
 		var category = parent.parents('.category');
-		$.post('/pm/completetodo/'+parent.attr('rel')+'/'+complete+'/', {}, function() {
+		$.post('/pm/completetodo/'+parent.attr('rel')+'/'+complete+'/', {}, function(response) {
 				if(complete) {
 					parent.slideUp('fast', function() {
 						$(this).hide();
+						$('.created', this).text('('+response.date+')');
 						$('.handle', this).remove();
 						$(this).addClass('complete').appendTo($('.todos_completed', category)).fadeIn('fast');
 					});
 				} else {
 					parent.slideUp('fast', function() {
 						$(this).hide();
+						$('.created', this).text('('+response.age+' days)');
 						$('.icons', this).prepend($('<span>').addClass('handle').append($('<img>').attr('src', '/site_media/images/list_ordered.gif')));
 						$(this).removeClass('complete').appendTo($('.todos_active', category)).fadeIn('fast');
 					});

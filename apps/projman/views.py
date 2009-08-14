@@ -22,7 +22,7 @@ def	overview(request):
 @login_required
 def	view(request, account_id):
 	account	= get_object_or_404(Account, pk=account_id)
-	if account.useraccount_set.filter(user__exact=request.user)	!= []:
+	if account.useraccount_set.filter(user__exact=request.user).count():
 		projects = account.project_set.all()
 		todo_form =	TodoForm()
 		project_form = ProjectForm()
@@ -155,7 +155,12 @@ def	completetodo(request, todo_id, complete):
 		todo.complete =	int(complete)
 		todo.save()
 		
-		return HttpResponse(simplejson.dumps({ 'id': todo.id, 'complete': todo.complete, 'date': (todo.complete	and	todo.completed or todo.created).strftime('%Y-%m-%d %H:%M:%S') }))
+		df = DateFormat(todo.completed if todo.completed else todo.created)
+		
+		return HttpResponse(simplejson.dumps({ 'id': todo.id, 
+			'complete': todo.complete, 
+			'date': df.format('Y-m-d g:ia'), 
+			'age': todo.age().days }))
 	
 	raise Http404(None)
 	
@@ -199,7 +204,7 @@ def	load(request):
 						item = todoitem.findtext('content')[:255]
 						created = datetime.strptime(todoitem.findtext('created-on'), '%Y-%m-%dT%H:%M:%SZ')
 						complete = (todoitem.findtext('completed') == 'true')
-						completed = complete and  datetime.strptime(todoitem.findtext('completed-on'), '%Y-%m-%dT%H:%M:%SZ') or None
+						completed = datetime.strptime(todoitem.findtext('completed-on'), '%Y-%m-%dT%H:%M:%SZ') if complete else None
 						priority = todoitem.findtext('position')
 						
 						t = Todo(category=c, item=item, created=created, complete=complete, completed=completed, priority=priority)
