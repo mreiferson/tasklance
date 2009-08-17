@@ -1,5 +1,85 @@
 {% extends "base.html" %}
 
-{% block content %}
-{% include "login_form.html" %}
+{% block main %}
+<style type="text/css">
+	#middleContainer {
+		background: #ececec;
+	}
+	
+	#centerContainer {
+		width: 1024px;
+		margin: 0 auto;
+	}
+	
+	#middleLeft {
+		float: left;
+	}
+	
+	#middleRight {
+		float: right;
+	}
+	
+	#logo {
+		padding-top: 30px;
+	}
+	
+	#bigHeader {
+		margin-top: 20px;
+		font-weight: Bold;
+		font-size: 40px;
+		font-family: Arial;
+	}
+	
+	#littleHeader {
+		margin-top: 10px;
+		font-weight: normal;
+		font-size: 18px;
+		font-family: Georgia;
+	}
+	
+	#register {
+		margin-top: 15px;
+		text-align: center;
+	}
+	
+	#footer {
+		border-top: 1px dotted #000;
+		background: #4b4b4b;
+		text-align: center;
+		color: #fff;
+		font-family: Arial;
+		font-size: 10px;
+	}
+	
+	#footer p {
+		margin: 1em 0;
+	}
+	
+	#footer a, #footer a:visited, #footer a:active {
+		color: #fff;
+		text-decoration: underline;
+	}
+	
+	#footer a:hover {
+		color: #fff;
+	}
+</style>
+<div id="middleContainer">
+	<div id="centerContainer" class="floatContainer">
+		<div id="middleLeft">
+			<div id="logo"><img src="/site_media/images/logo.gif" alt="TaskLance"/></div>
+			<div id="bigHeader">A Project Manager<br/>That "Just Works."</div>
+			<div id="littleHeader">Web-based project management at it's finest.<br/>Collaborate, delegate, and execute.<br/>Get things done.</div>
+			<div id="register"><img src="/site_media/images/register_button.gif" alt="Register"/></div>
+		</div>
+		<div id="middleRight">
+			<img src="/site_media/images/sshots.gif" alt="Screenshots"/>
+		</div>
+	</div>
+</div>
+<div id="footer">
+	<img src="/site_media/images/plabs_footlogo.gif" alt="Perplexed Labs, Inc."/>
+	<p>Check out our <a href="http://blog.perplexedlabs.com/">web development blog</a>!
+	<p>Copyright &copy; 2007-2009 Perplexed Labs, Inc.  All rights reserved.
+</div>
 {% endblock %}

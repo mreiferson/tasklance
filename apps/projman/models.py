@@ -6,6 +6,7 @@ from datetime import datetime
 class Account(models.Model):
 	name = models.CharField(max_length=255)
 	description = models.CharField(max_length=255)
+	subdomain = models.CharField(max_length=25)
 	created = models.DateTimeField('Date Created', editable=False)
 	
 	def save(self):

@@ -14,23 +14,21 @@
 <body>
 	<div id="header">
 		<div id="left">
-			<a href="/">Home</a> | <a href="http://blog.perplexedlabs.com/">Blog</a> | {% if request.user.is_authenticated %}<a href="/logout">Logout</a> | <a href="/pm/overview">Overview</a>{% else %}<a href="/login">Login</a> | <a href="/pm/create">Create</a>{% endif %}
+			{% if request.account %}{{ request.account.name }}: {% endif %}<a href="/">Home</a> | <a href="http://blog.perplexedlabs.com/">Blog</a> | {% if request.user.is_authenticated %}<a href="/logout">Logout</a> | <a href="/pm/overview">Overview</a>{% else %}<a href="/login">Login</a> | <a href="/pm/create">Register</a>{% endif %}
 		</div>
 		<div id="right">
 			<img src="/site_media/images/plabs_logo.gif" alt="Perplexed Labs, Inc."/>
 		</div>
 	</div>
-	<div id="content">
-		{% block content %}{% endblock %}
-	</div>
-<script type="text/javascript">
-var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-</script>
-<script type="text/javascript">
-try {
-var pageTracker = _gat._getTracker("UA-69624-4");
-pageTracker._trackPageview();
-} catch(err) {}</script>
+	{% block main %}{% endblock %}
+	<script type="text/javascript">
+	var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+	document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+	try {
+	var pageTracker = _gat._getTracker("UA-69624-4");
+	pageTracker._trackPageview();
+	} catch(err) {}</script>
 </body>
 </html>
