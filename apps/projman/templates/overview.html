@@ -3,8 +3,28 @@
 {% block title %}Overview - {{ block.super }}{% endblock %}
 
 {% block content %}
-	{% for account in accounts %}
-		<h1 class="accountTitle"><a href=""><img src="/site_media/images/trash.gif"/></a> <a href="{% url pm_view account.id %}">{{ account.name }}</a></h1>
-		<div class="accountDescription">{{ account.description }}</div>
-	{% endfor %}
+<table cellspacing="0" id="overviewContainer">
+	<tr>
+		<td style="vertical-align: top;">
+			<div id="account" rel="{{ request.account.id }}">
+				<div id="projects">
+					{% for project in request.account.project_set.all %}
+					<div id="project{{ project.id }}" rel="{{ project.id }}" class="project">
+						<h1><a href="{% url pm_delproject project.id %}"><img src="/site_media/images/report_delete.gif" alt="Delete Project"/></a> <a href="{% url pm_view project.id %}"><span class="projectName" rel="name">{{ project.name }}</span></a></h1>
+						<div class="projectDescription" rel="description">{{ project.description }}</div>
+					</div>
+					{% endfor %}
+				</div>
+			</div>
+		</td>
+		<td style="vertical-align: top;">
+			<div id="manage">
+				<div class="addProjectContainer">
+					<div class="addHeader">Add Project</div>
+					{% include "addproject.html" %}
+				</div>
+			</div>
+		</td>
+	</tr>
+</table>
 {% endblock %}

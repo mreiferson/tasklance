@@ -4,7 +4,7 @@ import views
 
 urlpatterns = patterns('',
 	url(r'^overview/$', views.overview, name='pm_overview'),
-	url(r'^view/(?P<account_id>\d+)/$', views.view, name='pm_view'),
+	url(r'^view/(?P<project_id>\d+)/$', views.view, name='pm_view'),
 	url(r'^create/$', views.create, name='pm_create'),
 	
 	url(r'^addproject/$', views.addproject, name='pm_addproject'),
