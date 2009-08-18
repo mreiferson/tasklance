@@ -1,4 +1,5 @@
 {% extends "content.html" %}
+{% load custom_tags %}
 
 {% block title %}Overview - {{ block.super }}{% endblock %}
 
@@ -12,6 +13,7 @@
 					<div id="project{{ project.id }}" rel="{{ project.id }}" class="project">
 						<h1><a href="{% url pm_delproject project.id %}"><img src="/site_media/images/report_delete.gif" alt="Delete Project"/></a> <a href="{% url pm_view project.id %}"><span class="projectName" rel="name">{{ project.name }}</span></a></h1>
 						<div class="projectDescription" rel="description">{{ project.description }}</div>
+						{% show_history project %}
 					</div>
 					{% endfor %}
 				</div>
