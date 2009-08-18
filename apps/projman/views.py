@@ -15,8 +15,9 @@ from decorators import useracct_required
 @useracct_required
 def overview(request):
 	project_form = ProjectForm()
+	load_form = LoadForm()
 	
-	return render_to_response('overview.html', { 'project_form': project_form },
+	return render_to_response('overview.html', { 'project_form': project_form, 'load_form': load_form },
 		context_instance=RequestContext(request))
 
 
@@ -26,10 +27,9 @@ def view(request, project_id):
 	if project.account == request.account:
 		todo_form = TodoForm()
 		category_form = CategoryForm()
-		load_form = LoadForm()
 		
 		return render_to_response('view.html', { 'project': project, 'todo_form': todo_form,
-			'category_form': category_form, 'load_form': load_form }, context_instance=RequestContext(request))
+			'category_form': category_form }, context_instance=RequestContext(request))
 		
 	else:
 		return HttpResponseRedirect(reverse('login'))

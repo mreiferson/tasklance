@@ -1,11 +1,11 @@
 {% if todos.count %}
 	<div class="projectHistoryHeader">Recently Completed Todos:</div>
-	<div class="projectHistory">
+	<table class="projectHistory" cellspacing="0">
 	{% for todo in todos %}
-		<div class="historyLine floatContainer">
-			<div class="historyLineDate">{{ todo.completed|date:"M j" }}:</div>
-			<div class="historyLineItem">{{ todo.item }}</div>
-		</div>
+		<tr class="historyLine{% cycle 'Odd' 'Even' %}">
+			<td class="historyLineDate">{{ todo.completed|date:"M j" }}</td>
+			<td class="historyLineItem">{{ todo.item }}</td>
+		</tr>
 	{% endfor %}
-	</div>
+	</table>
 {% endif %}

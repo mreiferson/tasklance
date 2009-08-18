@@ -6,16 +6,6 @@ body {
 	background: #4b4b4b;
 }
 
-h1.accountTitle {
-	font-size: 1.5em;
-	line-height: 1.3em;
-}
-
-h1.projectTitle {
-	font-size: 1.2em;
-	line-height: 1.1em;
-}
-
 body * {
 	margin: 0;
 	padding: 0;
@@ -107,10 +97,10 @@ a:hover {
 }
 
 #projects h1 {
-	font-size: 2em;
+	font-size: 1.75em;
 	font-weight: bold;
 	color: #3179F0;
-	margin-bottom: 6px;
+	line-height: 1.3em;
 }
 
 #projects h2 {
@@ -266,22 +256,27 @@ a:hover {
 }
 
 .projectHistory {
-	margin-top: 10px;
-	margin-left: 25px;
+	width: 100%;
 	font-size: 10px;
 }
 
-.historyLine {
-	margin-bottom: 0.2em;
+.projectHistory td {
+	padding: 3px;
+}
+
+.historyLineEven {
+	background: #f0f0f0;
+}
+
+.historyLineOdd {
+	background: #fafafa;
 }
 
 .historyLineDate {
-	margin-right: 5px;
-	float: left;
+	font-weight: bold;
 	color: #666;
 }
 
 .historyLineItem {
-	float: left;
-	color: #999;
+	color: #666;
 }

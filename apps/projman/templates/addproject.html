@@ -1,6 +1,6 @@
 <form autocomplete="off">
 	<input type="hidden" name="priority" value=""/>
-	<input type="hidden" name="account" value="{{ account.id }}"/>
+	<input type="hidden" name="account" value="{{ request.account.id }}"/>
 	<label for="name">Name:</label> <input type="text" name="{{ project_form.name.name }}" style="width: 221px;"/><br/>
 	<label for="description">Description:</label> <input type="text" name="{{ project_form.description.name }}" style="width: 140px;"/><button type="button" class="button">Add</button>
 </form>
