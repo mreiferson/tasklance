@@ -4,15 +4,19 @@ from models import Account
 
 class SubdomainMiddleware(object):
 	def process_request(self, request):
-		m = re.match('(?P<subdomain>\w+)\..*', request.META['SERVER_NAME'])
-		subdomain = m.group('subdomain')
-		if subdomain != 'www':
+		account = Account()
+
+		subdomain = request.GET.get('_subdomain')
+		if subdomain is None:
+			m = re.match('(?P<subdomain>\w+)\.(?P<domain>.*)', request.META['SERVER_NAME'])
+			if m is not None:
+				subdomain = m.group('subdomain')
+		
+		if subdomain is not None and subdomain != 'www':
 			try:
 				account = Account.objects.get(subdomain__exact=subdomain)
 			except:
-				return HttpResponseRedirect('http://www.tasklance.com'+(':'+request.META['SERVER_PORT'] if (request.META['SERVER_PORT'] != '80') else ''));
-		else:
-			account = Account()
+				return HttpResponseRedirect('http://'+request.META['SERVER_NAME']+(':'+request.META['SERVER_PORT'] if (request.META['SERVER_PORT'] != '80') else ''));
 		
 		request.account = account
 		

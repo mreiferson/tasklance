@@ -1,6 +1,19 @@
-Login:
 <form method="POST" action="{% url login %}">
-	{{ login_form.as_p }}
-	<input type="checkbox" name="remember" value="1"/> Remember Me<br/>
-	<input type="submit" value="Login">
+	<fieldset>
+		<legend>Login</legend>
+		<div>
+			<label for="id_username">Username:</label>
+			<input type="text" name="username" id="id_username" class="text"/>
+		</div>
+		<div>
+			<label for="id_password">Password:</label>
+			<input type="password" name="password" id="id_password" class="password"/>
+		</div>
+		<div>
+		<input type="checkbox" name="remember" value="1"/> Remember Me<br/>
+		</div>
+		<div class="submit">
+			<input type="submit" value="Login">
+		</div>
+	</fieldset>
 </form>

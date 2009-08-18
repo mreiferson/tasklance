@@ -3,7 +3,7 @@
 {% block main %}
 <div id="contentContainer">
 	<div id="banner">
-		{{ request.account.name}}: {{ request.account.description }}
+		{% if request.account.name %}{{ request.account.name}}: {{ request.account.description }}{% else %}TaskLance{% endif %}
 	</div>
 	<div id="content">
 		{% block content %}{% endblock %}
