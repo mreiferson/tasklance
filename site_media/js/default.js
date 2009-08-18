@@ -124,7 +124,8 @@ var addTodo = function(f) {
 											.append($('<input>').attr({ 'type': 'checkbox', 'autocomplete': 'off' }).addClass('completeLink').click(toggleCompleteTodo))
 											))
 							.append($('<div>').addClass('item').append(response.item).append(' '))
-							.append($('<div>').addClass('created').text('('+response.created+')'))
+							
+.append($('<div>').addClass('created').text('(0 days)'))
 					)
 					.hide()
 					.appendTo('#category'+category_id+' .todos:first')
