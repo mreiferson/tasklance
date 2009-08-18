@@ -110,7 +110,7 @@ a:hover {
 	font-size: 2em;
 	font-weight: bold;
 	color: #3179F0;
-	margin-bottom: 4px;
+	margin-bottom: 6px;
 }
 
 #projects h2 {
@@ -258,4 +258,30 @@ a:hover {
 
 .links li.categoryLink {
 	font-weight: normal;
+}
+
+.projectHistoryHeader {
+	margin-top: 1em;
+	font-weight: bold;
+}
+
+.projectHistory {
+	margin-top: 10px;
+	margin-left: 25px;
+	font-size: 10px;
+}
+
+.historyLine {
+	margin-bottom: 0.2em;
+}
+
+.historyLineDate {
+	margin-right: 5px;
+	float: left;
+	color: #666;
+}
+
+.historyLineItem {
+	float: left;
+	color: #999;
 }

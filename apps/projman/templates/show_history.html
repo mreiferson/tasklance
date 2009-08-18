@@ -1,21 +1,11 @@
 {% if todos.count %}
+	<div class="projectHistoryHeader">Recently Completed Todos:</div>
+	<div class="projectHistory">
 	{% for todo in todos %}
-		<li id="todo{{ todo.id }}" rel="{{ todo.id }}" class="todo{% if todo.complete %} complete{% endif %}">
-			<div class="floatContainer">
-			<div class="control">
-				<div class="icons">
-					{% if not todo.complete %}
-					<span class="handle"><img src="/site_media/images/list_ordered.gif"/></span>
-					{% endif %}
-					<a href="javascript:;" class="deleteLink"><img src="/site_media/images/trash.gif"/></a>
-				</div>
-				<div class="completeInput">
-					<input type="checkbox" autocomplete="off" class="completeLink" {% if todo.complete %}checked{% endif %}>
-				</div>
-			</div>
-			<div class="item">{{ todo.item }}</div>
-			<div class="created">({% if todo.complete %}{{ todo.completed|date:"Y-m-d g:ia" }}{% else %}{{ todo.age.days }} days{% endif %})</div>
-			</div>
-		</li>
+		<div class="historyLine floatContainer">
+			<div class="historyLineDate">{{ todo.completed|date:"M j" }}:</div>
+			<div class="historyLineItem">{{ todo.item }}</div>
+		</div>
 	{% endfor %}
+	</div>
 {% endif %}
