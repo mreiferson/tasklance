@@ -274,6 +274,7 @@ a:hover {
 
 .historyLineDate {
 	font-weight: bold;
+	width: 55px;
 	color: #666;
 }
 

@@ -4,7 +4,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm;
 from django.contrib.auth.models import User;
 from django.contrib import auth
 from django.template import RequestContext
-from datetime import datetime
+from datetime import timedelta
 
 
 def index(request):
@@ -22,7 +22,7 @@ def login(request):
 		if f.is_valid():
 			user = f.get_user()
 			auth.login(request, user)
-			request.session.set_expiry(('remember' in request.POST) and datetime.timedelta(weeks=2) or 0)
+			request.session.set_expiry(timedelta(weeks=2) if ('remember' in request.POST) else 0)
 			return HttpResponseRedirect('/pm/overview')
 				
 	return render_to_response('login.html', { 'login_form': f },
