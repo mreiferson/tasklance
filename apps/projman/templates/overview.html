@@ -29,6 +29,20 @@
 					<div class="addHeader">Load From XML</div>
 					{% include "load.html" %}
 				</div>
+				<div class="links">
+					<div class="addHeader">Quick Links / Re-order</div>
+					<ul class="projectLinks" rel="project">
+						{% for project in request.account.project_set.all %}
+						<li class="projectLink" rel="{{ project.id }}"><span class="handle"><img src="/site_media/images/list_ordered.gif"/></span> <a href="#project{{ project.id }}">{{ project.name }}</a>
+							<ul class="categoryLinks" rel="category">
+							{% for category in project.category_set.all %}
+								<li class="categoryLink" rel="{{ category.id }}"><span class="handle"><img src="/site_media/images/list_ordered.gif"/></span> <a href="#category{{ category.id }}">{{ category.name }}</a></li>
+							{% endfor %}
+							</ul>
+						</li>
+						{% endfor %}
+					</ul>
+				</div>
 			</div>
 		</td>
 	</tr>

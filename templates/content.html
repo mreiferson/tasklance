@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 
 {% block main %}
+<style type="text/css">
+	body {
+		background: #ececec;
+	}
+</style>
 <div id="contentContainer">
 	<div id="banner">
 		{% if request.account.name %}{{ request.account.name}}: {{ request.account.description }}{% else %}TaskLance{% endif %}
