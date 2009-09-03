@@ -5,12 +5,18 @@ from django.contrib.auth.models import User;
 from django.contrib import auth
 from django.template import RequestContext
 from datetime import timedelta
+from django.core.urlresolvers import reverse
 
 
 def index(request):
 	login_form = AuthenticationForm()
 	
-	return render_to_response('index.html', { 'login_form': login_form },
+	if request.subdomain != 'www':
+		template = 'login.html'	
+	else:
+		template = 'index.html'
+		
+	return render_to_response(template, { 'login_form': login_form },
 		context_instance=RequestContext(request))
 
 
@@ -23,7 +29,7 @@ def login(request):
 			user = f.get_user()
 			auth.login(request, user)
 			request.session.set_expiry(timedelta(weeks=2) if ('remember' in request.POST) else 0)
-			return HttpResponseRedirect('/pm/overview')
+			return HttpResponseRedirect(reverse('pm_overview'))
 				
 	return render_to_response('login.html', { 'login_form': f },
 		context_instance=RequestContext(request))

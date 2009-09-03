@@ -18,6 +18,7 @@ class SubdomainMiddleware(object):
 			except:
 				return HttpResponseRedirect('http://'+request.META['SERVER_NAME']+(':'+request.META['SERVER_PORT'] if (request.META['SERVER_PORT'] != '80') else ''));
 		
+		request.subdomain = subdomain
 		request.account = account
 		
 		return None
