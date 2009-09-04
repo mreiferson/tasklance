@@ -18,8 +18,48 @@ class Account(models.Model):
 		return self.name
 
 
-class Project(models.Model):
+class Category(models.Model):
 	account = models.ForeignKey(Account)
+	name = models.CharField(max_length=255)
+	description = models.CharField(max_length=255)
+	created = models.DateTimeField('Date Created', editable=False)
+	priority = models.PositiveIntegerField(default=0)
+
+	class Meta:
+		ordering = ('priority', 'created')
+		verbose_name_plural = 'categories'
+
+	def save(self):
+		if self.created == None:
+			self.created = datetime.now()
+		super(Category, self).save()
+
+	def __unicode__(self):
+		return self.name+' ('+self.account.name+')'
+		
+		
+class Milestone(models.Model):
+	category = models.ForeignKey(Category)
+	name = models.CharField(max_length=255)
+	description = models.CharField(max_length=255)
+	deadline = models.DateTimeField()
+	created = models.DateTimeField('Date Created', editable=False)
+	priority = models.PositiveIntegerField(default=0)
+	
+	class Meta:
+		ordering = ('priority', 'created')
+	
+	def save(self):
+		if self.created == None:
+			self.created = datetime.now()
+		super(Milestone, self).save()
+		
+	def __unicode__(self):
+		return self.name+' ('+self.category.name+')'
+
+
+class Project(models.Model):
+	account = models.ForeignKey(Category)
 	name = models.CharField(max_length=255)
 	description = models.CharField(max_length=255)
 	created = models.DateTimeField('Date Created', editable=False)
@@ -34,31 +74,11 @@ class Project(models.Model):
 		super(Project, self).save()
 		
 	def __unicode__(self):
-		return self.name
-
-
-class Category(models.Model):
-	project = models.ForeignKey(Project)
-	name = models.CharField(max_length=255)
-	description = models.CharField(max_length=255)
-	created = models.DateTimeField('Date Created', editable=False)
-	priority = models.PositiveIntegerField(default=0)
-	
-	class Meta:
-		ordering = ('priority', 'created')
-		verbose_name_plural = 'categories'
-	
-	def save(self):
-		if self.created == None:
-			self.created = datetime.now()
-		super(Category, self).save()
-	
-	def __unicode__(self):
-		return self.name+' ('+self.project.name+')'
+		return self.name+' ('+self.category.name+')'
 
 
 class Todo(models.Model):
-	category = models.ForeignKey(Category)
+	project = models.ForeignKey(Project)
 	item = models.CharField(max_length=255)
 	complete = models.BooleanField(default=False)
 	priority = models.PositiveIntegerField(default=0)
@@ -84,7 +104,7 @@ class Todo(models.Model):
 		super(Todo, self).save()
 	
 	def __unicode__(self):
-		return self.item+' ('+self.category.project.name+' => '+self.category.name+')'
+		return self.item+' ('+self.project.category.name+' => '+self.project.name+')'
 
 		
 class Dependency(models.Model):

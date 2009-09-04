@@ -8,25 +8,25 @@
 	<tr>
 		<td style="vertical-align: top;">
 			<div id="account" rel="{{ request.account.id }}">
-				<div id="projects">
-					<a name="project{{ project.id }}"></a>
-					<div id="project{{ project.id }}" rel="{{ project.id }}" class="project">
-						<h1><a href="{% url pm_delproject project.id %}"><img src="/site_media/images/report_delete.gif" alt="Delete Project"/></a> <span class="projectName" rel="name">{{ project.name }}</span></h1>
-						<div class="projectDescription" rel="description">{{ project.description }}</div>
-						<div class="categories">
-							{% for category in project.category_set.all %}
-								<a name="category{{ category.id }}"></a>
-								<div id="category{{ category.id }}" rel="{{ category.id }}" class="category">
-									<h2><a href="{% url pm_delcategory category.id %}"><img src="/site_media/images/folder_delete.gif" alt="Delete Category"/></a> <span class="categoryName" rel="name">{{ category.name }}</span></h2>
-									<div class="categoryDescription" rel="description">{{ category.description }}</div>
+				<div id="categories">
+					<a name="category{{ category.id }}"></a>
+					<div id="category{{ category.id }}" rel="{{ category.id }}" class="category">
+						<h1><a href="{% url pm_delcategory category.id %}"><img src="/site_media/images/report_delete.gif" alt="Delete Category"/></a> <span class="categoryName" rel="name">{{ category.name }}</span></h1>
+						<div class="categoryDescription" rel="description">{{ category.description }}</div>
+						<div class="projects">
+							{% for project in category.project_set.all %}
+								<a name="project{{ project.id }}"></a>
+								<div id="project{{ project.id }}" rel="{{ project.id }}" class="project">
+									<h2><a href="{% url pm_delproject project.id %}"><img src="/site_media/images/folder_delete.gif" alt="Delete Project"/></a> <span class="projectName" rel="name">{{ project.name }}</span></h2>
+									<div class="projectDescription" rel="description">{{ project.description }}</div>
 									<ul class="todos todos_active">
-										{% show_todos category %}
+										{% show_todos project %}
 									</ul>
 									<div class="addTodoContainer">
 										<a href="javascript:;" class="showAddTodoLink">Add Todo</a>
 									</div>
 									<ul class="todos todos_completed">
-										{% show_todos category 1 %}
+										{% show_todos project 1 %}
 									</ul>
 								</div>
 							{% endfor %}
@@ -38,16 +38,16 @@
 		<td style="vertical-align: top;">
 			<div id="manage">
 				<div class="addCategoryContainer">
-					<div class="addHeader">Add Category</div>
-					{% include "addcategory.html" %}
+					<div class="addHeader">Add Project</div>
+					{% include "addproject.html" %}
 				</div>
 				<div class="links">
 					<div class="addHeader">Quick Links / Re-order</div>
-					<ul class="projectLinks" rel="project">
-						<li class="projectLink" rel="{{ project.id }}"><span class="handle"><img src="/site_media/images/list_ordered.gif"/></span> <a href="#project{{ project.id }}">{{ project.name }}</a>
+					<ul class="categoryLinks" rel="category">
+						<li class="categoryLink" rel="{{ category.id }}"><span class="handle"><img src="/site_media/images/list_ordered.gif"/></span> <a href="#category{{ category.id }}">{{ category.name }}</a>
 							<ul class="categoryLinks" rel="category">
-							{% for category in project.category_set.all %}
-								<li class="categoryLink" rel="{{ category.id }}"><span class="handle"><img src="/site_media/images/list_ordered.gif"/></span> <a href="#category{{ category.id }}">{{ category.name }}</a></li>
+							{% for project in category.project_set.all %}
+								<li class="projectLink" rel="{{ project.id }}"><span class="handle"><img src="/site_media/images/list_ordered.gif"/></span> <a href="#project{{ project.id }}">{{ project.name }}</a></li>
 							{% endfor %}
 							</ul>
 						</li>

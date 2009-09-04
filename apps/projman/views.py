@@ -14,22 +14,22 @@ from decorators import useracct_required
 
 @useracct_required
 def overview(request):
-	project_form = ProjectForm()
+	category_form = CategoryForm()
 	load_form = LoadForm()
 	
-	return render_to_response('overview.html', { 'project_form': project_form, 'load_form': load_form },
+	return render_to_response('overview.html', { 'category_form': category_form, 'load_form': load_form },
 		context_instance=RequestContext(request))
 
 
 @useracct_required
-def view(request, project_id):
-	project = get_object_or_404(Project, pk=project_id)
-	if project.account == request.account:
+def view(request, category_id):
+	category = get_object_or_404(Category, pk=category_id)
+	if category.account == request.account:
 		todo_form = TodoForm()
-		category_form = CategoryForm()
+		project_form = ProjectForm()
 		
-		return render_to_response('view.html', { 'project': project, 'todo_form': todo_form,
-			'category_form': category_form }, context_instance=RequestContext(request))
+		return render_to_response('view.html', { 'category': category, 'todo_form': todo_form,
+			'project_form': project_form }, context_instance=RequestContext(request))
 		
 	else:
 		return HttpResponseRedirect(reverse('login'))
@@ -81,23 +81,6 @@ def addproject(request):
 	raise Http404(repr(f.errors) if f else None)
 
 
-def updateproject(request, project_id):
-	if request.method == 'POST':
-		project = get_object_or_404(Project, pk=project_id)
-		
-		if 'description' in request.POST:
-			project.description = request.POST['description']
-		
-		if 'name' in request.POST:
-			project.name = request.POST['name']
-			
-		project.save()
-		
-		return HttpResponse(simplejson.dumps({ 'id': project.id, 'name': project.name, 'description': project.description }))
-	
-	raise Http404(None)
-
-
 def addcategory(request):
 	if request.method == 'POST':
 		f = CategoryForm(request.POST)
@@ -107,7 +90,19 @@ def addcategory(request):
 				'project_id': category.project.id, 'name': category.name, 'description': category.description }))
 		
 	raise Http404(repr(f.errors) if f else None)
-	
+
+
+def addtodo(request):
+	if request.method == 'POST':
+		f = TodoForm(request.POST)
+		if f.is_valid():
+			todo = f.save()
+			df = DateFormat(todo.created)
+			return HttpResponse(simplejson.dumps({ 'id': todo.id, 
+				'created': df.format('Y-m-d g:ia'), 'item': todo.item }))
+		
+	raise Http404(repr(f.errors) if f else None)
+
 
 def updatecategory(request, category_id):
 	if request.method == 'POST':
@@ -125,17 +120,22 @@ def updatecategory(request, category_id):
 			
 	raise Http404(None)
 
-	
-def addtodo(request):
+
+def updateproject(request, project_id):
 	if request.method == 'POST':
-		f = TodoForm(request.POST)
-		if f.is_valid():
-			todo = f.save()
-			df = DateFormat(todo.created)
-			return HttpResponse(simplejson.dumps({ 'id': todo.id, 
-				'created': df.format('Y-m-d g:ia'), 'item': todo.item }))
+		project = get_object_or_404(Project, pk=project_id)
 		
-	raise Http404(repr(f.errors) if f else None)
+		if 'description' in request.POST:
+			project.description = request.POST['description']
+		
+		if 'name' in request.POST:
+			project.name = request.POST['name']
+			
+		project.save()
+		
+		return HttpResponse(simplejson.dumps({ 'id': project.id, 'name': project.name, 'description': project.description }))
+	
+	raise Http404(None)
 	
 
 def deletetodo(request, todo_id):
@@ -167,13 +167,27 @@ def completetodo(request, todo_id, complete):
 def updatetodo(request, todo_id):
 	if request.method == 'POST':
 		todo = get_object_or_404(Todo, pk=todo_id)
-		category = get_object_or_404(Category, pk=request.POST['category_id'])
+		project = get_object_or_404(Project, pk=request.POST['project_id'])
 		todo.category = category
 		todo.save()
 		
-		return HttpResponse(simplejson.dumps({ 'id': todo.id, 'category': todo.category.id }))
+		return HttpResponse(simplejson.dumps({ 'id': todo.id, 'project': todo.project.id }))
 	
 	raise Http404(None)
+	
+
+def prioritize(request, obj_type, id):
+	if request.method == 'POST':
+		mapping = { 'Category': Account, 'Milestone': Category, 'Project': Category, 'Todo': Project }
+		parent = get_object_or_404(obj_type, pk=id)
+		order = request.POST['order'].split(',')
+		for i, obj_id in enumerate(order):
+			obj = get_object_or_404(mapping[obj_type], pk=obj_id)
+			if obj.__dict__[obj_type.lower()].id == parent.id:
+				obj.priority = i
+				obj.save()
+
+	return HttpResponse(simplejson.dumps({ 'id': parent.id, 'order': order }))
 
 
 def load(request):
@@ -212,42 +226,3 @@ def load(request):
 		return HttpResponseRedirect(request.META.get('HTTP_REFERER', reverse('pm_overview')))
 	
 	return render_to_response('load.html')
-
-
-def prioritize(request, id):
-	if request.method == 'POST':
-		category = get_object_or_404(Category, pk=id)
-		order = request.POST['order'].split(',')
-		for i, todo_id in enumerate(order):
-			todo = get_object_or_404(Todo, pk=todo_id)
-			if todo.category.id == category.id:
-				todo.priority = i
-				todo.save()
-	
-	return HttpResponse(simplejson.dumps({ 'id': category.id, 'order': order }))
-	
-
-def prioritize_project(request, id):
-	if request.method == 'POST':
-		project = get_object_or_404(Project, pk=id)
-		order = request.POST['order'].split(',')
-		for i, category_id in enumerate(order):
-			category = get_object_or_404(Category, pk=category_id)
-			if category.project.id == project.id:
-				category.priority = i
-				category.save()
-				
-	return HttpResponse(simplejson.dumps({ 'id': project.id, 'order': order }))
-	
-
-def prioritize_account(request, id):
-	if request.method == 'POST':
-		account = get_object_or_404(Account, pk=id)
-		order = request.POST['order'].split(',')
-		for i, project_id in enumerate(order):
-			project = get_object_or_404(Project, pk=project_id)
-			if project.account.id == account.id:
-				project.priority = i
-				project.save()
-	
-	return HttpResponse(simplejson.dumps({ 'id': account.id, 'order': order }))

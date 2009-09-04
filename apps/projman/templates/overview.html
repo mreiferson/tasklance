@@ -8,12 +8,12 @@
 	<tr>
 		<td style="vertical-align: top;">
 			<div id="account" rel="{{ request.account.id }}">
-				<div id="projects">
-					{% for project in request.account.project_set.all %}
-					<div id="project{{ project.id }}" rel="{{ project.id }}" class="project">
-						<h1><a href="{% url pm_delproject project.id %}"><img src="/site_media/images/report_delete.gif" alt="Delete Project"/></a> <a href="{% url pm_view project.id %}"><span class="projectName" rel="name">{{ project.name }}</span></a></h1>
-						<div class="projectDescription" rel="description">{{ project.description }}</div>
-						{% show_history project %}
+				<div id="categories">
+					{% for category in request.account.category_set.all %}
+					<div id="category{{ category.id }}" rel="{{ category.id }}" class="category">
+						<h1><a href="{% url pm_delcategory category.id %}"><img src="/site_media/images/report_delete.gif" alt="Delete Category"/></a> <a href="{% url pm_view category.id %}"><span class="categoryName" rel="name">{{ category.name }}</span></a></h1>
+						<div class="categoryDescription" rel="description">{{ category.description }}</div>
+						{% show_history category %}
 					</div>
 					{% endfor %}
 				</div>
@@ -21,9 +21,9 @@
 		</td>
 		<td style="vertical-align: top;">
 			<div id="manage">
-				<div class="addProjectContainer">
-					<div class="addHeader">Add Project</div>
-					{% include "addproject.html" %}
+				<div class="addCategoryContainer">
+					<div class="addHeader">Add Category</div>
+					{% include "addcategory.html" %}
 				</div>
 				<div class="loadContainer">
 					<div class="addHeader">Load From XML</div>
@@ -31,12 +31,12 @@
 				</div>
 				<div class="links">
 					<div class="addHeader">Quick Links / Re-order</div>
-					<ul class="projectLinks" rel="project">
-						{% for project in request.account.project_set.all %}
-						<li class="projectLink" rel="{{ project.id }}"><span class="handle"><img src="/site_media/images/list_ordered.gif"/></span> <a href="#project{{ project.id }}">{{ project.name }}</a>
+					<ul class="categoryLinks" rel="category">
+						{% for category in request.account.category_set.all %}
+						<li class="categoryLink" rel="{{ category.id }}"><span class="handle"><img src="/site_media/images/list_ordered.gif"/></span> <a href="#category{{ category.id }}">{{ category.name }}</a>
 							<ul class="categoryLinks" rel="category">
-							{% for category in project.category_set.all %}
-								<li class="categoryLink" rel="{{ category.id }}"><span class="handle"><img src="/site_media/images/list_ordered.gif"/></span> <a href="#category{{ category.id }}">{{ category.name }}</a></li>
+							{% for project in category.project_set.all %}
+								<li class="projectLink" rel="{{ project.id }}"><span class="handle"><img src="/site_media/images/list_ordered.gif"/></span> <a href="#project{{ project.id }}">{{ project.name }}</a></li>
 							{% endfor %}
 							</ul>
 						</li>

@@ -1,6 +1,6 @@
 {% if todos.count %}
-	<div class="projectHistoryHeader">Recently Completed Todos:</div>
-	<table class="projectHistory" cellspacing="0">
+	<div class="categoryHistoryHeader">Recently Completed Todos:</div>
+	<table class="categoryHistory" cellspacing="0">
 	{% for todo in todos %}
 		<tr class="historyLine{% cycle 'Odd' 'Even' %}">
 			<td class="historyLineDate">{{ todo.completed|date:"M j" }}</td>
