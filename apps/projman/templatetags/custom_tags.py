@@ -14,7 +14,7 @@ def show_todos(project, complete=0):
 
 
 @register.inclusion_tag('show_history.html')
-def show_history(project):
+def show_history(category):
 	todos = Todo.objects.filter(project__category__exact=category).filter(complete=1).order_by('-completed')[:15]
 	
 	return locals()
