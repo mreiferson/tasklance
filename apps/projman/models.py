@@ -59,7 +59,7 @@ class Milestone(models.Model):
 
 
 class Project(models.Model):
-	account = models.ForeignKey(Category)
+	category = models.ForeignKey(Category)
 	name = models.CharField(max_length=255)
 	description = models.CharField(max_length=255)
 	created = models.DateTimeField('Date Created', editable=False)
