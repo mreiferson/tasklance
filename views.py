@@ -12,7 +12,10 @@ def index(request):
 	login_form = AuthenticationForm()
 	
 	if request.subdomain != 'www':
-		template = 'login.html'	
+		if request.user.is_authenticated():
+			return HttpResponseRedirect(reverse('pm_home'))
+		
+		template = 'login.html'
 	else:
 		template = 'index.html'
 		
@@ -29,7 +32,7 @@ def login(request):
 			user = f.get_user()
 			auth.login(request, user)
 			request.session.set_expiry(timedelta(weeks=2) if ('remember' in request.POST) else 0)
-			return HttpResponseRedirect(reverse('pm_overview'))
+			return HttpResponseRedirect(reverse('pm_home'))
 				
 	return render_to_response('login.html', { 'login_form': f },
 		context_instance=RequestContext(request))
