@@ -13,11 +13,11 @@ from decorators import useracct_required
 
 
 @useracct_required
-def overview(request):
+def home(request):
 	category_form = CategoryForm()
 	load_form = LoadForm()
 	
-	return render_to_response('overview.html', { 'category_form': category_form, 'load_form': load_form },
+	return render_to_response('home.html', { 'category_form': category_form, 'load_form': load_form },
 		context_instance=RequestContext(request))
 
 
@@ -26,17 +26,19 @@ def view(request, category_id):
 	category = get_object_or_404(Category, pk=category_id)
 	if category.account == request.account:
 		todo_form = TodoForm()
+		milestone_form = MilestoneForm()
 		project_form = ProjectForm()
 		
 		return render_to_response('view.html', { 'category': category, 'todo_form': todo_form,
-			'project_form': project_form }, context_instance=RequestContext(request))
+			'milestone_form': milestone_form, 'project_form': project_form }, 
+			context_instance=RequestContext(request))
 		
 	else:
 		return HttpResponseRedirect(reverse('login'))
 
 
 def delete_object_referer(request, object_id, **kwargs):
-	backup = reverse('pm_overview')
+	backup = reverse('pm_home')
 	
 	if request.method == 'POST':
 		post_delete_redirect = request.POST.get('post_delete_redirect', backup)
@@ -70,6 +72,30 @@ def create(request):
 		'account_form': account_form }, context_instance=RequestContext(request))
 
 
+def addcategory(request):
+	if request.method == 'POST':
+		f = CategoryForm(request.POST)
+		if f.is_valid():
+			category = f.save()
+			return HttpResponse(simplejson.dumps({ 'id': category.id, 
+				'name': category.name, 'description': category.description }))
+		
+	raise Http404(repr(f.errors) if f else None)
+	
+	
+def addmilestone(request):
+	if request.method == 'POST':
+		f = MilestoneForm(request.POST)
+		if f.is_valid():
+			milestone = f.save()
+			df = DateFormat(milestone.deadline)
+			return HttpResponse(simplejson.dumps({ 'id': milestone.id,
+				'name': milestone.name, 'description': milestone.description,
+				'deadline': df.format('Y-m-d') }))
+					
+	raise Http404(repr(f.errors) if f else None)
+
+
 def addproject(request):
 	if request.method == 'POST':
 		f = ProjectForm(request.POST)
@@ -77,17 +103,6 @@ def addproject(request):
 			project = f.save()
 			return HttpResponse(simplejson.dumps({ 'id': project.id, 
 				'name': project.name, 'description': project.description }))
-		
-	raise Http404(repr(f.errors) if f else None)
-
-
-def addcategory(request):
-	if request.method == 'POST':
-		f = CategoryForm(request.POST)
-		if f.is_valid():
-			category = f.save()
-			return HttpResponse(simplejson.dumps({ 'id': category.id, 
-				'project_id': category.project.id, 'name': category.name, 'description': category.description }))
 		
 	raise Http404(repr(f.errors) if f else None)
 
@@ -178,12 +193,15 @@ def updatetodo(request, todo_id):
 
 def prioritize(request, obj_type, id):
 	if request.method == 'POST':
-		mapping = { 'Category': Account, 'Milestone': Category, 'Project': Category, 'Todo': Project }
-		parent = get_object_or_404(obj_type, pk=id)
+		parent_mapping = { 'category': Account, 'milestone': Category, 'project': Category, 'todo': Project }
+		mapping = { 'category': Category, 'milestone': Milestone, 'project': Project, 'todo': Todo }
+		
+		obj_type = obj_type.lower()
+		parent = get_object_or_404(parent_mapping[obj_type], pk=id)
 		order = request.POST['order'].split(',')
 		for i, obj_id in enumerate(order):
 			obj = get_object_or_404(mapping[obj_type], pk=obj_id)
-			if obj.__dict__[obj_type.lower()].id == parent.id:
+			if getattr(obj, parent.__class__.__name__.lower()).id == parent.id:
 				obj.priority = i
 				obj.save()
 
@@ -223,6 +241,6 @@ def load(request):
 						t = Todo(category=c, item=item, created=created, complete=complete, completed=completed, priority=priority)
 						t.save()
 		
-		return HttpResponseRedirect(request.META.get('HTTP_REFERER', reverse('pm_overview')))
+		return HttpResponseRedirect(request.META.get('HTTP_REFERER', reverse('pm_home')))
 	
 	return render_to_response('load.html')
