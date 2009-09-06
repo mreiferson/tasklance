@@ -34,7 +34,7 @@
 					<ul class="categoryLinks" rel="category">
 						{% for category in request.account.category_set.all %}
 						<li class="categoryLink" rel="{{ category.id }}"><span class="handle"><img src="/site_media/images/list_ordered.gif"/></span> <a href="#category{{ category.id }}">{{ category.name }}</a>
-							<ul class="categoryLinks" rel="category">
+							<ul class="projectLinks" rel="project">
 							{% for project in category.project_set.all %}
 								<li class="projectLink" rel="{{ project.id }}"><span class="handle"><img src="/site_media/images/list_ordered.gif"/></span> <a href="#project{{ project.id }}">{{ project.name }}</a></li>
 							{% endfor %}

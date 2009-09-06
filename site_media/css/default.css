@@ -20,11 +20,11 @@ a {
 }
 
 a:link, a:visited, a:active {
-	color: #39c;
+	color: #3179f0;
 }
 
 a:hover {
-	color: #6cf;
+	color: #3179f0;
 }
 
 .floatContainer:after {
@@ -60,70 +60,83 @@ a:hover {
 }
 
 #header a:hover {
-	color: #6cf;
+	color: #ff0;
 }
 
 #contentContainer {
 	width: 980px;
 	margin: 10px auto;
 	padding: 0px;
-	background: #fff;
-	border: 1px solid #ddd;
 }
 
-#banner {
-	padding: 5px;
-	font-weight: bold;
-	font-size: 18px;
-	font-family: Arial;
-	background: #f0f0f0;
+#navMenuList {
+}
+
+#navMenuList li {
+	list-style: none;
+	display: inline;
+}
+
+#navMenuList li a {
+	float: left;
+	padding: 6px 10px;
+	background: #36c;
+	border-color: #eee #eee #36c #eee;
+	border-style: solid;
+	border-width: 1px;
+	color: #fff;
+}
+
+#navMenuList li a:hover {
+	background: #69f;
+	border-bottom-color: #69f;
+	color: #ff0;
 }
 
 #content {
+	background: #fff;
 	padding: 10px;
+	/* border: 1px solid #ddd; */
 }
 
 .accountDescription {
 	color: #888;
 }
 
-.projectDescription {
+.categoryDescription {
 	color: #888;
 }
 
-.categoryDescription {
+.projectDescription {
 	color: #888;
 	margin-bottom: 8px;
 }
 
-#projects h1 {
+#categories h1 {
 	font-size: 1.75em;
 	font-weight: bold;
 	color: #3179F0;
 	line-height: 1.3em;
 }
 
-#projects h2 {
+#categories h2 {
 	font-size: 1.5em;
 	font-weight: bold;
 	color: #039;
 	margin: 5px 0 2px 0;
 }
 
-#projects li {
+#categories li {
 	padding-bottom: 6px;
 	clear: both;
 }
 
-#projects {
+#categories {
 	width: 668px;
 }
 
-.project {
-	margin-bottom: 1em;
-}
-
 .category {
+	margin-bottom: 1em;
 }
 
 #manage {
@@ -132,7 +145,7 @@ a:hover {
 	width: 280px;
 }
 
-.categories {
+.projects {
 	margin-left: 20px;
 }
 
@@ -220,7 +233,7 @@ a:hover {
 	background: #f4f4f4;
 }
 
-.addProjectContainer, .addCategoryContainer, .addTodoContainer, .loadContainer, .links {
+.addCategoryContainer, .addMilestoneContainer, .addProjectContainer, .addTodoContainer, .loadContainer, .links {
 	padding: 5px;
 }
 
@@ -242,25 +255,25 @@ a:hover {
 	line-height: 1.3em;
 }
 
-.links li.projectLink {
+.links li.categoryLink {
 	font-weight: bold;
 }
 
-.links li.categoryLink {
+.links li.projectLink {
 	font-weight: normal;
 }
 
-.projectHistoryHeader {
+.categoryHistoryHeader {
 	margin-top: 1em;
 	font-weight: bold;
 }
 
-.projectHistory {
+.categoryHistory {
 	width: 100%;
 	font-size: 10px;
 }
 
-.projectHistory td {
+.categoryHistory td {
 	padding: 3px;
 }
 

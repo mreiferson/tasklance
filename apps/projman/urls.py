@@ -3,8 +3,8 @@ from models import *
 import views
 
 urlpatterns = patterns('',
-	url(r'^overview/$', views.overview, name='pm_overview'),
-	url(r'^view/(?P<project_id>\d+)/$', views.view, name='pm_view'),
+	url(r'^home/$', views.home, name='pm_home'),
+	url(r'^view/(?P<category_id>\d+)/$', views.view, name='pm_view'),
 	url(r'^create/$', views.create, name='pm_create'),
 	
 	url(r'^addproject/$', views.addproject, name='pm_addproject'),
@@ -21,6 +21,8 @@ urlpatterns = patterns('',
 	url(r'^deletetodo/(?P<todo_id>\d+)/$', views.deletetodo, name='pm_deletetodo'),
 	url(r'^completetodo/(?P<todo_id>\d+)/(?P<complete>[01]+)/$', views.completetodo, name='pm_completetodo'),
 	url(r'^updatetodo/(?P<todo_id>\d+)/$', views.updatetodo, name='pm_updatetodo'),
+	
+	url(r'^addmilestone/$', views.addmilestone, name='pm_addtodo'),
 	
 	url(r'^load/$', views.load, name='pm_load'),
 	

@@ -3,6 +3,15 @@
 
 {% block title %}View Account - {{ block.super }}{% endblock %}
 
+{% block navMenu %}
+<ul id="navMenuList">
+	<li><a href="">Overview</a></li>
+	<li><a href="">Tasks</a></li>
+	<li><a href="">Messages</a></li>
+	<li><a href="">Milestones</a></li>
+</ul>
+{% endblock %}
+
 {% block content %}
 <table cellspacing="0" id="overviewContainer">
 	<tr>
@@ -37,7 +46,11 @@
 		</td>
 		<td style="vertical-align: top;">
 			<div id="manage">
-				<div class="addCategoryContainer">
+				<div class="addMilestoneContainer">
+					<div class="addHeader">Add Milestone</div>
+					{% include "addmilestone.html" %}
+				</div>
+				<div class="addProjectContainer">
 					<div class="addHeader">Add Project</div>
 					{% include "addproject.html" %}
 				</div>
@@ -45,7 +58,7 @@
 					<div class="addHeader">Quick Links / Re-order</div>
 					<ul class="categoryLinks" rel="category">
 						<li class="categoryLink" rel="{{ category.id }}"><span class="handle"><img src="/site_media/images/list_ordered.gif"/></span> <a href="#category{{ category.id }}">{{ category.name }}</a>
-							<ul class="categoryLinks" rel="category">
+							<ul class="projectLinks" rel="project">
 							{% for project in category.project_set.all %}
 								<li class="projectLink" rel="{{ project.id }}"><span class="handle"><img src="/site_media/images/list_ordered.gif"/></span> <a href="#project{{ project.id }}">{{ project.name }}</a></li>
 							{% endfor %}

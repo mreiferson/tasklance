@@ -7,8 +7,8 @@
 	}
 </style>
 <div id="contentContainer">
-	<div id="banner">
-		{% if request.account.name %}{{ request.account.name}}: {{ request.account.description }}{% else %}TaskLance{% endif %}
+	<div id="navMenu" class="floatContainer">
+		{% block navMenu %}{% endblock %}
 	</div>
 	<div id="content">
 		{% block content %}{% endblock %}
