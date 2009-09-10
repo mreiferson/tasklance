@@ -126,7 +126,7 @@ class Thread(models.Model):
 		super(Thread, self).save()
 	
 	def __unicode__(self):
-		return self.relation_model
+		return self.content_object.__class__.__name__+' '+self.content_object.name
 
 
 class Message(models.Model):
