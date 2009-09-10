@@ -35,6 +35,16 @@ def view(request, category_id):
 		
 	else:
 		return HttpResponseRedirect(reverse('login'))
+		
+@useracct_required
+def tasks(request, category_id):
+	category = get_object_or_404(Category, pk=category_id)
+	if category.account == request.account:
+		todos = Todo.objects.filter(project__category__exact=category)
+		
+		return render_to_response('tasks.html', { 'category': category, 'todos': todos }, context_instance=RequestContext(request))
+	else:
+		return HttpResponseRedirect(reverse('login'))
 
 
 def delete_object_referer(request, object_id, **kwargs):
@@ -131,7 +141,8 @@ def updatecategory(request, category_id):
 		
 		category.save()
 		
-		return HttpResponse(simplejson.dumps({ 'id': category.id, 'name': category.name, 'description': category.description }))
+		return HttpResponse(simplejson.dumps({ 'id': category.id, 'name': category.name, 
+			'description': category.description }))
 			
 	raise Http404(None)
 
@@ -148,7 +159,8 @@ def updateproject(request, project_id):
 			
 		project.save()
 		
-		return HttpResponse(simplejson.dumps({ 'id': project.id, 'name': project.name, 'description': project.description }))
+		return HttpResponse(simplejson.dumps({ 'id': project.id, 'name': project.name, 
+			'description': project.description }))
 	
 	raise Http404(None)
 	
@@ -208,6 +220,29 @@ def prioritize(request, obj_type, id):
 	return HttpResponse(simplejson.dumps({ 'id': parent.id, 'order': order }))
 
 
+def thread_view(request, relation_model, relation_id):
+	try:
+		thread = Thread.objects.get(relation_model=relation_model, relation_id=relation_id)
+	except Thread.DoesNotExist:
+		thread = Thread(relation_model=relation_model, relation_id=relation_id, creator=request.user)
+		thread.save()
+		
+	msg_form = MessageForm()
+	
+	return render_to_response('thread_view.html', { 'thread': thread, 'msg_form': msg_form })
+
+
+def thread_post(request):
+	if request.method == 'POST':
+		f = MessageForm(request.POST)
+		if f.is_valid():
+			t = f.save(commit=False)
+			t.creator = request.user
+			t.save()
+
+	return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
 def load(request):
 	if request.method == 'POST':
 		f = LoadForm(request.POST, request.FILES)
@@ -233,12 +268,15 @@ def load(request):
 					todoitems = todolist.findall('todo-items/todo-item')
 					for todoitem in todoitems:
 						item = todoitem.findtext('content')[:255]
-						created = datetime.strptime(todoitem.findtext('created-on'), '%Y-%m-%dT%H:%M:%SZ')
+						created = datetime.strptime(todoitem.findtext('created-on'), 
+								'%Y-%m-%dT%H:%M:%SZ')
 						complete = (todoitem.findtext('completed') == 'true')
-						completed = datetime.strptime(todoitem.findtext('completed-on'), '%Y-%m-%dT%H:%M:%SZ') if complete else None
+						completed = datetime.strptime(todoitem.findtext('completed-on'), 
+								'%Y-%m-%dT%H:%M:%SZ') if complete else None
 						priority = todoitem.findtext('position')
 						
-						t = Todo(category=c, item=item, created=created, complete=complete, completed=completed, priority=priority)
+						t = Todo(category=c, item=item, created=created, complete=complete, 
+							completed=completed, priority=priority)
 						t.save()
 		
 		return HttpResponseRedirect(request.META.get('HTTP_REFERER', reverse('pm_home')))

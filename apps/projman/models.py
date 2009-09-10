@@ -10,8 +10,9 @@ class Account(models.Model):
 	created = models.DateTimeField('Date Created', editable=False)
 	
 	def save(self):
-		if self.created == None:
+		if not self.created:
 			self.created = datetime.now()
+		
 		super(Account, self).save()
 	
 	def __unicode__(self):
@@ -30,8 +31,9 @@ class Category(models.Model):
 		verbose_name_plural = 'categories'
 
 	def save(self):
-		if self.created == None:
+		if not self.created:
 			self.created = datetime.now()
+		
 		super(Category, self).save()
 
 	def __unicode__(self):
@@ -50,8 +52,9 @@ class Milestone(models.Model):
 		ordering = ('priority', 'created')
 	
 	def save(self):
-		if self.created == None:
+		if not self.created:
 			self.created = datetime.now()
+		
 		super(Milestone, self).save()
 		
 	def __unicode__(self):
@@ -69,7 +72,7 @@ class Project(models.Model):
 		ordering = ('priority', 'created')
 	
 	def save(self):
-		if self.created == None:
+		if not self.created:
 			self.created = datetime.now()
 		super(Project, self).save()
 		
@@ -92,7 +95,7 @@ class Todo(models.Model):
 		return datetime.now() - self.created
 		
 	def save(self):
-		if self.created == None:
+		if not self.created:
 			self.created = datetime.now()
 			
 		if self.complete:
@@ -105,6 +108,39 @@ class Todo(models.Model):
 	
 	def __unicode__(self):
 		return self.item+' ('+self.project.category.name+' => '+self.project.name+')'
+
+
+class Thread(models.Model):
+	relation_model = models.CharField(max_length=1, 
+		choices=(('a', 'Account'), ('c', 'Category'), ('m', 'Milestone'), ('p', 'Project'), ('t', 'Task')))
+	relation_id = models.IntegerField()
+	creator = models.ForeignKey(User, editable=False)
+	created = models.DateTimeField('Creation Stamp', editable=False)
+
+	def save(self):
+		if not self.created:
+			self.created = datetime.now()
+
+		super(Thread, self).save()
+	
+	def __unicode__(self):
+		return self.relation_model
+
+
+class Message(models.Model):
+	thread = models.ForeignKey(Thread)
+	text = models.TextField()
+	creator = models.ForeignKey(User, editable=False, related_name='msg')
+	created = models.DateTimeField('Creation Stamp', editable=False)
+
+	def save(self):
+		if not self.created:
+			self.created = datetime.now()
+
+		super(Message, self).save()
+	
+	def __unicode__(self):
+		return self.text
 
 		
 class Dependency(models.Model):

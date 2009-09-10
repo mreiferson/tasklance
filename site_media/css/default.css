@@ -93,6 +93,14 @@ a:hover {
 	color: #ff0;
 }
 
+#navMenuList li a.current {
+	background: #69f;
+	border-bottom-color: #69f;
+	color: #ff0;
+	text-decoration: none;
+	font-weight: bold;
+}
+
 #content {
 	background: #fff;
 	padding: 10px;

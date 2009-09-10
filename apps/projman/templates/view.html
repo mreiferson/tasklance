@@ -1,13 +1,13 @@
 {% extends "content.html" %}
 {% load custom_tags %}
 
-{% block title %}View Account - {{ block.super }}{% endblock %}
+{% block title %}Category Overview - {{ block.super }}{% endblock %}
 
 {% block navMenu %}
 <ul id="navMenuList">
-	<li><a href="">Overview</a></li>
-	<li><a href="">Tasks</a></li>
-	<li><a href="">Messages</a></li>
+	<li><a href="{% url pm_view category.id %}" class="current">Overview</a></li>
+	<li><a href="{% url pm_tasks category.id %}">Tasks</a></li>
+	<li><a href="{% url pm_thread "c",category.id %}">Messages</a></li>
 	<li><a href="">Milestones</a></li>
 </ul>
 {% endblock %}

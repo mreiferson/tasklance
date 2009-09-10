@@ -257,7 +257,7 @@ $(document).ready(function() {
 										.append(' ')
 										.append(
 											$('<a>')
-												.attr('href', '/pm/view/'+response.id).text(response.name));
+												.attr('href', '/pm/category/view/'+response.id).text(response.name));
 					var cat = $('<div>')
 						.addClass('category')
 						.attr('id', 'category'+response.id)

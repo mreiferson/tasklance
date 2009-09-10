@@ -23,3 +23,7 @@ class TodoForm(forms.ModelForm):
 		
 class LoadForm(forms.Form):
 	file = forms.FileField()
+
+class MessageForm(forms.ModelForm):
+	class Meta:
+		model = Message

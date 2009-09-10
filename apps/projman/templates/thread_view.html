@@ -1,0 +1,26 @@
+{% extends "content.html" %}
+
+{% block title %}View Thread - {{ block.super }}{% endblock %}
+
+{% block navMenu %}
+<ul id="navMenuList">
+	<li><a href="">Overview</a></li>
+	<li><a href="">Tasks</a></li>
+	<li><a href="" class="current"">Messages</a></li>
+	<li><a href="">Milestones</a></li>
+</ul>
+{% endblock %}
+
+{% block content %}
+<form method="post" action="{% url thread_post %}">
+	<input type="hidden" name="thread" value="{{ thread.id }}"/>
+	{{ msg_form.text }}
+	<input type="submit" value="Post"/>
+</form>
+
+<div id="thread{{ thread.id }}" class="thread">
+	{% for msg in thread.message_set.all %}
+		<div id="message{{ msg.id }}" class="message">{{ msg.text }}</div>
+	{% endfor %}
+</div>
+{% endblock %}

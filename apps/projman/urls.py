@@ -4,7 +4,6 @@ import views
 
 urlpatterns = patterns('',
 	url(r'^home/$', views.home, name='pm_home'),
-	url(r'^view/(?P<category_id>\d+)/$', views.view, name='pm_view'),
 	url(r'^create/$', views.create, name='pm_create'),
 	
 	url(r'^addproject/$', views.addproject, name='pm_addproject'),
@@ -12,6 +11,10 @@ urlpatterns = patterns('',
 	url(r'^delproject/(?P<object_id>\d+)/$', views.delete_object_referer, 
 		{ 'model': Project, 'template_name': 'project_confirm_delete.html' }, name='pm_delproject'),
 	
+	url(r'^category/view/(?P<category_id>\d+)/$', views.view, name='pm_view'),
+	url(r'^category/tasks/(?P<category_id>\d+)/$', views.tasks, name='pm_tasks'),
+	url(r'^category/thread/(?P<relation_model>\w+)/(?P<relation_id>\d+)/$', views.thread_view, name='pm_thread'),
+
 	url(r'^addcategory/$', views.addcategory, name='pm_addcategory'),
 	url(r'^updatecategory/(?P<category_id>\d+)/$', views.updatecategory, name='pm_updatecategory'),
 	url(r'^delcategory/(?P<object_id>\d+)/$', views.delete_object_referer,
@@ -27,4 +30,6 @@ urlpatterns = patterns('',
 	url(r'^load/$', views.load, name='pm_load'),
 	
 	url(r'^prioritize/(?P<obj_type>\w+)/(?P<id>\d+)/$', views.prioritize, name='pm_prioritize'),
+
+	url(r'^thread/post/$', views.thread_post, name='thread_post'),
 )
