@@ -13,7 +13,7 @@ urlpatterns = patterns('',
 	
 	url(r'^category/view/(?P<category_id>\d+)/$', views.view, name='pm_view'),
 	url(r'^category/tasks/(?P<category_id>\d+)/$', views.tasks, name='pm_tasks'),
-	url(r'^category/thread/(?P<relation_model>\w+)/(?P<relation_id>\d+)/$', views.thread_view, name='pm_thread'),
+	url(r'^category/thread/(?P<content_id>\d+)/$', views.thread_view, { 'content_object': Category }, name='pm_thread'),
 
 	url(r'^addcategory/$', views.addcategory, name='pm_addcategory'),
 	url(r'^updatecategory/(?P<category_id>\d+)/$', views.updatecategory, name='pm_updatecategory'),

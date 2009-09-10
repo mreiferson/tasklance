@@ -10,6 +10,7 @@ from xml.etree import ElementTree as etree
 from django.core.urlresolvers import reverse
 from django.views.generic.create_update import delete_object
 from decorators import useracct_required
+from django.contrib.contenttypes.models import ContentType
 
 
 @useracct_required
@@ -220,16 +221,19 @@ def prioritize(request, obj_type, id):
 	return HttpResponse(simplejson.dumps({ 'id': parent.id, 'order': order }))
 
 
-def thread_view(request, relation_model, relation_id):
+def thread_view(request, content_object, content_id):
+	obj = get_object_or_404(content_object, pk=content_id)
 	try:
-		thread = Thread.objects.get(relation_model=relation_model, relation_id=relation_id)
-	except Thread.DoesNotExist:
-		thread = Thread(relation_model=relation_model, relation_id=relation_id, creator=request.user)
+		ctype = ContentType.objects.get_for_model(obj)
+		thread = Thread.objects.get(content_type__pk=ctype.id, object_id=obj.id)
+	except:
+		thread = Thread(content_object=obj, creator=request.user)
 		thread.save()
 		
 	msg_form = MessageForm()
 	
-	return render_to_response('thread_view.html', { 'thread': thread, 'msg_form': msg_form })
+	return render_to_response('thread_view.html', { content_object.__name__.lower(): obj, 'thread': thread, 'msg_form': msg_form }, 
+		context_instance=RequestContext(request))
 
 
 def thread_post(request):

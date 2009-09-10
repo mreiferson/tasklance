@@ -4,9 +4,9 @@
 
 {% block navMenu %}
 <ul id="navMenuList">
-	<li><a href="">Overview</a></li>
-	<li><a href="">Tasks</a></li>
-	<li><a href="" class="current"">Messages</a></li>
+	<li><a href="{% url pm_view category.id %}">Overview</a></li>
+	<li><a href="{% url pm_tasks category.id %}">Tasks</a></li>
+	<li><a href="{% url pm_thread category.id %}" class="current"">Messages</a></li>
 	<li><a href="">Milestones</a></li>
 </ul>
 {% endblock %}

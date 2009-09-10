@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes import generic
 
 
 class Account(models.Model):
@@ -111,9 +113,9 @@ class Todo(models.Model):
 
 
 class Thread(models.Model):
-	relation_model = models.CharField(max_length=1, 
-		choices=(('a', 'Account'), ('c', 'Category'), ('m', 'Milestone'), ('p', 'Project'), ('t', 'Task')))
-	relation_id = models.IntegerField()
+	content_type = models.ForeignKey(ContentType)
+	content_object = generic.GenericForeignKey()
+	object_id = models.PositiveIntegerField()
 	creator = models.ForeignKey(User, editable=False)
 	created = models.DateTimeField('Creation Stamp', editable=False)
 
