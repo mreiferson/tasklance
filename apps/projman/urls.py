@@ -11,7 +11,7 @@ urlpatterns = patterns('',
 	url(r'^delproject/(?P<object_id>\d+)/$', views.delete_object_referer, 
 		{ 'model': Project, 'template_name': 'project_confirm_delete.html' }, name='pm_delproject'),
 	
-	url(r'^category/view/(?P<category_id>\d+)/$', views.view, name='pm_view'),
+	url(r'^category/overview/(?P<category_id>\d+)/$', views.overview, name='pm_overview'),
 	url(r'^category/tasks/(?P<category_id>\d+)/$', views.tasks, name='pm_tasks'),
 	url(r'^category/thread/(?P<content_id>\d+)/$', views.thread_view, { 'content_object': Category }, name='pm_thread'),
 

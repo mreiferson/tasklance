@@ -1,0 +1,68 @@
+{% extends "content.html" %}
+{% load custom_tags %}
+
+{% block title %}Category Overview - {{ block.super }}{% endblock %}
+
+{% block navMenu %}
+<ul id="navMenuList">
+	<li><a href="{% url pm_overview category.id %}" class="current">Overview</a></li>
+	<li><a href="{% url pm_tasks category.id %}">Tasks</a></li>
+	<li><a href="{% url pm_thread category.id %}">Messages</a></li>
+	<li><a href="">Milestones</a></li>
+</ul>
+{% endblock %}
+
+{% block content %}
+<style type="text/css">
+	.date {
+		margin-bottom: 1em;
+		border-top: 1px solid #aaa;
+	}
+	
+	.date .dateHeader {
+		font-weight: bold;
+		color: #888;
+	}
+	
+	.item {
+		margin: 2px 0;
+	}
+	
+	.item .itemType {
+		background: #400080;
+		font-weight: bold;
+		color: #fff;
+		float: left;
+		margin-right: 5px;
+		padding: 5px;
+	}
+	
+	.item .itemStamp {
+		color: #888;
+		float: left;
+		margin-right: 5px;
+		padding-top: 3px;
+	}
+	
+	.item .itemText {
+		float: left;
+		padding-top: 3px;
+	}
+	
+	.completed {
+		text-decoration: line-through;
+	}
+</style>
+{% for datelist in items %}
+	<div class="date">
+		<div class="dateHeader">{{ datelist.0 }}</div>
+		{% for item in datelist.1 %}
+			<div class="item floatContainer">
+				<div class="itemType">{{ item.1 }}</div>
+				<div class="itemStamp">{{ item.0 }}</div>
+				<div class="itemText{% if item.2 %} completed{% endif %}">{{ item.3 }}</div>
+			</div>
+		{% endfor %}
+	</div>
+{% endfor %}
+{% endblock %}

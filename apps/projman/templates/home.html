@@ -11,7 +11,7 @@
 				<div id="categories">
 					{% for category in request.account.category_set.all %}
 					<div id="category{{ category.id }}" rel="{{ category.id }}" class="category">
-						<h1><a href="{% url pm_delcategory category.id %}"><img src="/site_media/images/report_delete.gif" alt="Delete Category"/></a> <a href="{% url pm_view category.id %}"><span class="categoryName" rel="name">{{ category.name }}</span></a></h1>
+						<h1><a href="{% url pm_delcategory category.id %}"><img src="/site_media/images/report_delete.gif" alt="Delete Category"/></a> <a href="{% url pm_overview category.id %}"><span class="categoryName" rel="name">{{ category.name }}</span></a></h1>
 						<div class="categoryDescription" rel="description">{{ category.description }}</div>
 						{% show_history category %}
 					</div>

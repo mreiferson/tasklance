@@ -4,7 +4,7 @@
 
 {% block navMenu %}
 <ul id="navMenuList">
-	<li><a href="{% url pm_view category.id %}">Overview</a></li>
+	<li><a href="{% url pm_overview category.id %}">Overview</a></li>
 	<li><a href="{% url pm_tasks category.id %}">Tasks</a></li>
 	<li><a href="{% url pm_thread category.id %}" class="current"">Messages</a></li>
 	<li><a href="">Milestones</a></li>
@@ -12,15 +12,49 @@
 {% endblock %}
 
 {% block content %}
+<style type="text/css">
+	.thread {
+		margin: 15px 0;
+	}
+	
+	.message {
+		margin-bottom: 1em;
+	}
+	
+	.message .messageHeader {
+		background: #eee;
+		padding: 6px;
+		color: #888;
+	}
+	
+	.message .messageHeader .messageCreator {
+		font-weight: bold;
+		color: #36c;
+	}
+	
+	.message .messageHeader .messageStamp {
+		font-weight: bold;
+		color: #444;
+	}
+	
+	.message .messageText {
+		padding: 5px 10px;
+		background: #fafafa;
+	}
+</style>
+
 <form method="post" action="{% url thread_post %}">
 	<input type="hidden" name="thread" value="{{ thread.id }}"/>
-	{{ msg_form.text }}
+	<textarea name="{{ msg_form.text.name }}" class="textarea" style="width: 625px;"></textarea><br/>
 	<input type="submit" value="Post"/>
 </form>
 
 <div id="thread{{ thread.id }}" class="thread">
 	{% for msg in thread.message_set.all %}
-		<div id="message{{ msg.id }}" class="message">{{ msg.text }}</div>
+		<div id="message{{ msg.id }}" class="message">
+			<div class="messageHeader">by <span class="messageCreator">{{ msg.creator.username }}</span> on <span class="messageStamp">{{ msg.created }}</span></div>
+			<div class="messageText">{{ msg.text }}</div>
+		</div>
 	{% endfor %}
 </div>
 {% endblock %}

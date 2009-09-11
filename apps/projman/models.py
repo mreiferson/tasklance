@@ -134,6 +134,9 @@ class Message(models.Model):
 	text = models.TextField()
 	creator = models.ForeignKey(User, editable=False, related_name='msg')
 	created = models.DateTimeField('Creation Stamp', editable=False)
+	
+	class Meta:
+		ordering = ('-created',)
 
 	def save(self):
 		if not self.created:

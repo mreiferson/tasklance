@@ -23,14 +23,14 @@ def home(request):
 
 
 @useracct_required
-def view(request, category_id):
+def tasks(request, category_id):
 	category = get_object_or_404(Category, pk=category_id)
 	if category.account == request.account:
 		todo_form = TodoForm()
 		milestone_form = MilestoneForm()
 		project_form = ProjectForm()
 		
-		return render_to_response('view.html', { 'category': category, 'todo_form': todo_form,
+		return render_to_response('tasks.html', { 'category': category, 'todo_form': todo_form,
 			'milestone_form': milestone_form, 'project_form': project_form }, 
 			context_instance=RequestContext(request))
 		
@@ -38,12 +38,34 @@ def view(request, category_id):
 		return HttpResponseRedirect(reverse('login'))
 		
 @useracct_required
-def tasks(request, category_id):
+def overview(request, category_id):
 	category = get_object_or_404(Category, pk=category_id)
 	if category.account == request.account:
 		todos = Todo.objects.filter(project__category__exact=category)
 		
-		return render_to_response('tasks.html', { 'category': category, 'todos': todos }, context_instance=RequestContext(request))
+		d = {}
+		for todo in todos:
+			if todo.complete:
+				ts = todo.completed
+			else:
+				ts = todo.created
+			
+			date = ts.date().isoformat()
+			ts = ts.isoformat()
+			item = (ts, 'todo', todo.complete, todo.item)
+			
+			if date in d:
+				d[date].append(item)
+			else:
+				d[date] = [item,]
+		
+		items = []
+		keys = d.keys()
+		keys.sort(reverse=True)
+		for key in keys:
+			items.append((key, d[key]))
+		
+		return render_to_response('overview.html', { 'category': category, 'items': items }, context_instance=RequestContext(request))
 	else:
 		return HttpResponseRedirect(reverse('login'))
 

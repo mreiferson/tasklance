@@ -1,10 +1,11 @@
 {% extends "content.html" %}
+{% load custom_tags %}
 
 {% block title %}Category Tasks - {{ block.super }}{% endblock %}
 
 {% block navMenu %}
 <ul id="navMenuList">
-	<li><a href="{% url pm_view category.id %}">Overview</a></li>
+	<li><a href="{% url pm_overview category.id %}">Overview</a></li>
 	<li><a href="{% url pm_tasks category.id %}" class="current">Tasks</a></li>
 	<li><a href="{% url pm_thread category.id %}">Messages</a></li>
 	<li><a href="">Milestones</a></li>
@@ -12,9 +13,64 @@
 {% endblock %}
 
 {% block content %}
-{% for todo in todos %}
-	{% if not todo.complete %}
-		<div>{{ todo.item }}</div>
-	{% endif %}
-{% endfor %}
+<table cellspacing="0" id="overviewContainer">
+	<tr>
+		<td style="vertical-align: top;">
+			<div id="account" rel="{{ request.account.id }}">
+				<div id="categories">
+					<a name="category{{ category.id }}"></a>
+					<div id="category{{ category.id }}" rel="{{ category.id }}" class="category">
+						<h1><a href="{% url pm_delcategory category.id %}"><img src="/site_media/images/report_delete.gif" alt="Delete Category"/></a> <span class="categoryName" rel="name">{{ category.name }}</span></h1>
+						<div class="categoryDescription" rel="description">{{ category.description }}</div>
+						<div class="projects">
+							{% for project in category.project_set.all %}
+								<a name="project{{ project.id }}"></a>
+								<div id="project{{ project.id }}" rel="{{ project.id }}" class="project">
+									<h2><a href="{% url pm_delproject project.id %}"><img src="/site_media/images/folder_delete.gif" alt="Delete Project"/></a> <span class="projectName" rel="name">{{ project.name }}</span></h2>
+									<div class="projectDescription" rel="description">{{ project.description }}</div>
+									<ul class="todos todos_active">
+										{% show_todos project %}
+									</ul>
+									<div class="addTodoContainer">
+										<a href="javascript:;" class="showAddTodoLink">Add Todo</a>
+									</div>
+									<ul class="todos todos_completed">
+										{% show_todos project 1 %}
+									</ul>
+								</div>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+		</td>
+		<td style="vertical-align: top;">
+			<div id="manage">
+				<div class="addMilestoneContainer">
+					<div class="addHeader">Add Milestone</div>
+					{% include "addmilestone.html" %}
+				</div>
+				<div class="addProjectContainer">
+					<div class="addHeader">Add Project</div>
+					{% include "addproject.html" %}
+				</div>
+				<div class="links">
+					<div class="addHeader">Quick Links / Re-order</div>
+					<ul class="categoryLinks" rel="category">
+						<li class="categoryLink" rel="{{ category.id }}"><span class="handle"><img src="/site_media/images/list_ordered.gif"/></span> <a href="#category{{ category.id }}">{{ category.name }}</a>
+							<ul class="projectLinks" rel="project">
+							{% for project in category.project_set.all %}
+								<li class="projectLink" rel="{{ project.id }}"><span class="handle"><img src="/site_media/images/list_ordered.gif"/></span> <a href="#project{{ project.id }}">{{ project.name }}</a></li>
+							{% endfor %}
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</td>
+	</tr>
+</table>
+<div id="addTodoTemplateContainer" style="display: none;">
+	{% include "addtodo.html" %}
+</div>
 {% endblock %}
