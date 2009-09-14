@@ -205,7 +205,7 @@ $(document).ready(function() {
 	$('.addMilestoneContainer :button').click(function() {
 			var f = $(this.form);
 			$(':input[name=priority]', f).val($('.milestone').length);
-			$.post('/pm/addmilestone/', f.serialize(), function(response) {
+			$.post('/pm/milestone/add/', f.serialize(), function(response) {
 					f.get(0).reset();
 				}, 'json');
 		});

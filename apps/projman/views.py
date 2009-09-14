@@ -27,12 +27,10 @@ def tasks(request, category_id):
 	category = get_object_or_404(Category, pk=category_id)
 	if category.account == request.account:
 		todo_form = TodoForm()
-		milestone_form = MilestoneForm()
 		project_form = ProjectForm()
 		
 		return render_to_response('tasks.html', { 'category': category, 'todo_form': todo_form,
-			'milestone_form': milestone_form, 'project_form': project_form }, 
-			context_instance=RequestContext(request))
+			'project_form': project_form }, context_instance=RequestContext(request))
 		
 	else:
 		return HttpResponseRedirect(reverse('login'))
@@ -86,14 +84,16 @@ def thread_view(request, content_object, content_id):
 		
 	msg_form = MessageForm()
 	
-	return render_to_response('thread_view.html', { content_object.__name__.lower(): obj, 'thread': thread, 'msg_form': msg_form }, 
-		context_instance=RequestContext(request))
+	return render_to_response('thread_view.html', { content_object.__name__.lower(): obj, 
+		'thread': thread, 'msg_form': msg_form }, context_instance=RequestContext(request))
 		
 
 def milestones(request, category_id):
 	category = get_object_or_404(Category, pk=category_id)
+	milestone_form = MilestoneForm()
 	
-	return render_to_response('milestones.html', { 'category': category }, context_instance=RequestContext(request))
+	return render_to_response('milestones.html', { 'category': category, 
+		'milestone_form': milestone_form }, context_instance=RequestContext(request))
 
 
 def delete_object_referer(request, object_id, **kwargs):

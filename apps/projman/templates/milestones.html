@@ -12,10 +12,44 @@
 {% endblock %}
 
 {% block content %}
+<style type="text/css">
+	.milestone {
+		margin-bottom: 1em;
+		background: #f0f0f0;
+		padding: 10px;
+	}
+	
+	.milestone .msName {
+		float: left;
+		font-weight: bold;
+		font-size: 12px;
+	}
+	
+	.milestone .msDeadline {
+		float: right;
+		font-weight: bold;
+		font-size: 12px;
+		color: #f00;
+	}
+	
+	.milestone .msDescription {
+		clear: both;
+		padding-top: 5px;
+		color: #666;
+	}
+</style>
 <table cellspacing="0" id="overviewContainer">
 	<tr>
 		<td style="vertical-align: top;">
-			<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc adipiscing egestas iaculis. Ut ornare sodales tempor. Quisque vel sem sed mi ullamcorper pharetra. Praesent fermentum, tortor quis mollis dignissim, tortor libero bibendum elit, vitae imperdiet dolor urna sit amet leo. Nulla sit amet nibh ligula, vitae venenatis diam. Mauris condimentum purus quis elit rutrum dictum. Nulla facilisi. Donec quis neque lectus, vestibulum vehicula est. Aliquam est sem, ultricies sed sodales eu, mattis sit amet diam. Fusce congue mollis quam quis imperdiet. Donec non orci ipsum. Phasellus vel ligula diam. Proin eros leo, vulputate nec tincidunt rhoncus, viverra quis metus. In eu dolor ipsum, at accumsan mauris. Aliquam erat volutpat. Maecenas laoreet est sed ipsum varius in mattis nisi malesuada. Nulla vitae imperdiet erat. Sed quam eros, dignissim luctus consectetur quis, fringilla eu velit. Pellentesque cursus arcu sed sem pharetra vestibulum. Praesent sed neque libero, in pellentesque mi.</div>
+			<div id="milestones">
+				{% for milestone in category.milestone_set.all %}
+					<div id="milestone{{ milestone.id }}" class="milestone">
+						<div class="msName">{{ milestone.name }}</div>
+						<div class="msDeadline">{{ milestone.deadline|date:"Y-m-d" }}</div>
+						<div class="msDescription">{{ milestone.description }}</div>
+					</div>
+				{% endfor %}
+			</div>
 		</td>
 		<td style="vertical-align: top;">
 			<div id="manage">

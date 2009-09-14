@@ -26,8 +26,7 @@ urlpatterns = patterns('',
 	url(r'^completetodo/(?P<todo_id>\d+)/(?P<complete>[01]+)/$', views.completetodo, name='pm_completetodo'),
 	url(r'^updatetodo/(?P<todo_id>\d+)/$', views.updatetodo, name='pm_updatetodo'),
 	
-	
-	url(r'^addmilestone/$', views.addmilestone, name='pm_addtodo'),
+	url(r'^milestone/add/$', views.addmilestone, name='pm_addmilestone'),
 	
 	url(r'^load/$', views.load, name='pm_load'),
 	
