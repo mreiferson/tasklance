@@ -1,16 +1,6 @@
-{% extends "content.html" %}
-{% load custom_tags %}
+{% extends "category.html" %}
 
-{% block title %}Category Overview - {{ block.super }}{% endblock %}
-
-{% block navMenu %}
-<ul id="navMenuList">
-	<li><a href="{% url pm_overview category.id %}" class="current">Overview</a></li>
-	<li><a href="{% url pm_tasks category.id %}">Tasks</a></li>
-	<li><a href="{% url pm_thread category.id %}">Messages</a></li>
-	<li><a href="{% url pm_milestones category.id %}">Milestones</a></li>
-</ul>
-{% endblock %}
+{% block title %}Overview - {{ block.super }}{% endblock %}
 
 {% block content %}
 <style type="text/css">

@@ -18,3 +18,11 @@ def show_history(category):
 	todos = Todo.objects.filter(project__category__exact=category).filter(complete=1).order_by('-completed')[:15]
 	
 	return locals()
+	
+
+@register.simple_tag
+def active(request, pattern):
+	import re
+	if re.search(pattern, request.path):
+		return 'active'
+	return ''

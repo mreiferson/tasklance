@@ -1,0 +1,22 @@
+{% extends "content.html" %}
+{% load custom_tags %}
+
+{% block title %}Category - {{ block.super }}{% endblock %}
+
+{% block headline %}
+<h1 class="categoryHeadline"><a href="{% url pm_delcategory category.id %}"><img src="/site_media/images/report_delete.gif" alt="Delete Category"/></a> <span class="categoryName" rel="name">{{ category.name }}</span></h1>
+<div class="categoryDescription" rel="description">{{ category.description }}</div>
+{% endblock %}
+
+{% block navMenu %}
+{% url pm_overview category.id as overview %}
+{% url pm_tasks category.id as tasks %}
+{% url pm_thread category.id as thread %}
+{% url pm_milestones category.id as milestones %}
+<ul id="navMenuList">
+	<li><a href="{{ overview }}" class="{% active request overview %}">Overview</a></li>
+	<li><a href="{{ tasks }}" class="{% active request tasks %}">Tasks</a></li>
+	<li><a href="{{ thread }}" class="{% active request thread %}">Messages</a></li>
+	<li><a href="{{ milestones }}" class="{% active request milestones %}">Milestones</a></li>
+</ul>
+{% endblock %}

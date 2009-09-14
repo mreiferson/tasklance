@@ -1,16 +1,7 @@
-{% extends "content.html" %}
+{% extends "category.html" %}
 {% load custom_tags %}
 
-{% block title %}Category Tasks - {{ block.super }}{% endblock %}
-
-{% block navMenu %}
-<ul id="navMenuList">
-	<li><a href="{% url pm_overview category.id %}">Overview</a></li>
-	<li><a href="{% url pm_tasks category.id %}" class="current">Tasks</a></li>
-	<li><a href="{% url pm_thread category.id %}">Messages</a></li>
-	<li><a href="{% url pm_milestones category.id %}">Milestones</a></li>
-</ul>
-{% endblock %}
+{% block title %}Tasks - {{ block.super }}{% endblock %}
 
 {% block content %}
 <table cellspacing="0" id="overviewContainer">
@@ -20,8 +11,6 @@
 				<div id="categories">
 					<a name="category{{ category.id }}"></a>
 					<div id="category{{ category.id }}" rel="{{ category.id }}" class="category">
-						<h1><a href="{% url pm_delcategory category.id %}"><img src="/site_media/images/report_delete.gif" alt="Delete Category"/></a> <span class="categoryName" rel="name">{{ category.name }}</span></h1>
-						<div class="categoryDescription" rel="description">{{ category.description }}</div>
 						<div class="projects">
 							{% for project in category.project_set.all %}
 								<a name="project{{ project.id }}"></a>
@@ -46,10 +35,6 @@
 		</td>
 		<td style="vertical-align: top;">
 			<div id="manage">
-				<div class="addMilestoneContainer">
-					<div class="addHeader">Add Milestone</div>
-					{% include "addmilestone.html" %}
-				</div>
 				<div class="addProjectContainer">
 					<div class="addHeader">Add Project</div>
 					{% include "addproject.html" %}

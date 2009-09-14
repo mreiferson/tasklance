@@ -69,6 +69,10 @@ a:hover {
 	padding: 0px;
 }
 
+#headline {
+	margin-bottom: 1em;
+}
+
 #navMenuList {
 }
 
@@ -93,10 +97,10 @@ a:hover {
 	color: #ff0;
 }
 
-#navMenuList li a.current {
+#navMenuList li a.active {
 	background: #69f;
 	border-bottom-color: #69f;
-	color: #ff0;
+	color: #fff;
 	text-decoration: none;
 	font-weight: bold;
 }
@@ -120,10 +124,10 @@ a:hover {
 	margin-bottom: 8px;
 }
 
-#categories h1 {
+.categoryHeadline {
 	font-size: 1.75em;
 	font-weight: bold;
-	color: #3179F0;
+	color: #115FDF;
 	line-height: 1.3em;
 }
 
@@ -154,7 +158,6 @@ a:hover {
 }
 
 .projects {
-	margin-left: 20px;
 }
 
 .todos {
