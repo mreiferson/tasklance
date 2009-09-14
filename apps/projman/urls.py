@@ -14,6 +14,7 @@ urlpatterns = patterns('',
 	url(r'^category/overview/(?P<category_id>\d+)/$', views.overview, name='pm_overview'),
 	url(r'^category/tasks/(?P<category_id>\d+)/$', views.tasks, name='pm_tasks'),
 	url(r'^category/thread/(?P<content_id>\d+)/$', views.thread_view, { 'content_object': Category }, name='pm_thread'),
+	url(r'^category/milestones/(?P<category_id>\d+)/$', views.milestones, name='pm_milestones'),
 
 	url(r'^addcategory/$', views.addcategory, name='pm_addcategory'),
 	url(r'^updatecategory/(?P<category_id>\d+)/$', views.updatecategory, name='pm_updatecategory'),
@@ -24,6 +25,7 @@ urlpatterns = patterns('',
 	url(r'^deletetodo/(?P<todo_id>\d+)/$', views.deletetodo, name='pm_deletetodo'),
 	url(r'^completetodo/(?P<todo_id>\d+)/(?P<complete>[01]+)/$', views.completetodo, name='pm_completetodo'),
 	url(r'^updatetodo/(?P<todo_id>\d+)/$', views.updatetodo, name='pm_updatetodo'),
+	
 	
 	url(r'^addmilestone/$', views.addmilestone, name='pm_addtodo'),
 	

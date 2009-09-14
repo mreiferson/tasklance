@@ -73,6 +73,27 @@ def overview(request, category_id):
 			context_instance=RequestContext(request))
 	else:
 		return HttpResponseRedirect(reverse('login'))
+		
+@useracct_required
+def thread_view(request, content_object, content_id):
+	obj = get_object_or_404(content_object, pk=content_id)
+	try:
+		ctype = ContentType.objects.get_for_model(obj)
+		thread = Thread.objects.get(content_type__pk=ctype.id, object_id=obj.id)
+	except:
+		thread = Thread(content_object=obj, creator=request.user)
+		thread.save()
+		
+	msg_form = MessageForm()
+	
+	return render_to_response('thread_view.html', { content_object.__name__.lower(): obj, 'thread': thread, 'msg_form': msg_form }, 
+		context_instance=RequestContext(request))
+		
+
+def milestones(request, category_id):
+	category = get_object_or_404(Category, pk=category_id)
+	
+	return render_to_response('milestones.html', { 'category': category }, context_instance=RequestContext(request))
 
 
 def delete_object_referer(request, object_id, **kwargs):
@@ -246,21 +267,6 @@ def prioritize(request, obj_type, id):
 				obj.save()
 
 	return HttpResponse(simplejson.dumps({ 'id': parent.id, 'order': order }))
-
-
-def thread_view(request, content_object, content_id):
-	obj = get_object_or_404(content_object, pk=content_id)
-	try:
-		ctype = ContentType.objects.get_for_model(obj)
-		thread = Thread.objects.get(content_type__pk=ctype.id, object_id=obj.id)
-	except:
-		thread = Thread(content_object=obj, creator=request.user)
-		thread.save()
-		
-	msg_form = MessageForm()
-	
-	return render_to_response('thread_view.html', { content_object.__name__.lower(): obj, 'thread': thread, 'msg_form': msg_form }, 
-		context_instance=RequestContext(request))
 
 
 def thread_post(request):

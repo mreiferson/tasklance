@@ -8,7 +8,7 @@
 	<li><a href="{% url pm_overview category.id %}" class="current">Overview</a></li>
 	<li><a href="{% url pm_tasks category.id %}">Tasks</a></li>
 	<li><a href="{% url pm_thread category.id %}">Messages</a></li>
-	<li><a href="">Milestones</a></li>
+	<li><a href="{% url pm_milestones category.id %}">Milestones</a></li>
 </ul>
 {% endblock %}
 
@@ -16,7 +16,7 @@
 <style type="text/css">
 	.date {
 		margin-bottom: 25px;
-		border-top: 1px solid #aaa;
+		border-top: 2px solid #eee;
 	}
 	
 	.date .dateInnerContainer {
@@ -25,8 +25,8 @@
 	
 	.date .dateHeader {
 		font-weight: bold;
-		color: #888;
-		margin: 2px 0 5px 2px;
+		color: #444;
+		margin: 2px 0 10px 2px;
 		font-size: 12px;
 	}
 	

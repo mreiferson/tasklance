@@ -1,0 +1,30 @@
+{% extends "content.html" %}
+
+{% block title %}Milestones - {{ block.super }}{% endblock %}
+
+{% block navMenu %}
+<ul id="navMenuList">
+	<li><a href="{% url pm_overview category.id %}">Overview</a></li>
+	<li><a href="{% url pm_tasks category.id %}">Tasks</a></li>
+	<li><a href="{% url pm_thread category.id %}">Messages</a></li>
+	<li><a href="{% url pm_milestones category.id %}" class="current">Milestones</a></li>
+</ul>
+{% endblock %}
+
+{% block content %}
+<table cellspacing="0" id="overviewContainer">
+	<tr>
+		<td style="vertical-align: top;">
+			<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc adipiscing egestas iaculis. Ut ornare sodales tempor. Quisque vel sem sed mi ullamcorper pharetra. Praesent fermentum, tortor quis mollis dignissim, tortor libero bibendum elit, vitae imperdiet dolor urna sit amet leo. Nulla sit amet nibh ligula, vitae venenatis diam. Mauris condimentum purus quis elit rutrum dictum. Nulla facilisi. Donec quis neque lectus, vestibulum vehicula est. Aliquam est sem, ultricies sed sodales eu, mattis sit amet diam. Fusce congue mollis quam quis imperdiet. Donec non orci ipsum. Phasellus vel ligula diam. Proin eros leo, vulputate nec tincidunt rhoncus, viverra quis metus. In eu dolor ipsum, at accumsan mauris. Aliquam erat volutpat. Maecenas laoreet est sed ipsum varius in mattis nisi malesuada. Nulla vitae imperdiet erat. Sed quam eros, dignissim luctus consectetur quis, fringilla eu velit. Pellentesque cursus arcu sed sem pharetra vestibulum. Praesent sed neque libero, in pellentesque mi.</div>
+		</td>
+		<td style="vertical-align: top;">
+			<div id="manage">
+				<div class="addMilestoneContainer">
+					<div class="addHeader">Add Milestone</div>
+					{% include "addmilestone.html" %}
+				</div>
+			</div>
+		</td>
+	</tr>
+</table>
+{% endblock %}

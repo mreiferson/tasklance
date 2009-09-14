@@ -8,7 +8,7 @@
 	<li><a href="{% url pm_overview category.id %}">Overview</a></li>
 	<li><a href="{% url pm_tasks category.id %}" class="current">Tasks</a></li>
 	<li><a href="{% url pm_thread category.id %}">Messages</a></li>
-	<li><a href="">Milestones</a></li>
+	<li><a href="{% url pm_milestones category.id %}">Milestones</a></li>
 </ul>
 {% endblock %}
 
