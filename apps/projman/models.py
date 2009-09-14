@@ -52,6 +52,9 @@ class Milestone(models.Model):
 	
 	class Meta:
 		ordering = ('priority', 'created')
+		
+	def days_remaining(self):
+		return self.deadline - datetime.now()
 	
 	def save(self):
 		if not self.created:
