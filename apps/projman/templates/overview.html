@@ -15,13 +15,19 @@
 {% block content %}
 <style type="text/css">
 	.date {
-		margin-bottom: 1em;
+		margin-bottom: 25px;
 		border-top: 1px solid #aaa;
+	}
+	
+	.date .dateInnerContainer {
+		margin-left: 20px;
 	}
 	
 	.date .dateHeader {
 		font-weight: bold;
 		color: #888;
+		margin: 2px 0 5px 2px;
+		font-size: 12px;
 	}
 	
 	.item {
@@ -35,34 +41,51 @@
 		float: left;
 		margin-right: 5px;
 		padding: 5px;
+		width: 50px;
+		text-align: center;
 	}
 	
 	.item .itemStamp {
 		color: #888;
 		float: left;
 		margin-right: 5px;
-		padding-top: 3px;
+		padding-top: 4px;
+		width: 65px;
 	}
 	
 	.item .itemText {
 		float: left;
-		padding-top: 3px;
+		padding-top: 4px;
 	}
 	
-	.completed {
+	.item .itemProject {
+		font-weight: bold;
+	}
+	
+	.itemType.completed {
+		background: #080;
+	}
+	
+	.itemText.completed {
 		text-decoration: line-through;
 	}
 </style>
 {% for datelist in items %}
 	<div class="date">
 		<div class="dateHeader">{{ datelist.0 }}</div>
-		{% for item in datelist.1 %}
-			<div class="item floatContainer">
-				<div class="itemType">{{ item.1 }}</div>
-				<div class="itemStamp">{{ item.0 }}</div>
-				<div class="itemText{% if item.2 %} completed{% endif %}">{{ item.3 }}</div>
-			</div>
-		{% endfor %}
+		<div class="dateInnerContainer">
+			{% for e in datelist.1 %}
+				{% ifequal e.1 'todo' %}
+					<div class="item floatContainer">
+						<div class="itemType{% if e.2.completed %} completed{% endif %}">{{ e.1 }}</div>
+						<div class="itemStamp">{{ e.0 }}</div>
+						<div class="itemText{% if e.2.completed %} completed{% endif %}">{{ e.2.item }} (<span class="itemProject">{{ e.2.project.name }}</span>)</div>
+					</div>
+				{% endifequal %}
+				{% ifequal e.1 'message' %}
+				{% endifequal %}
+			{% endfor %}
+		</div>
 	</div>
 {% endfor %}
 {% endblock %}

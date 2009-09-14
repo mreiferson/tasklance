@@ -44,28 +44,33 @@ def overview(request, category_id):
 		todos = Todo.objects.filter(project__category__exact=category)
 		
 		d = {}
+		dateLongStrings = {}
 		for todo in todos:
 			if todo.complete:
 				ts = todo.completed
 			else:
 				ts = todo.created
+				
+			df = DateFormat(ts)
+			dateString = df.format('Y-m-d')
+			timeString = df.format('g:ia')
+			item = (timeString, 'todo', todo)
 			
-			date = ts.date().isoformat()
-			ts = ts.isoformat()
-			item = (ts, 'todo', todo.complete, todo.item)
-			
-			if date in d:
-				d[date].append(item)
+			if dateString in d:
+				d[dateString].append(item)
 			else:
-				d[date] = [item,]
+				dateLongStrings[dateString] = df.format('l, F jS')
+				d[dateString] = [item]
 		
 		items = []
 		keys = d.keys()
 		keys.sort(reverse=True)
 		for key in keys:
-			items.append((key, d[key]))
+			d[key].sort(reverse=True, key=lambda x: x[0])
+			items.append((dateLongStrings[key], d[key]))
 		
-		return render_to_response('overview.html', { 'category': category, 'items': items }, context_instance=RequestContext(request))
+		return render_to_response('overview.html', { 'category': category, 'items': items }, 
+			context_instance=RequestContext(request))
 	else:
 		return HttpResponseRedirect(reverse('login'))
 
