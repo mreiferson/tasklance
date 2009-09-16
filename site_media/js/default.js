@@ -10,13 +10,13 @@ var sortableOptions_todos = {
 				checkForPlaceholder($(this));
 			},
 			update: function(event, ui) {
-				var category = $(ui.item).parents('.category');
-				var activeTodos = $('.todos_active', category);
+				var project = $(ui.item).parents('.project');
+				var activeTodos = $('.todos_active', project);
 				var order = $.makeArray($.map($('li', activeTodos), 
 									function(n) { return $(n).attr('rel'); }
 								));
 
-				$.post('/pm/prioritize/todo/'+category.attr('rel')+'/', { 'order': order.join(',') }, function(response) {}, 'json');
+				$.post('/pm/prioritize/todo/'+project.attr('rel')+'/', { 'order': order.join(',') }, function(response) {}, 'json');
 			}
 		};
 		
