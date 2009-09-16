@@ -15,50 +15,49 @@ var sortableOptions_todos = {
 				var order = $.makeArray($.map($('li', activeTodos), 
 									function(n) { return $(n).attr('rel'); }
 								));
-
 				$.post('/pm/prioritize/todo/'+project.attr('rel')+'/', { 'order': order.join(',') }, function(response) {}, 'json');
 			}
 		};
 		
 var sortableOptions_reorder = {
-			handle: '.handle',
-			receive: function(event, ui) {
-			},
-			remove: function(event, ui) {
-			},
-			update: function(event, ui) {
-				var parent = $(ui.item).parent();
-				var type = parent.attr('rel');
-				var order = $('.'+type+'Link', parent);
-				
-				$.each(order, function(i, el) {
-					var match = $('#'+type+$(el).attr('rel'));
-					$(match).parent().append(match);
-				});
-				
-				order = $.makeArray($.map(order, 
-								function(n) { return $(n).attr('rel'); }
-							));
-				
-				if(type == 'category') {
-					var parentId = $('#account').attr('rel');
-				} else if(type == 'project') {
-					var parentId = $(ui.item).parents('.categoryLink').attr('rel');
-				}
-				
-				$.post('/pm/prioritize/'+type+'/'+parentId+'/', { 'order': order.join(',') }, function(response) {}, 'json');
+		handle: '.handle',
+		receive: function(event, ui) {
+		},
+		remove: function(event, ui) {
+		},
+		update: function(event, ui) {
+			var parent = $(ui.item).parent();
+			var type = parent.attr('rel');
+			var order = $('.'+type+'Link', parent);
+			
+			$.each(order, function(i, el) {
+				var match = $('#'+type+$(el).attr('rel'));
+				$(match).parent().append(match);
+			});
+			
+			order = $.makeArray($.map(order, 
+							function(n) { return $(n).attr('rel'); }
+						));
+			
+			if(type == 'category') {
+				var parentId = $('#account').attr('rel');
+			} else if(type == 'project') {
+				var parentId = $(ui.item).parents('.categoryLink').attr('rel');
 			}
-		};
+			
+			$.post('/pm/prioritize/'+type+'/'+parentId+'/', { 'order': order.join(',') }, function(response) {}, 'json');
+		}
+	};
 		
 var editableOptions = { 'editBy': 'dblclick', 'submit': 'Update', 'cancel': 'Cancel', 'editClass': 'descriptionEdit', 'onSubmit': function(content) {
-			if(content.current != content.previous) {
-				var parent = $(this).parents('div');
-				var type = parent.attr('class');
-				var params = {};
-				params[$(this).attr('rel')] = content.current;
-				$.post('/pm/update'+type+'/'+parent.attr('rel')+'/', params, function() {}, 'json');
-			}
-		} };
+		if(content.current != content.previous) {
+			var parent = $(this).parents('div');
+			var type = parent.attr('class');
+			var params = {};
+			params[$(this).attr('rel')] = content.current;
+			$.post('/pm/update'+type+'/'+parent.attr('rel')+'/', params, function() {}, 'json');
+		}
+	} };
 
 var checkForPlaceholder = function(target) {
 		if($('.todo', target).length) {
@@ -141,7 +140,7 @@ var showAddTodo = function() {
 		var div = $(this).parent();
 		var project_id = $(this).parents('.project').attr('rel');
 		
-		div.html(f).append(
+		div.html(f).append('<br/>').append(
 			$('<a>').attr('href', 'javascript:;').text('All Done!').appendTo(div).click(hideAddTodo));
 		
 		$(':input[name=project]', f).val(project_id);

@@ -73,6 +73,10 @@ a:hover {
 	margin-bottom: 1em;
 }
 
+#navMenu {
+	height: 24px;
+}
+
 #navMenuList {
 }
 
@@ -124,7 +128,7 @@ a:hover {
 	margin-bottom: 8px;
 }
 
-.categoryHeadline {
+#categories h1, .categoryHeadline {
 	font-size: 1.75em;
 	font-weight: bold;
 	color: #115FDF;
@@ -164,6 +168,9 @@ a:hover {
 	margin-left: 20px;
 }
 
+.todos .todo {
+}
+
 .handle {
 	cursor: pointer;
 }
@@ -196,9 +203,7 @@ a:hover {
 }
 
 .todos .control {
-	position: relative;
-	top: 0;
-	left: 0;
+	float: left;
 }
 
 .todos_completed {
@@ -207,6 +212,7 @@ a:hover {
 
 .todos .icons {
 	float: left;
+	/*padding-top: 3px;*/
 	padding-right: 3px;
 }
 
@@ -217,6 +223,8 @@ a:hover {
 
 .todos .item {
 	float: left;
+	line-height: 13px;
+	/*padding-top: 3px;*/
 	margin-right: 2px;
 }
 
@@ -242,6 +250,7 @@ a:hover {
 
 .addTodoContainer {
 	background: #f4f4f4;
+	clear: both;
 }
 
 .addCategoryContainer, .addMilestoneContainer, .addProjectContainer, .addTodoContainer, .loadContainer, .links {
