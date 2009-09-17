@@ -164,11 +164,11 @@ a:hover {
 .projects {
 }
 
-.todos {
+.tasks {
 	margin-left: 20px;
 }
 
-.todos .todo {
+.tasks .task {
 }
 
 .handle {
@@ -176,70 +176,70 @@ a:hover {
 }
 
 
-.todos_active {
+.tasks_active {
 	font-size: 12px;
 }
 
-.todos_active .completeInput {
+.tasks_active .completeInput {
 	padding-top: 0px;
 }
 
-.todos_completed {
+.tasks_completed {
 	font-size: 10px;
 }
 
-.todo.complete {
+.task.complete {
 	color: #aaa;
 	padding-left: 13px;
 }
 
-.todos {
+.tasks {
 	list-style: none;
 }
 
-.todos .created {
+.tasks .created {
 	color: #ccc;
 	float: right;
 }
 
-.todos .control {
+.tasks .control {
 	float: left;
 }
 
-.todos_completed {
+.tasks_completed {
 	margin-top: 5px;
 }
 
-.todos .icons {
+.tasks .icons {
 	float: left;
 	padding-right: 4px;
 }
 
-.todos .completeInput {
+.tasks .completeInput {
 	float: left;
 	padding-right: 4px;
 }
 
-.todos .completeInput input {
+.tasks .completeInput input {
 	width: 14px;
 	height: 14px;
 }
 
-.todos .item {
+.tasks .item {
 	float: left;
 	line-height: 13px;
 	margin-right: 2px;
 }
 
-.todos_active .item {
+.tasks_active .item {
 	width: 440px;
 }
 
-.todos_completed .item {
+.tasks_completed .item {
 	width: 440px;
 }
 
-.todos .placeholder {
+.tasks .placeholder {
 	color: #ccc;
 }
 
@@ -251,12 +251,12 @@ a:hover {
 	background: #f4f4f4;
 }
 
-.addTodoContainer {
+.addTaskContainer {
 	background: #f4f4f4;
 	clear: both;
 }
 
-.addCategoryContainer, .addMilestoneContainer, .addProjectContainer, .addTodoContainer, .loadContainer, .links {
+.addCategoryContainer, .addMilestoneContainer, .addProjectContainer, .addTaskContainer, .loadContainer, .links {
 	padding: 5px;
 }
 

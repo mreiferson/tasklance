@@ -1,20 +1,20 @@
-{% if todos.count %}
-	{% for todo in todos %}
-		<li id="todo{{ todo.id }}" rel="{{ todo.id }}" class="todo{% if todo.complete %} complete{% endif %}">
+{% if tasks.count %}
+	{% for task in tasks %}
+		<li id="task{{ task.id }}" rel="{{ task.id }}" class="task{% if task.complete %} complete{% endif %}">
 			<div class="floatContainer">
 				<div class="control" class="floatContainer">
 					<div class="icons">
-						{% if not todo.complete %}
+						{% if not task.complete %}
 						<span class="handle"><img src="/site_media/images/list_ordered.gif"/></span>
 						{% endif %}
 						<a href="javascript:;" class="deleteLink"><img src="/site_media/images/trash.gif"/></a>
 					</div>
 					<div class="completeInput">
-						<input type="checkbox" autocomplete="off" class="completeLink" {% if todo.complete %}checked{% endif %}>
+						<input type="checkbox" autocomplete="off" class="completeLink" {% if task.complete %}checked{% endif %}>
 					</div>
 				</div>
-				<div class="item">{{ todo.item }}</div>
-				<div class="created">({% if todo.complete %}{{ todo.completed|date:"Y-m-d g:ia" }}{% else %}{{ todo.age.days }} days{% endif %})</div>
+				<div class="item">{{ task.item }}</div>
+				<div class="created">({% if task.complete %}{{ task.completed|date:"Y-m-d g:ia" }}{% else %}{{ task.age.days }} days{% endif %})</div>
 			</div>
 		</li>
 	{% endfor %}

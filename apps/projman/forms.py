@@ -17,9 +17,9 @@ class CategoryForm(forms.ModelForm):
 	class Meta:
 		model = Category
 
-class TodoForm(forms.ModelForm):
+class TaskForm(forms.ModelForm):
 	class Meta:
-		model = Todo
+		model = Task
 		
 class LoadForm(forms.Form):
 	file = forms.FileField()

@@ -37,8 +37,8 @@
 		font-variant: small-caps;
 	}
 	
-	.itemType.todo {
-		background: #76c;
+	.itemType.task {
+		background: #C4BCE9;
 	}
 	
 	.itemType.message {
@@ -49,8 +49,12 @@
 		background: #C13992;
 	}
 	
-	.itemType.todo.completed {
-		background: #696;
+	.itemType.task.complete {
+		background: #7766CC;
+	}
+	
+	.itemType.task.complete:after {
+		content: " done"
 	}
 	
 	.item .itemStamp {
@@ -103,10 +107,9 @@
 	
 	.milestone .msDeadline {
 		float: right;
-		font-weight: bold;
 		font-size: 12px;
 		color: #666;
-		padding-top: 7px;
+		text-align: right;
 	}
 	
 	.milestone .msName {
@@ -114,7 +117,13 @@
 		font-weight: bold;
 		font-size: 12px;
 		color: #C62D7D;
-		padding-top: 7px;
+	}
+	
+	.milestone .msDescription {
+		font-size: 10px;
+		font-weight: normal;
+		padding: 5px 0;
+		color: #666;
 	}
 </style>
 <div id="milestonesHeader">Milestones:</div>
@@ -122,8 +131,8 @@
 	{% for milestone in category.milestone_set.all %}
 		<div id="milestone{{ milestone.id }}" class="milestone floatContainer">
 			<div class="msPercCompleted">{{ milestone.perc_completed|floatformat:2 }}%</div>
-			<div class="msName">{{ milestone.name }}</div>
-			<div class="msDeadline">{{ milestone.days_remaining.days }} day{% ifnotequal milestone.days_remaining.days 1 %}s{% endifnotequal %} remaining ({{ milestone.deadline|date:"Y-m-d" }})</div>
+			<div class="msName">{{ milestone.name }}<div class="msDescription">{{ milestone.description }}</div></div>
+			<div class="msDeadline">started <strong>{{ milestone.created|date:"Y-m-d" }}</strong> - deadline <strong>{{ milestone.deadline|date:"Y-m-d" }}</strong><br/><strong>{{ milestone.days_remaining.days }}</strong> day{% ifnotequal milestone.days_remaining.days 1 %}s{% endifnotequal %} remaining</div>
 		</div>
 	{% endfor %}
 </div>
@@ -134,9 +143,9 @@
 			<div class="dateHeader">{{ datelist.0 }}</div>
 			<div class="dateInnerContainer">
 				{% for e in datelist.1 %}
-					{% ifequal e.2 'todo' %}
+					{% ifequal e.2 'task' %}
 						<div class="item floatContainer">
-							<div class="itemType {{ e.2 }} {% if e.3.completed %} completed{% endif %}">{{ e.2 }}</div>
+							<div class="itemType {{ e.2 }} {% if e.3.complete %} complete{% endif %}">{{ e.2 }}</div>
 							<div class="itemStamp">{{ e.1 }}</div>
 							<div class="itemText{% if e.3.completed %} completed{% endif %}">{{ e.3.item }} (<span class="itemProject">{{ e.3.project.name }}</span>)</div>
 						</div>

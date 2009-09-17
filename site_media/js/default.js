@@ -1,21 +1,21 @@
-var sortableOptions_todos = {
+var sortableOptions_tasks = {
 			handle: '.handle',
-			connectWith: '.todos_active',
+			connectWith: '.tasks_active',
 			receive: function(event, ui) {
 				var category = $(ui.item).parents('.category');
-				$.post('/pm/updatetodo/'+$(ui.item).attr('rel')+'/', { 'category_id': category.attr('rel') }, function() {}, 'json');
-				checkForPlaceholder($('.todos_active', category));
+				$.post('/pm/updatetask/'+$(ui.item).attr('rel')+'/', { 'category_id': category.attr('rel') }, function() {}, 'json');
+				checkForPlaceholder($('.tasks_active', category));
 			},
 			remove: function(event, ui) {
 				checkForPlaceholder($(this));
 			},
 			update: function(event, ui) {
 				var project = $(ui.item).parents('.project');
-				var activeTodos = $('.todos_active', project);
-				var order = $.makeArray($.map($('li', activeTodos), 
+				var activeTasks = $('.tasks_active', project);
+				var order = $.makeArray($.map($('li', activeTasks), 
 									function(n) { return $(n).attr('rel'); }
 								));
-				$.post('/pm/prioritize/todo/'+project.attr('rel')+'/', { 'order': order.join(',') }, function(response) {}, 'json');
+				$.post('/pm/prioritize/task/'+project.attr('rel')+'/', { 'order': order.join(',') }, function(response) {}, 'json');
 			}
 		};
 		
@@ -60,108 +60,108 @@ var editableOptions = { 'editBy': 'dblclick', 'submit': 'Update', 'cancel': 'Can
 	} };
 
 var checkForPlaceholder = function(target) {
-		if($('.todo', target).length) {
+		if($('.task', target).length) {
 			$('.placeholder', target).fadeOut('fast', function() { $(this).remove(); });
 		} else {
 			$('<li>').addClass('placeholder').text('Add some tasks!').appendTo(target);
 		}
 	};
 
-var toggleCompleteTodo = function() {
-		var parent = $(this).parents('.todo');
+var toggleCompleteTask = function() {
+		var parent = $(this).parents('.task');
 		var complete = (+$(this).is(':checked'));
 		var project = parent.parents('.project');
-		$.post('/pm/completetodo/'+parent.attr('rel')+'/'+complete+'/', {}, function(response) {
+		$.post('/pm/completetask/'+parent.attr('rel')+'/'+complete+'/', {}, function(response) {
 				if(complete) {
 					parent.slideUp('fast', function() {
 						$(this).hide();
 						$('.created', this).text('('+response.date+')');
 						$('.handle', this).remove();
-						$(this).addClass('complete').appendTo($('.todos_completed', project)).fadeIn('fast');
+						$(this).addClass('complete').appendTo($('.tasks_completed', project)).fadeIn('fast');
 					});
 				} else {
 					parent.slideUp('fast', function() {
 						$(this).hide();
 						$('.created', this).text('('+response.age+' days)');
 						$('.icons', this).prepend($('<span>').addClass('handle').append($('<img>').attr('src', '/site_media/images/list_ordered.gif')));
-						$(this).removeClass('complete').appendTo($('.todos_active', project)).fadeIn('fast');
+						$(this).removeClass('complete').appendTo($('.tasks_active', project)).fadeIn('fast');
 					});
 				}
 			}, 'json');
 	};
 
-var deleteTodo = function() {
-		var parent = $(this).parents('.todo');
-		var todos = parent.parent();
-		$.post('/pm/deletetodo/'+parent.attr('rel')+'/', {}, function () {
-				parent.slideUp('fast', function() { parent.remove(); checkForPlaceholder(todos); });
+var deleteTask = function() {
+		var parent = $(this).parents('.task');
+		var tasks = parent.parent();
+		$.post('/pm/deletetask/'+parent.attr('rel')+'/', {}, function () {
+				parent.slideUp('fast', function() { parent.remove(); checkForPlaceholder(tasks); });
 			}, 'json');
 	};
 
-var addTodo = function(f) {
+var addTask = function(f) {
 		f = $(f);
 		var project = $(f).parents('.project');
 		var project_id = project.attr('rel');
 		
-		$.post('/pm/addtodo/', f.serialize(), function(response) {
+		$.post('/pm/addtask/', f.serialize(), function(response) {
 				$('<li>')
-					.attr('id', 'todo'+response.id)
+					.attr('id', 'task'+response.id)
 					.attr('rel', response.id)
-					.addClass('todo')
-					.addClass('todo')
+					.addClass('task')
+					.addClass('task')
 					.append(
 						$('<div>').addClass('floatContainer')
 							.append($('<div>').addClass('control')
 										.append($('<div>').addClass('icons')
 											.append($('<span>').addClass('handle').append($('<img>').attr('src', '/site_media/images/list_ordered.gif')))
 											.append(' ')
-											.append($('<a>').attr('href', 'javascript:;').addClass('deleteLink').append($('<img>').attr('src', '/site_media/images/trash.gif')).click(deleteTodo))
+											.append($('<a>').attr('href', 'javascript:;').addClass('deleteLink').append($('<img>').attr('src', '/site_media/images/trash.gif')).click(deleteTask))
 											.append(' '))
 										.append($('<div>').addClass('completeInput')
-											.append($('<input>').attr({ 'type': 'checkbox', 'autocomplete': 'off' }).addClass('completeLink').click(toggleCompleteTodo))
+											.append($('<input>').attr({ 'type': 'checkbox', 'autocomplete': 'off' }).addClass('completeLink').click(toggleCompleteTask))
 											))
 							.append($('<div>').addClass('item').append(response.item).append(' '))
 							.append($('<div>').addClass('created').text('(0 days)'))
 					)
 					.hide()
-					.appendTo('#project'+project_id+' .todos:first')
+					.appendTo('#project'+project_id+' .tasks:first')
 					.fadeIn('fast');
 				
 				f.get(0).reset();
 				
-				checkForPlaceholder($('.todos_active', project));
+				checkForPlaceholder($('.tasks_active', project));
 			}, 'json');
 			
 		return false;
 	};
 	
-var showAddTodo = function() {
-		var f = $('#addTodoTemplateContainer > form').clone();
+var showAddTask = function() {
+		var f = $('#addTaskTemplateContainer > form').clone();
 		var div = $(this).parent();
 		var project_id = $(this).parents('.project').attr('rel');
 		
 		div.html(f).append('<br/>').append(
-			$('<a>').attr('href', 'javascript:;').text('All Done!').appendTo(div).click(hideAddTodo));
+			$('<a>').attr('href', 'javascript:;').text('All Done!').appendTo(div).click(hideAddTask));
 		
 		$(':input[name=project]', f).val(project_id);
-		$(':input[name=priority]', f).val($('.todo', $(this).parents('.project')).length);
-		$(':button', f).click(function() { addTodo(f); });
+		$(':input[name=priority]', f).val($('.task', $(this).parents('.project')).length);
+		$(':button', f).click(function() { addTask(f); });
 		
 		$(':input[type=text]', f).focus();
 	};
 
-var hideAddTodo = function() {
-		$(this).parents('.addTodoContainer').html($('<a>').attr('href', 'javascript:;').addClass('showAddTodoLink').text('Add Todo').click(showAddTodo));
+var hideAddTask = function() {
+		$(this).parents('.addTaskContainer').html($('<a>').attr('href', 'javascript:;').addClass('showAddTaskLink').text('Add Task').click(showAddTask));
 	};
 
-var onKeyPress_addTodo = function(e, target) {
+var onKeyPress_addTask = function(e, target) {
 		switch(e.charCode || e.keyCode) {
 			case 13:
-				addTodo(target);
+				addTask(target);
 				return false;
 				break;
 			case 27:
-				$('a', $(target).parents('.addTodoContainer')).click();
+				$('a', $(target).parents('.addTaskContainer')).click();
 				return false;
 				break;
 		}
@@ -189,17 +189,17 @@ function entSub(e, frm) {
 }
 
 $(document).ready(function() {
-	$('.deleteLink').click(deleteTodo);
+	$('.deleteLink').click(deleteTask);
 		
-	$('.completeLink').click(toggleCompleteTodo);
+	$('.completeLink').click(toggleCompleteTask);
 	
-	$('.showAddTodoLink').click(showAddTodo);
+	$('.showAddTaskLink').click(showAddTask);
 	
 	$('.projectDescription, .categoryDescription, .projectName, .categoryName').editable(editableOptions);
 	
 	$('.projectLinks, .categoryLinks').sortable(sortableOptions_reorder);
 		
-	$('.todos').sortable(sortableOptions_todos);
+	$('.tasks').sortable(sortableOptions_tasks);
 	
 	$('.addMilestoneContainer :button').click(function() {
 			var f = $(this.form);
@@ -231,12 +231,12 @@ $(document).ready(function() {
 						.attr('rel', response.id)
 						.append(headline)
 						.append($('<div>').addClass('projectDescription').attr('rel', 'description').text(response.description).editable(editableOptions))
-						.append($('<div>').addClass('todos').addClass('todos_active').sortable(sortableOptions_todos))
-						.append($('<div>').addClass('addTodoContainer').append($('<a>').attr('href', 'javascript:;').addClass('showAddTodoLink').text('Add Todo').click(showAddTodo)))
-						.append($('<div>').addClass('todos').addClass('todos_completed'))
+						.append($('<div>').addClass('tasks').addClass('tasks_active').sortable(sortableOptions_tasks))
+						.append($('<div>').addClass('addTaskContainer').append($('<a>').attr('href', 'javascript:;').addClass('showAddTaskLink').text('Add Task').click(showAddTask)))
+						.append($('<div>').addClass('tasks').addClass('tasks_completed'))
 						.appendTo('.projects');
 						
-					checkForPlaceholder($('.todos_active', project));
+					checkForPlaceholder($('.tasks_active', project));
 					
 					f.get(0).reset();
 				}, 'json');

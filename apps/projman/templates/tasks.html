@@ -17,14 +17,14 @@
 								<div id="project{{ project.id }}" rel="{{ project.id }}" class="project">
 									<h2><a href="{% url pm_delproject project.id %}"><img src="/site_media/images/folder_delete.gif" alt="Delete Project"/></a> <span class="projectName" rel="name">{{ project.name }}</span></h2>
 									<div class="projectDescription" rel="description">{{ project.description }}</div>
-									<ul class="todos todos_active">
-										{% show_todos project %}
+									<ul class="tasks tasks_active">
+										{% show_tasks project %}
 									</ul>
-									<div class="addTodoContainer">
-										<a href="javascript:;" class="showAddTodoLink">Add Todo</a>
+									<div class="addtaskContainer">
+										<a href="javascript:;" class="showAddTaskLink">Add Task</a>
 									</div>
-									<ul class="todos todos_completed">
-										{% show_todos project 1 %}
+									<ul class="tasks tasks_completed">
+										{% show_tasks project 1 %}
 									</ul>
 								</div>
 							{% endfor %}
@@ -55,7 +55,7 @@
 		</td>
 	</tr>
 </table>
-<div id="addTodoTemplateContainer" style="display: none;">
-	{% include "addtodo.html" %}
+<div id="addTaskTemplateContainer" style="display: none;">
+	{% include "addTask.html" %}
 </div>
 {% endblock %}

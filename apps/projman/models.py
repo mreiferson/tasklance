@@ -93,8 +93,8 @@ class Project(models.Model):
 	def perc_completed(self):
 		t = 0
 		c = 0
-		for todo in self.todo_set.all():
-			if todo.complete:
+		for task in self.task_set.all():
+			if task.complete:
 				c = c + 1
 			t = t + 1
 			
@@ -109,7 +109,7 @@ class Project(models.Model):
 		return self.name+' ('+self.category.name+')'
 
 
-class Todo(models.Model):
+class Task(models.Model):
 	project = models.ForeignKey(Project)
 	item = models.CharField(max_length=255)
 	complete = models.BooleanField(default=False)
@@ -133,7 +133,7 @@ class Todo(models.Model):
 		else:
 			self.completed = None
 			
-		super(Todo, self).save()
+		super(Task, self).save()
 	
 	def __unicode__(self):
 		return self.item+' ('+self.project.category.name+' => '+self.project.name+')'
@@ -176,14 +176,14 @@ class Message(models.Model):
 
 		
 class Dependency(models.Model):
-	todo_a = models.ForeignKey(Todo, related_name='depends_on')
-	todo_b = models.ForeignKey(Todo, related_name='dependency_of')
+	task_a = models.ForeignKey(Task, related_name='depends_on')
+	task_b = models.ForeignKey(Task, related_name='dependency_of')
 	
 	class Meta:
 		verbose_name_plural = 'dependencies'
 	
 	def __unicode__(self):
-		return self.todo_a.__unicode__()+' ? '+self.todo_b.__unicode__();
+		return self.task_a.__unicode__()+' ? '+self.task_b.__unicode__();
 		
 
 class UserAccount(models.Model):

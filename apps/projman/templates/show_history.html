@@ -1,10 +1,10 @@
-{% if todos.count %}
-	<div class="categoryHistoryHeader">Recently Completed Todos:</div>
+{% if tasks.count %}
+	<div class="categoryHistoryHeader">Recently Completed Tasks:</div>
 	<table class="categoryHistory" cellspacing="0">
-	{% for todo in todos %}
+	{% for task in tasks %}
 		<tr class="historyLine{% cycle 'Odd' 'Even' %}">
-			<td class="historyLineDate">{{ todo.completed|date:"M j" }}</td>
-			<td class="historyLineItem">{{ todo.item }}</td>
+			<td class="historyLineDate">{{ task.completed|date:"M j" }}</td>
+			<td class="historyLineItem">{{ task.item }}</td>
 		</tr>
 	{% endfor %}
 	</table>

@@ -26,10 +26,10 @@ def home(request):
 def tasks(request, category_id):
 	category = get_object_or_404(Category, pk=category_id)
 	if category.account == request.account:
-		todo_form = TodoForm()
+		task_form = TaskForm()
 		project_form = ProjectForm()
 		
-		return render_to_response('tasks.html', { 'category': category, 'todo_form': todo_form,
+		return render_to_response('tasks.html', { 'category': category, 'task_form': task_form,
 			'project_form': project_form }, context_instance=RequestContext(request))
 		
 	else:
@@ -39,18 +39,23 @@ def tasks(request, category_id):
 def overview(request, category_id):
 	category = get_object_or_404(Category, pk=category_id)
 	if category.account == request.account:
-		todos = Todo.objects.filter(project__category__exact=category)
-		messages = category.get_thread().message_set.all()
+		tasks = Task.objects.filter(project__category__exact=category)
+		
+		try: 
+			messages = category.get_thread().message_set.all()
+		except Thread.DoesNotExist:
+			messages = []
+			
 		milestones = category.milestone_set.all()
 		
 		items = []
-		for todo in todos:
-			if todo.complete:
-				ts = todo.completed
+		for task in tasks:
+			if task.complete:
+				ts = task.completed
 			else:
-				ts = todo.created
+				ts = task.created
 			
-			items.append((ts, 'todo', todo))
+			items.append((ts, 'task', task))
 				
 		for message in messages:
 			ts = message.created
@@ -195,14 +200,14 @@ def addproject(request):
 	raise Http404(repr(f.errors) if f else None)
 
 
-def addtodo(request):
+def addtask(request):
 	if request.method == 'POST':
-		f = TodoForm(request.POST)
+		f = TaskForm(request.POST)
 		if f.is_valid():
-			todo = f.save()
-			df = DateFormat(todo.created)
-			return HttpResponse(simplejson.dumps({ 'id': todo.id, 
-				'created': df.format('Y-m-d g:ia'), 'item': todo.item }))
+			task = f.save()
+			df = DateFormat(task.created)
+			return HttpResponse(simplejson.dumps({ 'id': task.id, 
+				'created': df.format('Y-m-d g:ia'), 'item': task.item }))
 		
 	raise Http404(repr(f.errors) if f else None)
 
@@ -243,48 +248,48 @@ def updateproject(request, project_id):
 	raise Http404(None)
 	
 
-def deletetodo(request, todo_id):
+def deletetask(request, task_id):
 	if request.method == 'POST':
-		todo = get_object_or_404(Todo, pk=todo_id)
-		todo.delete()
+		task = get_object_or_404(Task, pk=task_id)
+		task.delete()
 		
 		return HttpResponse(simplejson.dumps({ 'return': True }))
 			
 	raise Http404(None)
 
 
-def completetodo(request, todo_id, complete):
+def completetask(request, task_id, complete):
 	if request.method == 'POST':
-		todo = get_object_or_404(Todo, pk=todo_id)
-		todo.complete = int(complete)
-		todo.save()
+		task = get_object_or_404(Task, pk=task_id)
+		task.complete = int(complete)
+		task.save()
 		
-		df = DateFormat(todo.completed if todo.completed else todo.created)
+		df = DateFormat(task.completed if task.completed else task.created)
 		
-		return HttpResponse(simplejson.dumps({ 'id': todo.id, 
-			'complete': todo.complete, 
+		return HttpResponse(simplejson.dumps({ 'id': task.id, 
+			'complete': task.complete, 
 			'date': df.format('Y-m-d g:ia'), 
-			'age': todo.age().days }))
+			'age': task.age().days }))
 	
 	raise Http404(None)
 	
 
-def updatetodo(request, todo_id):
+def updatetask(request, task_id):
 	if request.method == 'POST':
-		todo = get_object_or_404(Todo, pk=todo_id)
+		task = get_object_or_404(Task, pk=task_id)
 		project = get_object_or_404(Project, pk=request.POST['project_id'])
-		todo.category = category
-		todo.save()
+		task.category = category
+		task.save()
 		
-		return HttpResponse(simplejson.dumps({ 'id': todo.id, 'project': todo.project.id }))
+		return HttpResponse(simplejson.dumps({ 'id': task.id, 'project': task.project.id }))
 	
 	raise Http404(None)
 	
 
 def prioritize(request, obj_type, id):
 	if request.method == 'POST':
-		parent_mapping = { 'category': Account, 'milestone': Category, 'project': Category, 'todo': Project }
-		mapping = { 'category': Category, 'milestone': Milestone, 'project': Project, 'todo': Todo }
+		parent_mapping = { 'category': Account, 'milestone': Category, 'project': Category, 'task': Project }
+		mapping = { 'category': Category, 'milestone': Milestone, 'project': Project, 'task': Task }
 		
 		obj_type = obj_type.lower()
 		parent = get_object_or_404(parent_mapping[obj_type], pk=id)
@@ -323,25 +328,25 @@ def load(request):
 				p = Project(account=account, name=name, description='')
 				p.save()
 				
-				todolists = project.findall('todo-lists/todo-list')
-				for todolist in todolists:
-					name = todolist.findtext('name')
-					description = todolist.findtext('description')
+				tasklists = project.findall('task-lists/task-list')
+				for tasklist in tasklists:
+					name = tasklist.findtext('name')
+					description = tasklist.findtext('description')
 					
 					c = Category(project=p, name=name, description=description)
 					c.save()
 					
-					todoitems = todolist.findall('todo-items/todo-item')
-					for todoitem in todoitems:
-						item = todoitem.findtext('content')[:255]
-						created = datetime.strptime(todoitem.findtext('created-on'), 
+					taskitems = tasklist.findall('task-items/task-item')
+					for taskitem in taskitems:
+						item = taskitem.findtext('content')[:255]
+						created = datetime.strptime(taskitem.findtext('created-on'), 
 								'%Y-%m-%dT%H:%M:%SZ')
-						complete = (todoitem.findtext('completed') == 'true')
-						completed = datetime.strptime(todoitem.findtext('completed-on'), 
+						complete = (taskitem.findtext('completed') == 'true')
+						completed = datetime.strptime(taskitem.findtext('completed-on'), 
 								'%Y-%m-%dT%H:%M:%SZ') if complete else None
-						priority = todoitem.findtext('position')
+						priority = taskitem.findtext('position')
 						
-						t = Todo(category=c, item=item, created=created, complete=complete, 
+						t = Task(category=c, item=item, created=created, complete=complete, 
 							completed=completed, priority=priority)
 						t.save()
 		
