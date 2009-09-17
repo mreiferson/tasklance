@@ -34,7 +34,6 @@
 		padding: 5px;
 		width: 65px;
 		text-align: right;
-		font-variant: small-caps;
 	}
 	
 	.itemType.task {
@@ -51,10 +50,6 @@
 	
 	.itemType.task.complete {
 		background: #7766CC;
-	}
-	
-	.itemType.task.complete:after {
-		content: " done"
 	}
 	
 	.item .itemStamp {
@@ -145,21 +140,21 @@
 				{% for e in datelist.1 %}
 					{% ifequal e.2 'task' %}
 						<div class="item floatContainer">
-							<div class="itemType {{ e.2 }} {% if e.3.complete %} complete{% endif %}">{{ e.2 }}</div>
+							<div class="itemType {{ e.2 }} {% if e.3.complete %} complete{% endif %}">{% if e.3.complete %}<img src="/site_media/images/accept.gif"/> {% endif %}{{ e.2|capfirst }}</div>
 							<div class="itemStamp">{{ e.1 }}</div>
 							<div class="itemText{% if e.3.completed %} completed{% endif %}">{{ e.3.item }} (<span class="itemProject">{{ e.3.project.name }}</span>)</div>
 						</div>
 					{% endifequal %}
 					{% ifequal e.2 'message' %}
 						<div class="item floatContainer">
-							<div class="itemType {{ e.2 }}">{{ e.2 }}</div>
+							<div class="itemType {{ e.2 }}">{{ e.2|capfirst }}</div>
 							<div class="itemStamp">{{ e.1 }}</div>
 							<div class="itemText"><strong>{{ e.3.creator.username }}</strong>: {{ e.3.text }}</div>
 						</div>
 					{% endifequal %}
 					{% ifequal e.2 'milestone' %}
 						<div class="item floatContainer">
-							<div class="itemType {{ e.2 }}">{{ e.2 }}</div>
+							<div class="itemType {{ e.2 }}">{{ e.2|capfirst }}</div>
 							<div class="itemStamp">{{ e.1 }}</div>
 							<div class="itemText"><strong>{{ e.3.name }}</strong>: {{ e.3.description }}</div>
 						</div>
