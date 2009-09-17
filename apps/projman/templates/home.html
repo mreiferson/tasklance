@@ -4,6 +4,15 @@
 {% block title %}Overview - {{ block.super }}{% endblock %}
 
 {% block content %}
+{% include "milestones_css.html" %}
+<style type="text/css">
+	#milestonesHeader {
+		margin-top: 10px;
+	}
+	.msMeta {
+		width: 500px;
+	}
+</style>
 <table cellspacing="0" id="overviewContainer">
 	<tr>
 		<td style="vertical-align: top;">
@@ -13,6 +22,19 @@
 					<div id="category{{ category.id }}" rel="{{ category.id }}" class="category">
 						<h1><a href="{% url pm_delcategory category.id %}"><img src="/site_media/images/report_delete.gif" alt="Delete Category"/></a> <a href="{% url pm_overview category.id %}"><span class="categoryName" rel="name">{{ category.name }}</span></a></h1>
 						<div class="categoryDescription" rel="description">{{ category.description }}</div>
+						<div id="milestonesHeader">Milestones:</div>
+						<div id="milestones">
+							{% for milestone in category.milestone_set.all %}
+								<div id="milestone{{ milestone.id }}" class="milestone floatContainer">
+									<div class="msPercCompleted">{{ milestone.perc_completed|floatformat:2 }}%</div>
+									<div class="msMeta">
+										<div class="msName">{{ milestone.name }}</div>
+										<div class="msDescription">{{ milestone.description }}</div>
+										<div class="msDeadline">started <strong>{{ milestone.created|date:"Y-m-d" }}</strong> - deadline <strong>{{ milestone.deadline|date:"Y-m-d" }}</strong> - <strong>{{ milestone.days_remaining.days }}</strong> day{% ifnotequal milestone.days_remaining.days 1 %}s{% endifnotequal %} remaining</div>
+									</div>
+								</div>
+							{% endfor %}
+						</div>
 						{% show_history category %}
 					</div>
 					{% endfor %}

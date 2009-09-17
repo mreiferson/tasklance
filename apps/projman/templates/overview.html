@@ -74,53 +74,17 @@
 		text-decoration: line-through;
 	}
 	
-	#milestonesHeader, #chronologyHeader {
+	#chronologyHeader {
 		font-size: 14px;
 		font-weight: bold;
 		margin-bottom:1em;
 	}
 	
-	#milestones, #chronology {
-		margin: 0 35px 1em 35px;
-	}
-	
-	.milestone {
-		margin-bottom: 1em;
-	}
-	
-	.milestone .msPercCompleted {
-		text-align: center;
-		font-size: 18px;
-		font-weight: bold;
-		font-family: Georgia;
-		color: #fff;
-		padding: 6px;
-		background: #DE70AA;
-		float: left;
-		margin-right: 5px;
-	}
-	
-	.milestone .msDeadline {
-		float: right;
-		font-size: 12px;
-		color: #666;
-		text-align: right;
-	}
-	
-	.milestone .msName {
-		float: left;
-		font-weight: bold;
-		font-size: 12px;
-		color: #C62D7D;
-	}
-	
-	.milestone .msDescription {
-		font-size: 10px;
-		font-weight: normal;
-		padding: 5px 0;
-		color: #666;
+	#chronology {
+		margin: 0 35px 1em 35px;	
 	}
 </style>
+{% include "milestones_css.html" %}
 <div id="milestonesHeader">Milestones:</div>
 <div id="milestones">
 	{% for milestone in category.milestone_set.all %}
