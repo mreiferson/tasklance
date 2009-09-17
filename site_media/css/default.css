@@ -212,8 +212,7 @@ a:hover {
 
 .todos .icons {
 	float: left;
-	/*padding-top: 3px;*/
-	padding-right: 3px;
+	padding-right: 4px;
 }
 
 .todos .completeInput {
@@ -221,10 +220,14 @@ a:hover {
 	padding-right: 4px;
 }
 
+.todos .completeInput input {
+	width: 14px;
+	height: 14px;
+}
+
 .todos .item {
 	float: left;
 	line-height: 13px;
-	/*padding-top: 3px;*/
 	margin-right: 2px;
 }
 

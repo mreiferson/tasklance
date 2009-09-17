@@ -63,22 +63,33 @@
 		text-decoration: line-through;
 	}
 </style>
-{% for datelist in items %}
-	<div class="date">
-		<div class="dateHeader">{{ datelist.0 }}</div>
-		<div class="dateInnerContainer">
-			{% for e in datelist.1 %}
-				{% ifequal e.1 'todo' %}
-					<div class="item floatContainer">
-						<div class="itemType{% if e.2.completed %} completed{% endif %}">{{ e.1 }}</div>
-						<div class="itemStamp">{{ e.0 }}</div>
-						<div class="itemText{% if e.2.completed %} completed{% endif %}">{{ e.2.item }} (<span class="itemProject">{{ e.2.project.name }}</span>)</div>
-					</div>
-				{% endifequal %}
-				{% ifequal e.1 'message' %}
-				{% endifequal %}
-			{% endfor %}
+<div id="milestones">
+	{% for milestone in category.milestone_set.all %}
+		<div id="milestone{{ milestone.id }}" class="milestone">
+			<div class="msName">{{ milestone.name }}</div>
+			<div class="msDeadline">{{ milestone.days_remaining.days }} day{% ifnotequal milestone.days_remaining.days 1 %}s{% endifnotequal %} remaining ({{ milestone.deadline|date:"Y-m-d" }})</div>
+			<div class="msDescription">{{ milestone.description }}</div>
 		</div>
-	</div>
-{% endfor %}
+	{% endfor %}
+</div>
+<div id="itemsByDate">
+	{% for datelist in items %}
+		<div class="date">
+			<div class="dateHeader">{{ datelist.0 }}</div>
+			<div class="dateInnerContainer">
+				{% for e in datelist.1 %}
+					{% ifequal e.1 'todo' %}
+						<div class="item floatContainer">
+							<div class="itemType{% if e.2.completed %} completed{% endif %}">{{ e.1 }}</div>
+							<div class="itemStamp">{{ e.0 }}</div>
+							<div class="itemText{% if e.2.completed %} completed{% endif %}">{{ e.2.item }} (<span class="itemProject">{{ e.2.project.name }}</span>)</div>
+						</div>
+					{% endifequal %}
+					{% ifequal e.1 'message' %}
+					{% endifequal %}
+				{% endfor %}
+			</div>
+		</div>
+	{% endfor %}
+</div>
 {% endblock %}

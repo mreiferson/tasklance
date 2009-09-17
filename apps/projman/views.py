@@ -153,6 +153,19 @@ def addmilestone(request):
 				'deadline': df.format('Y-m-d') }))
 					
 	raise Http404(repr(f.errors) if f else None)
+	
+	
+def milestoneaddproject(request):
+	if request.method == 'POST':
+		milestone = get_object_or_404(Milestone, pk=request.POST['milestone_id'])
+		project = get_object_or_404(Project, pk=request.POST['project_id'])
+		
+		project.milestone = milestone
+		project.save()
+		
+		return HttpResponse(simplejson.dumps({ 'project_id': project.id, 'milestone_id': milestone.id, 'name': project.name }))
+		
+	raise Http404(None)
 
 
 def addproject(request):

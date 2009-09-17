@@ -4,10 +4,22 @@
 
 {% block content %}
 <style type="text/css">
+	#milestones {
+		width: 668px;
+	}
+	
 	.milestone {
 		margin-bottom: 1em;
 		background: #f0f0f0;
 		padding: 10px;
+	}
+	
+	.milestone .msPercCompleted {
+		text-align: center;
+		font-size: 18px;
+		font-weight: bold;
+		font-family: Georgia;
+		color: #080;
 	}
 	
 	.milestone .msName {
@@ -20,13 +32,41 @@
 		float: right;
 		font-weight: bold;
 		font-size: 12px;
-		color: #f00;
+		color: #666;
 	}
 	
 	.milestone .msDescription {
 		clear: both;
-		padding-top: 5px;
+		padding: 5px 0;
 		color: #666;
+	}
+	
+	.milestone .msDependenciesHeader {
+		font-weight: bold;
+		margin-bottom: 5px;
+	}
+	
+	.milestone .msDependencies {
+		margin-left: 25px;
+		margin-bottom: 5px;
+	}
+	
+	.msProject {
+		clear: both;
+	}
+	
+	.msProject .msProjectPercCompleted {
+		font-weight: bold;
+		color: #080;
+		float: left;
+		width: 75px;
+		text-align: right;
+		margin-right: 10px;
+	}
+	
+	.msProject .msProjectName {
+		font-weight: bold;
+		float: left;
 	}
 </style>
 <table cellspacing="0" id="overviewContainer">
@@ -34,10 +74,27 @@
 		<td style="vertical-align: top;">
 			<div id="milestones">
 				{% for milestone in category.milestone_set.all %}
-					<div id="milestone{{ milestone.id }}" class="milestone">
+					<div id="milestone{{ milestone.id }}" class="milestone" rel="{{ milestone.id }}">
+						<div class="msPercCompleted">{{ milestone.perc_completed|floatformat:3 }}%</div>
 						<div class="msName">{{ milestone.name }}</div>
 						<div class="msDeadline">{{ milestone.days_remaining.days }} day{% ifnotequal milestone.days_remaining.days 1 %}s{% endifnotequal %} remaining ({{ milestone.deadline|date:"Y-m-d" }})</div>
 						<div class="msDescription">{{ milestone.description }}</div>
+						<div class="msDependenciesHeader">Dependencies:</div>
+						<div class="msDependencies">
+							{% for project in milestone.project_set.all %}
+							<div class="msProject">
+								<div class="msProjectPercCompleted">{{ project.perc_completed|floatformat:3 }}%</div>
+								<div class="msProjectName">{{ project.name }}</div>
+							</div>
+							{% endfor %}
+							<div style="clear: both;"></div>
+						</div>
+						<select name="project_id">
+							{% for project in category.project_set.all %}
+							<option value="{{ project.id }}">{{ project.name }}</option>
+							{% endfor %}
+						</select>
+						<a href="javascript:;" class="addProjectLink">Add Project To Milestone</a>
 					</div>
 				{% endfor %}
 			</div>
@@ -52,4 +109,15 @@
 		</td>
 	</tr>
 </table>
+<script type="text/javascript" language="javascript">
+	$(document).ready(function() {
+			$('.addProjectLink').click(function() {
+					var parent = $(this).parents('.milestone');
+					$.post('{% url pm_milestoneaddproject %}', { 'milestone_id': parent.attr('rel'), 'project_id': $(':select[name=project_id]', parent).val() }, 
+						function(response) {
+							$('.msDependencies', parent).append($('<div>').addClass('msProject').append(response.name));
+						}, 'json');
+				});
+		});
+</script>
 {% endblock %}

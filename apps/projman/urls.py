@@ -27,6 +27,7 @@ urlpatterns = patterns('',
 	url(r'^updatetodo/(?P<todo_id>\d+)/$', views.updatetodo, name='pm_updatetodo'),
 	
 	url(r'^milestone/add/$', views.addmilestone, name='pm_addmilestone'),
+	url(r'^milestone/addproject/$', views.milestoneaddproject, name='pm_milestoneaddproject'),
 	
 	url(r'^load/$', views.load, name='pm_load'),
 	
