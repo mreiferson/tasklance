@@ -40,19 +40,35 @@ def overview(request, category_id):
 	category = get_object_or_404(Category, pk=category_id)
 	if category.account == request.account:
 		todos = Todo.objects.filter(project__category__exact=category)
+		messages = category.get_thread().message_set.all()
+		milestones = category.milestone_set.all()
 		
-		d = {}
-		dateLongStrings = {}
+		items = []
 		for todo in todos:
 			if todo.complete:
 				ts = todo.completed
 			else:
 				ts = todo.created
+			
+			items.append((ts, 'todo', todo))
 				
-			df = DateFormat(ts)
+		for message in messages:
+			ts = message.created
+			
+			items.append((ts, 'message', message))
+			
+		for milestone in milestones:
+			ts = milestone.created
+			
+			items.append((ts, 'milestone', milestone))
+		
+		d = {}
+		dateLongStrings = {}
+		for l in items:
+			df = DateFormat(l[0])
 			dateString = df.format('Y-m-d')
 			timeString = df.format('g:ia')
-			item = (timeString, 'todo', todo)
+			item = (df.format('Gis'), timeString, l[1], l[2])
 			
 			if dateString in d:
 				d[dateString].append(item)

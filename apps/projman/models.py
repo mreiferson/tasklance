@@ -31,6 +31,10 @@ class Category(models.Model):
 	class Meta:
 		ordering = ('priority', 'created')
 		verbose_name_plural = 'categories'
+		
+	def get_thread(self):
+		ctype = ContentType.objects.get_for_model(self)
+		return Thread.objects.get(content_type__pk=ctype.id, object_id=self.id)
 
 	def save(self):
 		if not self.created:
