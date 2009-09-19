@@ -34,7 +34,8 @@ def tasks(request, category_id):
 		
 	else:
 		return HttpResponseRedirect(reverse('login'))
-		
+
+
 @useracct_required
 def overview(request, category_id):
 	category = get_object_or_404(Category, pk=category_id)
@@ -92,7 +93,8 @@ def overview(request, category_id):
 			context_instance=RequestContext(request))
 	else:
 		return HttpResponseRedirect(reverse('login'))
-		
+
+
 @useracct_required
 def thread_view(request, content_object, content_id):
 	obj = get_object_or_404(content_object, pk=content_id)
@@ -107,7 +109,7 @@ def thread_view(request, content_object, content_id):
 	
 	return render_to_response('thread_view.html', { content_object.__name__.lower(): obj, 
 		'thread': thread, 'msg_form': msg_form }, context_instance=RequestContext(request))
-		
+
 
 def milestones(request, category_id):
 	category = get_object_or_404(Category, pk=category_id)
@@ -181,7 +183,7 @@ def milestoneaddproject(request):
 		milestone = get_object_or_404(Milestone, pk=request.POST['milestone_id'])
 		project = get_object_or_404(Project, pk=request.POST['project_id'])
 		
-		project.milestone = milestone
+		project.milestones.add(milestone)
 		project.save()
 		
 		return HttpResponse(simplejson.dumps({ 'project_id': project.id, 'milestone_id': milestone.id, 'name': project.name }))
@@ -278,7 +280,7 @@ def updatetask(request, task_id):
 	if request.method == 'POST':
 		task = get_object_or_404(Task, pk=task_id)
 		project = get_object_or_404(Project, pk=request.POST['project_id'])
-		task.category = category
+		task.project = project
 		task.save()
 		
 		return HttpResponse(simplejson.dumps({ 'id': task.id, 'project': task.project.id }))

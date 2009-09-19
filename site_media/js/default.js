@@ -2,9 +2,9 @@ var sortableOptions_tasks = {
 			handle: '.handle',
 			connectWith: '.tasks_active',
 			receive: function(event, ui) {
-				var category = $(ui.item).parents('.category');
-				$.post('/pm/updatetask/'+$(ui.item).attr('rel')+'/', { 'category_id': category.attr('rel') }, function() {}, 'json');
-				checkForPlaceholder($('.tasks_active', category));
+				var project = $(ui.item).parents('.project');
+				$.post('/pm/updatetask/'+$(ui.item).attr('rel')+'/', { 'project_id': project.attr('rel') }, function() {}, 'json');
+				checkForPlaceholder($('.tasks_active', project));
 			},
 			remove: function(event, ui) {
 				checkForPlaceholder($(this));

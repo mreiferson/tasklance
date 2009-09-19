@@ -61,11 +61,16 @@
 		clear: both;
 	}
 	
+	.msProject .msProjectLinks {
+		float: left;
+		margin-right: 3px;
+	}
+	
 	.msProject .msProjectPercCompleted {
 		font-weight: bold;
 		color: #080;
 		float: left;
-		width: 75px;
+		width: 65px;
 		text-align: right;
 		margin-right: 10px;
 	}
@@ -91,8 +96,9 @@
 						<div class="msDependencies">
 							{% for project in milestone.project_set.all %}
 							<div class="msProject floatContainer">
-								<div class="msProjectPercCompleted">{{ project.perc_completed|floatformat:3 }}%</div>
+								<div class="msProjectLinks"><a href="">x</a></div>
 								<div class="msProjectName">{{ project.name }}</div>
+								<div class="msProjectPercCompleted">{{ project.perc_completed|floatformat:3 }}%</div>
 							</div>
 							{% endfor %}
 						</div>

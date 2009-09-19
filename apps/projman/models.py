@@ -35,7 +35,7 @@ class Category(models.Model):
 	def get_thread(self):
 		ctype = ContentType.objects.get_for_model(self)
 		return Thread.objects.get(content_type__pk=ctype.id, object_id=self.id)
-
+		
 	def save(self):
 		if not self.created:
 			self.created = datetime.now()
@@ -81,7 +81,7 @@ class Milestone(models.Model):
 
 class Project(models.Model):
 	category = models.ForeignKey(Category)
-	milestone = models.ForeignKey(Milestone)
+	milestones = models.ManyToManyField(Milestone)
 	name = models.CharField(max_length=255)
 	description = models.CharField(max_length=255)
 	created = models.DateTimeField('Date Created', editable=False)
@@ -89,7 +89,7 @@ class Project(models.Model):
 	
 	class Meta:
 		ordering = ('priority', 'created')
-		
+	
 	def perc_completed(self):
 		t = 0
 		c = 0
@@ -104,7 +104,7 @@ class Project(models.Model):
 		if not self.created:
 			self.created = datetime.now()
 		super(Project, self).save()
-		
+	
 	def __unicode__(self):
 		return self.name+' ('+self.category.name+')'
 
@@ -184,11 +184,11 @@ class Dependency(models.Model):
 	
 	def __unicode__(self):
 		return self.task_a.__unicode__()+' ? '+self.task_b.__unicode__();
-		
+
 
 class UserAccount(models.Model):
 	user = models.ForeignKey(User)
 	account = models.ForeignKey(Account)
 	
 	def __unicode__(self):
-		return self.user.username+':'+self.account.name
+		return self.user+':'+self.account
