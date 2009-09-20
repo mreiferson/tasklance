@@ -1,4 +1,5 @@
 {% extends "category.html" %}
+{% load custom_tags %}
 
 {% block title %}Milestones - {{ block.super }}{% endblock %}
 
@@ -18,14 +19,16 @@
 		margin-bottom: 5px;
 	}
 	.milestone .msPercCompleted {
+		border: 2px solid #000;
 		text-align: center;
 		font-size: 18px;
 		font-weight: bold;
 		font-family: Georgia;
 		color: #fff;
-		padding: 6px;
+		padding: 8px;
 		background: #DE70AA;
 		float: left;
+		width: 75px;
 	}
 	.milestone .msDeadline {
 		float: right;
@@ -87,18 +90,18 @@
 				{% for milestone in category.milestone_set.all %}
 					<div id="milestone{{ milestone.id }}" class="milestone" rel="{{ milestone.id }}">
 						<div class="msMetaBanner floatContainer">
-							<div class="msPercCompleted">{{ milestone.perc_completed|floatformat:2 }}%</div>
+							<div class="msPercCompleted" style="background: {% perc_colorizer milestone.perc_completed %}; border-color: {% perc_colorizer_dark milestone.perc_completed 50 %}">{{ milestone.perc_completed|floatformat:2 }}%</div>
 							<div class="msDeadline">{{ milestone.days_remaining.days }} day{% ifnotequal milestone.days_remaining.days 1 %}s{% endifnotequal %} remaining ({{ milestone.deadline|date:"Y-m-d" }})</div>
 						</div>
 						<div class="msName">{{ milestone.name }}</div>
 						<div class="msDescription">{{ milestone.description }}</div>
 						<div class="msDependenciesHeader">Dependencies:</div>
 						<div class="msDependencies">
-							{% for project in milestone.project_set.all %}
-							<div class="msProject floatContainer">
-								<div class="msProjectLinks"><a href="">x</a></div>
+							{% for project in milestone.projects.all %}
+							<div class="msProject floatContainer" rel="{{ project.id }}">
+								<div class="msProjectLinks"><a href="javascript:;" class="delProjectFromMilestoneLink">x</a></div>
+								<div class="msProjectPercCompleted">{{ project.perc_completed|floatformat:2 }}%</div>
 								<div class="msProjectName">{{ project.name }}</div>
-								<div class="msProjectPercCompleted">{{ project.perc_completed|floatformat:3 }}%</div>
 							</div>
 							{% endfor %}
 						</div>
@@ -107,7 +110,7 @@
 							<option value="{{ project.id }}">{{ project.name }}</option>
 							{% endfor %}
 						</select>
-						<a href="javascript:;" class="addProjectLink">Add Project As Dependency</a>
+						<a href="javascript:;" class="addProjectToMilestoneLink">Add Project As Dependency</a>
 					</div>
 				{% endfor %}
 			</div>
@@ -123,12 +126,54 @@
 	</tr>
 </table>
 <script type="text/javascript" language="javascript">
+	var onclick_delProjectFromMilestone = function() {
+			var project = $(this).parents('.msProject');
+			var milestone = $(this).parents('.milestone');
+			$.post('{% url pm_delprojectfrommilestone %}', { 'milestone_id': milestone.attr('rel'), 'project_id': project.attr('rel') }, function(response) {
+					project.slideUp('fast');
+					$('.msPercCompleted', milestone).text(response.milestone_perc_completed+'%')
+				}, 'json');
+		};
+	
 	$(document).ready(function() {
-			$('.addProjectLink').click(function() {
-					var parent = $(this).parents('.milestone');
-					$.post('{% url pm_milestoneaddproject %}', { 'milestone_id': parent.attr('rel'), 'project_id': $(':select[name=project_id]', parent).val() }, 
+			$('.addMilestoneContainer :button').click(function() {
+					var f = $(this.form);
+					$(':input[name=priority]', f).val($('.milestone').length);
+					$.post('{% url pm_addmilestone %}', f.serialize(), function(response) {
+							
+							f.get(0).reset();
+						}, 'json');
+				});
+				
+			$('.delProjectFromMilestoneLink').click(onclick_delProjectFromMilestone);
+			
+			$('.addProjectToMilestoneLink').click(function() {
+					var milestone = $(this).parents('.milestone');
+					$.post('{% url pm_addprojecttomilestone %}', { 'milestone_id': milestone.attr('rel'), 'project_id': $(':select[name=project_id]', milestone).val() }, 
 						function(response) {
-							$('.msDependencies', parent).append($('<div>').addClass('msProject').append(response.name));
+							$('.msPercCompleted', milestone).text(response.milestone_perc_completed+'%');
+							var el = $('<div>')
+									.addClass('msProject')
+									.addClass('floatContainer')
+									.attr('rel', response.project_id)
+									.append(
+										$('<div>')
+											.addClass('msProjectLinks')
+											.append(
+												$('<a>').addClass('delProjectFromMilestoneLink').attr('href', 'javascript:;').text('x').click(onclick_delProjectFromMilestone)
+												)
+										)
+									.append(
+										$('<div>')
+											.addClass('msProjectPercCompleted')
+											.text(response.perc_completed+'%')
+										)
+									.append(
+										$('<div>')
+											.addClass('msProjectName')
+											.text(response.name)
+										);
+							el.hide().appendTo($('.msDependencies', milestone)).slideDown('fast');
 						}, 'json');
 				});
 		});

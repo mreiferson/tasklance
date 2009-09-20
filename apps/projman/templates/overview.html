@@ -1,4 +1,5 @@
 {% extends "category.html" %}
+{% load custom_tags %}
 
 {% block title %}Overview - {{ block.super }}{% endblock %}
 
@@ -89,7 +90,7 @@
 <div id="milestones">
 	{% for milestone in category.milestone_set.all %}
 		<div id="milestone{{ milestone.id }}" class="milestoneOverview floatContainer">
-			<div class="msPercCompleted">{{ milestone.perc_completed|floatformat:2 }}%</div>
+			<div class="msPercCompleted" style="background: {% perc_colorizer milestone.perc_completed %}; border-color: {% perc_colorizer_dark milestone.perc_completed 50 %}">{{ milestone.perc_completed|floatformat:2 }}%</div>
 			<div class="msMeta">
 				<div class="msName">{{ milestone.name }}</div>
 				<div class="msDescription">{{ milestone.description }}</div>

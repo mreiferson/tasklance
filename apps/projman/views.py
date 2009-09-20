@@ -50,23 +50,9 @@ def overview(request, category_id):
 		milestones = category.milestone_set.all()
 		
 		items = []
-		for task in tasks:
-			if task.complete:
-				ts = task.completed
-			else:
-				ts = task.created
-			
-			items.append((ts, 'task', task))
-				
-		for message in messages:
-			ts = message.created
-			
-			items.append((ts, 'message', message))
-			
-		for milestone in milestones:
-			ts = milestone.created
-			
-			items.append((ts, 'milestone', milestone))
+		[items.append((t.completed if t.complete else t.created, 'task', t)) for t in tasks]
+		[items.append((m.created, 'message', m)) for m in messages]
+		[items.append((m.created, 'milestone', m)) for m in milestones]
 		
 		d = {}
 		dateLongStrings = {}
@@ -178,15 +164,38 @@ def addmilestone(request):
 	raise Http404(repr(f.errors) if f else None)
 	
 	
-def milestoneaddproject(request):
+def delmilestone(request, milestone_id):
+	if request.method == 'POST':
+		milestone = get_object_or_404(Milestone, pk=milestone_id)
+		milestone.delete()
+		
+		return HttpResponse(simplejson.dumps({ 'return': True }))
+		
+	raise Http404(None)
+	
+	
+def addprojecttomilestone(request):
 	if request.method == 'POST':
 		milestone = get_object_or_404(Milestone, pk=request.POST['milestone_id'])
 		project = get_object_or_404(Project, pk=request.POST['project_id'])
 		
-		project.milestones.add(milestone)
-		project.save()
+		milestone.projects.add(project)
 		
-		return HttpResponse(simplejson.dumps({ 'project_id': project.id, 'milestone_id': milestone.id, 'name': project.name }))
+		return HttpResponse(simplejson.dumps({ 'project_id': project.id, 
+			'milestone_id': milestone.id, 'name': project.name, 
+			'perc_completed': "%.2f" % project.perc_completed(), 'milestone_perc_completed': "%.2f" % milestone.perc_completed() }))
+		
+	raise Http404(None)
+	
+	
+def delprojectfrommilestone(request):
+	if request.method == 'POST':
+		project = get_object_or_404(Project, pk=request.POST['project_id'])
+		milestone = get_object_or_404(Milestone, pk=request.POST['milestone_id'])
+		
+		milestone.projects.remove(project)
+		
+		return HttpResponse(simplejson.dumps({ 'milestone_perc_completed': "%.2f" % milestone.perc_completed() }))
 		
 	raise Http404(None)
 

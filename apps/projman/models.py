@@ -45,43 +45,9 @@ class Category(models.Model):
 	def __unicode__(self):
 		return self.name+' ('+self.account.name+')'
 		
-		
-class Milestone(models.Model):
-	category = models.ForeignKey(Category)
-	name = models.CharField(max_length=255)
-	description = models.TextField()
-	deadline = models.DateTimeField()
-	created = models.DateTimeField('Date Created', editable=False)
-	priority = models.PositiveIntegerField(default=0)
-	
-	class Meta:
-		ordering = ('priority', 'created')
-		
-	def days_remaining(self):
-		return self.deadline - datetime.now()
-		
-	def perc_completed(self):
-		t = 0
-		c = 0
-		for project in self.project_set.all():
-			t = t + project.perc_completed()
-			c = c + 1
-			
-		return (float(t) / float(c)) if c else 0.0
-	
-	def save(self):
-		if not self.created:
-			self.created = datetime.now()
-		
-		super(Milestone, self).save()
-		
-	def __unicode__(self):
-		return self.name+' ('+self.category.name+')'
-
 
 class Project(models.Model):
 	category = models.ForeignKey(Category)
-	milestones = models.ManyToManyField(Milestone)
 	name = models.CharField(max_length=255)
 	description = models.CharField(max_length=255)
 	created = models.DateTimeField('Date Created', editable=False)
@@ -98,13 +64,47 @@ class Project(models.Model):
 				c = c + 1
 			t = t + 1
 			
-		return (float(c) / float(t) * 100.00) if t else 0.0
+		return float((float(c) / float(t) * 100.00) if t else 0.0)
 	
 	def save(self):
 		if not self.created:
 			self.created = datetime.now()
 		super(Project, self).save()
 	
+	def __unicode__(self):
+		return self.name+' ('+self.category.name+')'
+		
+		
+class Milestone(models.Model):
+	category = models.ForeignKey(Category)
+	projects = models.ManyToManyField(Project)
+	name = models.CharField(max_length=255)
+	description = models.TextField()
+	deadline = models.DateTimeField()
+	created = models.DateTimeField('Date Created', editable=False)
+	priority = models.PositiveIntegerField(default=0)
+	
+	class Meta:
+		ordering = ('priority', 'created')
+		
+	def days_remaining(self):
+		return self.deadline - datetime.now()
+		
+	def perc_completed(self):
+		t = 0
+		c = 0
+		for project in self.projects.all():
+			t = t + project.perc_completed()
+			c = c + 1
+			
+		return float((float(t) / float(c)) if c else 0.0)
+	
+	def save(self):
+		if not self.created:
+			self.created = datetime.now()
+		
+		super(Milestone, self).save()
+		
 	def __unicode__(self):
 		return self.name+' ('+self.category.name+')'
 

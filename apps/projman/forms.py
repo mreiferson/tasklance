@@ -9,7 +9,7 @@ class AccountForm(forms.ModelForm):
 class MilestoneForm(forms.ModelForm):
 	class Meta:
 		model = Milestone
-		exclude = ('milestones',)
+		exclude = ('projects',)
 
 
 class ProjectForm(forms.ModelForm):

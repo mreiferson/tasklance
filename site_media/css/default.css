@@ -152,6 +152,8 @@ a:hover {
 }
 
 .category {
+	border-top: 2px dotted #eee;
+	padding-top: 5px;
 	margin-bottom: 1em;
 }
 
@@ -287,12 +289,13 @@ a:hover {
 }
 
 .categoryHistoryHeader {
-	margin-top: 1em;
+	font-size: 13px;
 	font-weight: bold;
+	margin: 1em 0;
 }
 
 .categoryHistory {
-	width: 100%;
+	margin: 0 35px 1em 35px;
 	font-size: 10px;
 }
 
@@ -311,9 +314,7 @@ a:hover {
 .historyLineDate {
 	font-weight: bold;
 	width: 55px;
-	color: #666;
 }
 
 .historyLineItem {
-	color: #666;
 }
