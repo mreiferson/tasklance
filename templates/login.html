@@ -2,4 +2,9 @@
 
 {% block content %}
 {% include "login_form.html" %}
+<script type="text/javascript" language="javascript">
+$(document).ready(function() {
+		$('#id_username').get(0).focus();
+	});
+</script>
 {% endblock %}
