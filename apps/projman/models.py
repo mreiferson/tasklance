@@ -44,7 +44,7 @@ class Category(models.Model):
 
 	def __unicode__(self):
 		return self.name+' ('+self.account.name+')'
-		
+
 
 class Project(models.Model):
 	category = models.ForeignKey(Category)
@@ -57,14 +57,11 @@ class Project(models.Model):
 		ordering = ('priority', 'created')
 	
 	def perc_completed(self):
-		t = 0
-		c = 0
-		for task in self.task_set.all():
-			if task.complete:
-				c = c + 1
-			t = t + 1
-			
-		return float((float(c) / float(t) * 100.00) if t else 0.0)
+		l = self.task_set.all()
+		c = l.count()
+		n = len([t for t in l if t.complete])
+		
+		return float((float(n) / float(c) * 100.00) if c else 0.0)
 	
 	def save(self):
 		if not self.created:
@@ -73,14 +70,15 @@ class Project(models.Model):
 	
 	def __unicode__(self):
 		return self.name+' ('+self.category.name+')'
-		
-		
+
+
 class Milestone(models.Model):
 	category = models.ForeignKey(Category)
 	projects = models.ManyToManyField(Project)
 	name = models.CharField(max_length=255)
 	description = models.TextField()
 	deadline = models.DateTimeField()
+	status = models.CharField(max_length=15)
 	created = models.DateTimeField('Date Created', editable=False)
 	priority = models.PositiveIntegerField(default=0)
 	
@@ -91,13 +89,11 @@ class Milestone(models.Model):
 		return self.deadline - datetime.now()
 		
 	def perc_completed(self):
-		t = 0
-		c = 0
-		for project in self.projects.all():
-			t = t + project.perc_completed()
-			c = c + 1
-			
-		return float((float(t) / float(c)) if c else 0.0)
+		l = self.projects.all()
+		c = l.count()
+		n = sum([p.perc_completed() for p in l])
+		
+		return float((float(n) / float(c) * 100.00) if c else 0.0)
 	
 	def save(self):
 		if not self.created:
@@ -174,7 +170,7 @@ class Message(models.Model):
 	def __unicode__(self):
 		return self.text
 
-		
+
 class Dependency(models.Model):
 	task_a = models.ForeignKey(Task, related_name='depends_on')
 	task_b = models.ForeignKey(Task, related_name='dependency_of')
