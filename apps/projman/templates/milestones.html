@@ -32,6 +32,7 @@
 	}
 	.milestone .msDeadline {
 		float: right;
+		text-align: right;
 		font-weight: bold;
 		font-size: 12px;
 		color: #666;
@@ -91,7 +92,15 @@
 					<div id="milestone{{ milestone.id }}" class="milestone" rel="{{ milestone.id }}">
 						<div class="msMetaBanner floatContainer">
 							<div class="msPercCompleted" style="background: {% perc_colorizer milestone.perc_completed %}; border-color: {% perc_colorizer_dark milestone.perc_completed 50 %}">{{ milestone.perc_completed|floatformat:2 }}%</div>
-							<div class="msDeadline">{{ milestone.days_remaining.days }} day{% ifnotequal milestone.days_remaining.days 1 %}s{% endifnotequal %} remaining ({{ milestone.deadline|date:"Y-m-d" }})</div>
+							<div class="msDeadline">
+								{{ milestone.days_remaining.days }} day{% ifnotequal milestone.days_remaining.days 1 %}s{% endifnotequal %} remaining ({{ milestone.deadline|date:"Y-m-d" }})
+								<br/>
+								<select>
+									{% for k,v in milestone_status %}
+										<option value="{{ k }}"{% ifequal milestone.status k %} selected{% endifequal %}>{{ v }}</option>
+									{% endfor %}
+								</select>
+							</div>
 						</div>
 						<div class="msName">{{ milestone.name }}</div>
 						<div class="msDescription">{{ milestone.description }}</div>
@@ -146,6 +155,13 @@
 				});
 				
 			$('.delProjectFromMilestoneLink').click(onclick_delProjectFromMilestone);
+			
+			$('.milestone .msDeadline :select').change(function() {
+					var milestone = $(this).parents('.milestone');
+					$.post('{% url pm_milestonestatus %}', { 'milestone_id': milestone.attr('rel'), 'status': $(this).val() }, function(response) {
+							alert('Status Updated!');
+						});
+				});
 			
 			$('.addProjectToMilestoneLink').click(function() {
 					var milestone = $(this).parents('.milestone');

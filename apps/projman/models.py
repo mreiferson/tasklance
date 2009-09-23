@@ -93,7 +93,7 @@ class Milestone(models.Model):
 		c = l.count()
 		n = sum([p.perc_completed() for p in l])
 		
-		return float((float(n) / float(c) * 100.00) if c else 0.0)
+		return float((float(n) / float(c)) if c else 0.0)
 	
 	def save(self):
 		if not self.created:

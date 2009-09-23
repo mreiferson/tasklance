@@ -102,7 +102,19 @@ def milestones(request, category_id):
 	milestone_form = MilestoneForm()
 	
 	return render_to_response('milestones.html', { 'category': category, 
+		'milestone_status': (('discovery', 'Discovery'), ('onhold', 'On Hold'), ('active', 'Active'), ('complete', 'Complete')),
 		'milestone_form': milestone_form }, context_instance=RequestContext(request))
+
+
+def milestonestatus(request):
+	if request.method == 'POST':
+		milestone = get_object_or_404(Milestone, pk=request.POST['milestone_id'])
+		milestone.status = request.POST['status']
+		milestone.save()
+		
+		return HttpResponse(simplejson.dumps({ 'milestone_id': milestone.id, 'status': milestone.status}))
+	
+	raise Http404(None)
 
 
 def delete_object_referer(request, object_id, **kwargs):
