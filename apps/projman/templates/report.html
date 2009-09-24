@@ -1,0 +1,21 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<title>{% block title %}TaskLance - A Project Manager That "Just Works."{% endblock %}</title>
+	<script type="text/javascript" language="javascript" src="/site_media/js/jquery.min.js"></script>
+	<script type="text/javascript" language="javascript" src="/site_media/js/jquery-ui.min.js"></script>
+	<script type="text/javascript" language="javascript" src="/site_media/js/jquery.editable.js"></script>
+	<script type="text/javascript" language="javascript" src="/site_media/js/default.js"></script>
+	<link rel="stylesheet" type="text/css" href="/site_media/css/reset.css">
+	<link rel="stylesheet" type="text/css" href="/site_media/css/default.css">
+	<link rel="stylesheet" type="text/css" href="/site_media/css/form.css">
+</head>
+<body>
+	<div id="contentContainer">
+		<div id="content">
+			{% block content %}{% endblock %}
+		</div>
+	</div>
+</body>
+</html>

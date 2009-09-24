@@ -11,6 +11,7 @@ from django.core.urlresolvers import reverse
 from django.views.generic.create_update import delete_object
 from decorators import useracct_required
 from django.contrib.contenttypes.models import ContentType
+from django.template.loader import get_template
 
 
 @useracct_required
@@ -102,7 +103,7 @@ def milestones(request, category_id):
 	milestone_form = MilestoneForm()
 	
 	return render_to_response('milestones.html', { 'category': category, 
-		'milestone_status': (('discovery', 'Discovery'), ('onhold', 'On Hold'), ('active', 'Active'), ('complete', 'Complete')),
+		'milestone_status': (('onhold', 'On Hold'), ('active', 'Active'), ('complete', 'Complete')),
 		'milestone_form': milestone_form }, context_instance=RequestContext(request))
 
 
@@ -376,3 +377,25 @@ def load(request):
 		return HttpResponseRedirect(request.META.get('HTTP_REFERER', reverse('pm_home')))
 	
 	return render_to_response('load.html')
+	
+	
+def report_weekly(request):
+	t = get_template('report_weekly.html')
+	html = t.render(RequestContext(request))
+	
+	import re
+	cre = re.compile(r'(src|href)\s*=\s*"(?!http)\/([^""\'>]+)"')
+	html = cre.sub(r'\1="http://tws.tasklance.dev/\2"', html)
+	
+	f = open('/tmp/test.html', 'w')
+	f.write(html)
+	f.close()
+	
+	import os
+	os.popen('/usr/local/bin/wkhtmltopdf --print-media-type --margin-bottom 0mm --margin-top 0mm --margin-left 0mm --margin-right 0mm --page-size Letter /tmp/test.html /tmp/test.pdf')
+	
+	#import subprocess
+	#p = subprocess.Popen('', shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	#stdout, stderr = p.communicate()
+
+	return HttpResponse(html)

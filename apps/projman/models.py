@@ -98,6 +98,9 @@ class Milestone(models.Model):
 	def save(self):
 		if not self.created:
 			self.created = datetime.now()
+			
+		if not self.status:
+			self.status = 'onhold'
 		
 		super(Milestone, self).save()
 		
@@ -124,7 +127,7 @@ class Task(models.Model):
 			self.created = datetime.now()
 			
 		if self.complete:
-			if self.completed == None:
+			if not self.completed:
 				self.completed = datetime.now()
 		else:
 			self.completed = None

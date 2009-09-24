@@ -1,0 +1,36 @@
+{% load custom_tags %}
+
+{% if any_milestones %}
+	<div class="homeHeader">Milestones:</div>
+	<div class="milestonesContainer">
+	{% if milestones_active.count %}
+		<div class="milestonesActiveHeader milestonesHeader">Active:</div>
+		<div class="milestonesActive milestones">
+		{% for milestone in milestones_active %}
+			<div id="milestone{{ milestone.id }}" class="milestoneOverview floatContainer">
+				<div class="msPercCompleted" style="background: {% perc_colorizer milestone.perc_completed %}; border-color: {% perc_colorizer_dark milestone.perc_completed 50 %}">{{ milestone.perc_completed|floatformat:2 }}%</div>
+				<div class="msMeta">
+					<div class="msName">{{ milestone.name }}</div>
+					<div class="msDescription">{{ milestone.description }}</div>
+					<div class="msDeadline">started <strong>{{ milestone.created|date:"Y-m-d" }}</strong> - deadline <strong>{{ milestone.deadline|date:"Y-m-d" }}</strong> - <strong>{{ milestone.days_remaining.days }}</strong> day{% ifnotequal milestone.days_remaining.days 1 %}s{% endifnotequal %} remaining</div>
+				</div>
+			</div>
+		{% endfor %}
+		</div>
+	{% endif %}
+	{% if milestones_onhold.count %}
+		<div class="milestonesOnHoldHeader milestonesHeader">On-Hold:</div>
+		<div class="milestonesOnHold milestones">
+		{% for milestone in milestones_onhold %}
+			<div id="milestone{{ milestone.id }}" class="milestoneOnHold floatContainer">
+				<div class="msPercCompleted" style="background: {% perc_colorizer milestone.perc_completed %}; border-color: {% perc_colorizer_dark milestone.perc_completed 50 %}">{{ milestone.perc_completed|floatformat:2 }}%</div>
+				<div class="msMeta">
+					<div class="msName">{{ milestone.name }}</div>
+					<div class="msDescription">{{ milestone.description }}</div>
+				</div>
+			</div>
+		{% endfor %}
+		</div>
+	{% endif %}
+	</div>
+{% endif %}

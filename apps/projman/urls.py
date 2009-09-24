@@ -34,4 +34,6 @@ urlpatterns = patterns('',
 	url(r'^milestone/delproject/$', views.delprojectfrommilestone, name='pm_delprojectfrommilestone'),
 	url(r'^milestone/delete/$', views.delmilestone, name='pm_delmilestone'),
 	url(r'^milestone/status/$', views.milestonestatus, name='pm_milestonestatus'),
+	
+	url(r'^report/weekly/$', views.report_weekly, name='pm_report_weekly'),
 )

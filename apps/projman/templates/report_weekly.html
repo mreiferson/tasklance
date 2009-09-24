@@ -1,0 +1,28 @@
+{% extends "report.html" %}
+{% load custom_tags %}
+
+{% block title %}Weekly Report - {{ block.super }}{% endblock %}
+
+{% block content %}
+{% include "milestones_css.html" %}
+<style type="text/css">
+	.milestonesHeader {
+		margin-top: 10px;
+	}
+	.msMeta {
+		width: 470px;
+	}
+</style>
+<div id="account" rel="{{ request.account.id }}">
+	<div id="categories">
+		{% for category in request.account.category_set.all %}
+		<div id="category{{ category.id }}" rel="{{ category.id }}" class="category">
+			<h1><a href="{% url pm_delcategory category.id %}"><img src="/site_media/images/report_delete.gif" alt="Delete Category"/></a> <a href="{% url pm_overview category.id %}"><span class="categoryName" rel="name">{{ category.name }}</span></a></h1>
+			<div class="categoryDescription" rel="description">{{ category.description }}</div>
+			{% show_milestones category %}
+			{% show_history category %}
+		</div>
+		{% endfor %}
+	</div>
+</div>
+{% endblock %}

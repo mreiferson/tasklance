@@ -13,6 +13,17 @@ def show_tasks(project, complete=0):
 	return locals()
 
 
+@register.inclusion_tag('show_milestones.html')
+def show_milestones(category):
+	milestones_active = category.milestone_set.filter(status__exact='active')
+	milestones_onhold = category.milestone_set.filter(status__exact='onhold')
+	milestones_complete = category.milestone_set.filter(status__exact='complete')
+	
+	any_milestones = (milestones_active.count() or milestones_onhold.count() or milestones_complete.count())
+	
+	return locals()
+
+
 @register.inclusion_tag('show_history.html')
 def show_history(category):
 	tasks = Task.objects.filter(project__category__exact=category).filter(complete=1).order_by('-completed')[:10]

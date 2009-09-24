@@ -1,12 +1,30 @@
 <style type="text/css">
-#milestonesHeader {
-	font-size: 13px;
-	font-weight: bold;
-	margin-bottom: 1em;
+.milestonesContainer {
+	margin-left: 25px;
 }
 
-#milestones {
+.milestonesHeader {
+	font-size: 12px;
+	font-weight: bold;
+	margin-bottom: 1em;
+	padding: 4px;
+	border-bottom: 1px solid #f0f0f0;
+}
+
+.milestonesActiveHeader {
+}
+
+.milestonesOnHoldHeader {
+}
+
+.milestones {
 	margin: 0 35px 1em 35px;
+}
+
+.milestonesActive {
+}
+
+.milestonesOnHold {
 }
 	
 .milestoneOverview {
@@ -26,7 +44,7 @@
 	margin-right: 5px;
 }
 
-.milestoneOverview .msMeta {
+.msMeta {
 	float: left;
 	font-size: 10px;
 }
@@ -45,5 +63,32 @@
 	font-weight: normal;
 	padding: 5px 0;
 	color: #666;
+}
+
+.milestoneOnHold .msPercCompleted {
+	border: 2px solid #000;
+	text-align: center;
+	font-size: 14px;
+	font-weight: bold;
+	font-family: Georgia;
+	color: #fff;
+	padding: 4px;
+	float: left;
+	width: 50px;
+	margin-right: 5px;
+}
+
+.milestoneOnHold .msName {
+	font-weight: bold;
+	color: #c62d7d;
+}
+
+.milestoneOnHold .msDescription {
+	padding: 5px 0;
+	color: #666;
+}
+
+.milestoneOnHold .msDeadline {
+	color: #aaa;
 }
 </style>
