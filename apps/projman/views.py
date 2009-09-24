@@ -385,17 +385,27 @@ def report_weekly(request):
 	
 	import re
 	cre = re.compile(r'(src|href)\s*=\s*"(?!http)\/([^""\'>]+)"')
-	html = cre.sub(r'\1="http://tws.tasklance.dev/\2"', html)
+	fqdn = 'http://'+request.META['SERVER_NAME']+':'+request.META['SERVER_PORT']
+	html = cre.sub(r'\1="'+fqdn+r'/\2"', html)
 	
-	f = open('/tmp/test.html', 'w')
-	f.write(html)
-	f.close()
+	import tempfile
+	s_path = tempfile.mktemp()+'.html'
+	d_path = tempfile.mktemp()+'.pdf'
+	
+	s = open(s_path, 'w')
+	s.write(html)
+	s.close()
 	
 	import os
-	os.popen('/usr/local/bin/wkhtmltopdf --print-media-type --margin-bottom 0mm --margin-top 0mm --margin-left 0mm --margin-right 0mm --page-size Letter /tmp/test.html /tmp/test.pdf')
+	cmd = '/usr/local/bin/wkhtmltopdf --print-media-type --margin-bottom 0mm --margin-top 0mm --margin-left 0mm --margin-right 0mm --page-size Letter '+s_path+' '+d_path
+	p = os.system(cmd)
 	
-	#import subprocess
-	#p = subprocess.Popen('', shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-	#stdout, stderr = p.communicate()
-
-	return HttpResponse(html)
+	os.unlink(s_path)
+	
+	o = open(d_path, 'r')
+	pdf = o.read()
+	o.close()
+	
+	os.unlink(d_path)
+	
+	return HttpResponse(pdf, content_type='application/pdf')
