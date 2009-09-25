@@ -11,11 +11,21 @@
 	<link rel="stylesheet" type="text/css" href="/site_media/css/default.css">
 	<link rel="stylesheet" type="text/css" href="/site_media/css/form.css">
 </head>
+<style type="text/css">
+body {
+	background: #fff;
+}
+
+#categories {
+	margin: 20px auto;
+}
+
+.category {
+	margin: 1.25em 0;
+	padding: 1.25em 0;
+}
+</style>
 <body>
-	<div id="contentContainer">
-		<div id="content">
-			{% block content %}{% endblock %}
-		</div>
-	</div>
+	{% block content %}{% endblock %}
 </body>
 </html>

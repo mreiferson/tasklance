@@ -408,4 +408,7 @@ def report_weekly(request):
 	
 	os.unlink(d_path)
 	
-	return HttpResponse(pdf, content_type='application/pdf')
+	response = HttpResponse(pdf, content_type='application/pdf')
+	response['Content-disposition'] = 'attachment; filename=report.pdf'
+	return response
+	#return HttpResponse(html)
