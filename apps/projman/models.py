@@ -9,7 +9,7 @@ class Account(models.Model):
 	name = models.CharField(max_length=255)
 	description = models.CharField(max_length=255)
 	subdomain = models.CharField(max_length=25)
-	created = models.DateTimeField('Date Created', editable=False)
+	created = models.DateTimeField(editable=False)
 	
 	def save(self):
 		if not self.created:
@@ -25,7 +25,7 @@ class Category(models.Model):
 	account = models.ForeignKey(Account)
 	name = models.CharField(max_length=255)
 	description = models.CharField(max_length=255)
-	created = models.DateTimeField('Date Created', editable=False)
+	created = models.DateTimeField(editable=False)
 	priority = models.PositiveIntegerField(default=0)
 
 	class Meta:
@@ -50,11 +50,17 @@ class Project(models.Model):
 	category = models.ForeignKey(Category)
 	name = models.CharField(max_length=255)
 	description = models.CharField(max_length=255)
-	created = models.DateTimeField('Date Created', editable=False)
+	created = models.DateTimeField(editable=False)
 	priority = models.PositiveIntegerField(default=0)
 	
 	class Meta:
 		ordering = ('priority', 'created')
+		
+	def visible(self):
+		for milestone in self.milestone_set.all():
+			if milestone.status != 'complete':
+				return True
+		return False
 	
 	def perc_completed(self):
 		l = self.task_set.all()
@@ -79,7 +85,7 @@ class Milestone(models.Model):
 	description = models.TextField()
 	deadline = models.DateTimeField()
 	status = models.CharField(max_length=15)
-	created = models.DateTimeField('Date Created', editable=False)
+	created = models.DateTimeField(editable=False)
 	priority = models.PositiveIntegerField(default=0)
 	
 	class Meta:
@@ -94,6 +100,21 @@ class Milestone(models.Model):
 		n = sum([p.perc_completed() for p in l])
 		
 		return float((float(n) / float(c)) if c else 0.0)
+		
+	def update_status(self, status, reason):
+		self.status = status
+		r1 = self.save()
+		
+		status_change = StatusChange(milestone=self, status=self.status, reason=reason)
+		r2 = status_change.save()
+		
+		return (r1 and r2)
+
+	def last_status_change(self):
+		try:
+			return self.statuschange_set.all().order_by('-timestamp')[0]
+		except IndexError:
+			return None
 	
 	def save(self):
 		if not self.created:
@@ -106,6 +127,22 @@ class Milestone(models.Model):
 		
 	def __unicode__(self):
 		return self.name+' ('+self.category.name+')'
+		
+		
+class StatusChange(models.Model):
+	milestone = models.ForeignKey(Milestone)
+	status = models.CharField(max_length=15)
+	reason = models.TextField(blank=True)
+	timestamp = models.DateTimeField()
+	
+	def save(self):
+		if not self.timestamp:
+			self.timestamp = datetime.now()
+		
+		super(StatusChange, self).save()
+	
+	def __unicode__(self):
+		return self.milestone.name
 
 
 class Task(models.Model):
@@ -113,8 +150,8 @@ class Task(models.Model):
 	item = models.CharField(max_length=255)
 	complete = models.BooleanField(default=False)
 	priority = models.PositiveIntegerField(default=0)
-	created = models.DateTimeField('Creation Stamp', editable=False)
-	completed = models.DateTimeField('Completion Stamp', null=True, editable=False)
+	created = models.DateTimeField(editable=False)
+	completed = models.DateTimeField(null=True, editable=False)
 	
 	class Meta:
 		ordering = ('priority', 'created')
@@ -143,7 +180,7 @@ class Thread(models.Model):
 	content_object = generic.GenericForeignKey()
 	object_id = models.PositiveIntegerField()
 	creator = models.ForeignKey(User, editable=False)
-	created = models.DateTimeField('Creation Stamp', editable=False)
+	created = models.DateTimeField(editable=False)
 
 	def save(self):
 		if not self.created:
@@ -159,7 +196,7 @@ class Message(models.Model):
 	thread = models.ForeignKey(Thread)
 	text = models.TextField()
 	creator = models.ForeignKey(User, editable=False, related_name='msg')
-	created = models.DateTimeField('Creation Stamp', editable=False)
+	created = models.DateTimeField(editable=False)
 	
 	class Meta:
 		ordering = ('-created',)

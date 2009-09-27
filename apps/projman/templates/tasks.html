@@ -13,6 +13,7 @@
 					<div id="category{{ category.id }}" rel="{{ category.id }}" class="category">
 						<div class="projects">
 							{% for project in category.project_set.all %}
+							{% if project.visible %}
 								<a name="project{{ project.id }}"></a>
 								<div id="project{{ project.id }}" rel="{{ project.id }}" class="project">
 									<h2><a href="{% url pm_delproject project.id %}"><img src="/site_media/images/folder_delete.gif" alt="Delete Project"/></a> <span class="projectName" rel="name">{{ project.name }}</span></h2>
@@ -27,6 +28,7 @@
 										{% show_tasks project 1 %}
 									</ul>
 								</div>
+							{% endif %}
 							{% endfor %}
 						</div>
 					</div>
@@ -45,7 +47,9 @@
 						<li class="categoryLink" rel="{{ category.id }}"><span class="handle"><img src="/site_media/images/list_ordered.gif"/></span> <a href="#category{{ category.id }}">{{ category.name }}</a>
 							<ul class="projectLinks" rel="project">
 							{% for project in category.project_set.all %}
+							{% if project.visible %}
 								<li class="projectLink" rel="{{ project.id }}"><span class="handle"><img src="/site_media/images/list_ordered.gif"/></span> <a href="#project{{ project.id }}">{{ project.name }}</a></li>
+							{% endif %}
 							{% endfor %}
 							</ul>
 						</li>

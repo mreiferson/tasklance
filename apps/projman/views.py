@@ -110,10 +110,9 @@ def milestones(request, category_id):
 def milestonestatus(request):
 	if request.method == 'POST':
 		milestone = get_object_or_404(Milestone, pk=request.POST['milestone_id'])
-		milestone.status = request.POST['status']
-		milestone.save()
+		milestone.update_status(request.POST['status'], request.POST['reason'])
 		
-		return HttpResponse(simplejson.dumps({ 'milestone_id': milestone.id, 'status': milestone.status}))
+		return HttpResponse(simplejson.dumps({ 'milestone_id': milestone.id, 'status': milestone.status }))
 	
 	raise Http404(None)
 

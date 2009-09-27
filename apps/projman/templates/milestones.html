@@ -158,7 +158,9 @@
 			
 			$('.milestone .msDeadline :select').change(function() {
 					var milestone = $(this).parents('.milestone');
-					$.post('{% url pm_milestonestatus %}', { 'milestone_id': milestone.attr('rel'), 'status': $(this).val() }, function(response) {
+					var status = $(this).val();
+					var reason = (status == 'onhold') ? prompt('Please enter a reason for this change in status:') : '';
+					$.post('{% url pm_milestonestatus %}', { 'milestone_id': milestone.attr('rel'), 'status': status, 'reason': reason }, function(response) {
 							alert('Status Updated!');
 						});
 				});
