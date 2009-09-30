@@ -101,7 +101,12 @@ $.editableFactory = {
 	'text': {
 		toEditable: function($this,options){
 			$('<input/>').appendTo($this)
-						 .val($this.data('editable.current'));
+						 .val($this.data('editable.current')).keypress(function(e) {
+								var code = e.charCode | e.keyCode;
+								if(code == 13) {
+									opts.toNonEditable($this,true);
+								}
+							});
 		},
 		getValue: function($this,options){
 			return $this.children().val();

@@ -300,11 +300,17 @@ def completetask(request, task_id, complete):
 def updatetask(request, task_id):
 	if request.method == 'POST':
 		task = get_object_or_404(Task, pk=task_id)
-		project = get_object_or_404(Project, pk=request.POST['project_id'])
-		task.project = project
+		
+		if 'project_id' in request.POST:
+			project = get_object_or_404(Project, pk=request.POST['project_id'])
+			task.project = project
+			
+		if 'item' in request.POST:
+			task.item = request.POST['item']
+			
 		task.save()
 		
-		return HttpResponse(simplejson.dumps({ 'id': task.id, 'project': task.project.id }))
+		return HttpResponse(simplejson.dumps({ 'id': task.id, 'project': task.project.id, 'item': task.item }))
 	
 	raise Http404(None)
 	

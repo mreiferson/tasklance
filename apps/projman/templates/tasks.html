@@ -64,25 +64,25 @@
 </div>
 <script type="text/javascript" language="javascript">
 var sortableOptions_tasks = {
-			handle: '.handle',
-			connectWith: '.tasks_active',
-			receive: function(event, ui) {
-				var project = $(ui.item).parents('.project');
-				$.post('/pm/updatetask/'+$(ui.item).attr('rel')+'/', { 'project_id': project.attr('rel') }, function() {}, 'json');
-				checkForPlaceholder($('.tasks_active', project));
-			},
-			remove: function(event, ui) {
-				checkForPlaceholder($(this));
-			},
-			update: function(event, ui) {
-				var project = $(ui.item).parents('.project');
-				var activeTasks = $('.tasks_active', project);
-				var order = $.makeArray($.map($('li', activeTasks), 
-									function(n) { return $(n).attr('rel'); }
-								));
-				$.post('/pm/prioritize/task/'+project.attr('rel')+'/', { 'order': order.join(',') }, function(response) {}, 'json');
-			}
-		};
+		handle: '.handle',
+		connectWith: '.tasks_active',
+		receive: function(event, ui) {
+			var project = $(ui.item).parents('.project');
+			$.post('/pm/updatetask/'+$(ui.item).attr('rel')+'/', { 'project_id': project.attr('rel') }, function() {}, 'json');
+			checkForPlaceholder($('.tasks_active', project));
+		},
+		remove: function(event, ui) {
+			checkForPlaceholder($(this));
+		},
+		update: function(event, ui) {
+			var project = $(ui.item).parents('.project');
+			var activeTasks = $('.tasks_active', project);
+			var order = $.makeArray($.map($('li', activeTasks), 
+								function(n) { return $(n).attr('rel'); }
+							));
+			$.post('/pm/prioritize/task/'+project.attr('rel')+'/', { 'order': order.join(',') }, function(response) {}, 'json');
+		}
+	};
 		
 var sortableOptions_reorder = {
 		handle: '.handle',
@@ -115,14 +115,16 @@ var sortableOptions_reorder = {
 	};
 		
 var editableOptions = { 'editBy': 'dblclick', 'submit': 'Update', 'cancel': 'Cancel', 'editClass': 'descriptionEdit', 'onSubmit': function(content) {
-		if(content.current != content.previous) {
-			var parent = $(this).parents('div');
-			var type = parent.attr('class');
-			var params = {};
-			params[$(this).attr('rel')] = content.current;
-			$.post('/pm/update'+type+'/'+parent.attr('rel')+'/', params, function() {}, 'json');
+			if(content.current != content.previous) {
+				var parentLookup = { 'projectName': 'div', 'item': 'li', 'projectDescription': 'div' };
+				var parent = $(this).parents(parentLookup[$(this).attr('class')]);
+				var type = parent.attr('class');
+				var params = {};
+				params[$(this).attr('rel')] = content.current;
+				$.post('/pm/update'+type+'/'+parent.attr('rel')+'/', params, function() {}, 'json');
+			}
 		}
-	} };
+	};
 
 var checkForPlaceholder = function(target) {
 		if($('.task', target).length) {
@@ -158,9 +160,11 @@ var toggleCompleteTask = function() {
 var deleteTask = function() {
 		var parent = $(this).parents('.task');
 		var tasks = parent.parent();
-		$.post('/pm/deletetask/'+parent.attr('rel')+'/', {}, function () {
-				parent.slideUp('fast', function() { parent.remove(); checkForPlaceholder(tasks); });
-			}, 'json');
+		if(confirm("Are you sure?")) {
+			$.post('/pm/deletetask/'+parent.attr('rel')+'/', {}, function () {
+					parent.slideUp('fast', function() { parent.remove(); checkForPlaceholder(tasks); });
+				}, 'json');
+		}
 	};
 
 var addTask = function(f) {
@@ -246,6 +250,8 @@ $(document).ready(function() {
 	$('.projectLinks, .categoryLinks').sortable(sortableOptions_reorder);
 		
 	$('.tasks').sortable(sortableOptions_tasks);
+	
+	$('.item').editable(editableOptions);
 		
 	$('.addProjectContainer :button').click(function() {
 			var f = $(this.form);

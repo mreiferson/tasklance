@@ -57,10 +57,14 @@ class Project(models.Model):
 		ordering = ('priority', 'created')
 		
 	def visible(self):
-		for milestone in self.milestone_set.all():
-			if milestone.status != 'complete':
-				return True
-		return False
+		if self.milestone_set.all().count():
+			for milestone in self.milestone_set.all():
+				if milestone.status != 'complete':
+					return True
+		
+			return False
+		else:
+			return True
 	
 	def perc_completed(self):
 		l = self.task_set.all()
