@@ -26,6 +26,14 @@ body {
 }
 </style>
 <body>
+	<div id="header">
+		<div id="left">
+			{% if request.account.name %}<strong>{{ request.account.name }}</strong>: {% endif %}Weekly Report {% now "Y-m-d" %}
+		</div>
+		<div id="right">
+			<img src="/site_media/images/plabs_logo.gif" alt="Perplexed Labs, Inc."/>
+		</div>
+	</div>
 	{% block content %}{% endblock %}
 </body>
 </html>
