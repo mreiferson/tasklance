@@ -38,4 +38,4 @@ class LoadForm(forms.Form):
 class MessageForm(forms.ModelForm):
 	class Meta:
 		model = Message
-		exclude = ('created',)
+		exclude = ('created', 'creator')
