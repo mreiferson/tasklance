@@ -9,7 +9,7 @@ class Account(models.Model):
 	name = models.CharField(max_length=255)
 	description = models.CharField(max_length=255)
 	subdomain = models.CharField(max_length=25)
-	created = models.DateTimeField(editable=False)
+	created = models.DateTimeField()
 	
 	def save(self):
 		if not self.created:
@@ -25,7 +25,7 @@ class Category(models.Model):
 	account = models.ForeignKey(Account)
 	name = models.CharField(max_length=255)
 	description = models.CharField(max_length=255)
-	created = models.DateTimeField(editable=False)
+	created = models.DateTimeField()
 	priority = models.PositiveIntegerField(default=0)
 
 	class Meta:
@@ -50,7 +50,7 @@ class Project(models.Model):
 	category = models.ForeignKey(Category)
 	name = models.CharField(max_length=255)
 	description = models.CharField(max_length=255)
-	created = models.DateTimeField(editable=False)
+	created = models.DateTimeField()
 	priority = models.PositiveIntegerField(default=0)
 	
 	class Meta:
@@ -89,7 +89,7 @@ class Milestone(models.Model):
 	description = models.TextField()
 	deadline = models.DateTimeField()
 	status = models.CharField(max_length=15)
-	created = models.DateTimeField(editable=False)
+	created = models.DateTimeField()
 	priority = models.PositiveIntegerField(default=0)
 	
 	class Meta:
@@ -154,8 +154,8 @@ class Task(models.Model):
 	item = models.CharField(max_length=255)
 	complete = models.BooleanField(default=False)
 	priority = models.PositiveIntegerField(default=0)
-	created = models.DateTimeField(editable=False)
-	completed = models.DateTimeField(null=True, editable=False)
+	created = models.DateTimeField()
+	completed = models.DateTimeField(null=True)
 	
 	class Meta:
 		ordering = ('priority', 'created')
@@ -183,8 +183,8 @@ class Thread(models.Model):
 	content_type = models.ForeignKey(ContentType)
 	content_object = generic.GenericForeignKey()
 	object_id = models.PositiveIntegerField()
-	creator = models.ForeignKey(User, editable=False)
-	created = models.DateTimeField(editable=False)
+	creator = models.ForeignKey(User)
+	created = models.DateTimeField()
 
 	def save(self):
 		if not self.created:
@@ -199,8 +199,8 @@ class Thread(models.Model):
 class Message(models.Model):
 	thread = models.ForeignKey(Thread)
 	text = models.TextField()
-	creator = models.ForeignKey(User, editable=False, related_name='msg')
-	created = models.DateTimeField(editable=False)
+	creator = models.ForeignKey(User, related_name='msg')
+	created = models.DateTimeField()
 	
 	class Meta:
 		ordering = ('-created',)

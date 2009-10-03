@@ -7,7 +7,7 @@
 		<div class="milestonesActiveHeader milestonesHeader">Active:</div>
 		<div class="milestonesActive milestones">
 		{% for milestone in milestones_active %}
-			<div id="milestone{{ milestone.id }}" class="milestoneOverview floatContainer">
+			<div id="milestone{{ milestone.id }}" class="milestoneOverview milestone floatContainer">
 				<div class="msPercCompleted" style="background: {% perc_colorizer milestone.perc_completed %}; border-color: {% perc_colorizer_dark milestone.perc_completed 50 %}">{{ milestone.perc_completed|floatformat:2 }}%</div>
 				<div class="msMeta">
 					<div class="msName">{{ milestone.name }}</div>
@@ -22,7 +22,7 @@
 		<div class="milestonesCompleteHeader milestonesHeader">Complete:</div>
 		<div class="milestonesComplete milestones">
 		{% for milestone in milestones_complete %}
-			<div id="milestone{{ milestone.id }}" class="milestoneComplete floatContainer">
+			<div id="milestone{{ milestone.id }}" class="milestoneComplete milestone floatContainer">
 				<div class="msPercCompleted" style="background: {% perc_colorizer milestone.perc_completed %}; border-color: {% perc_colorizer_dark milestone.perc_completed 50 %}">{{ milestone.perc_completed|floatformat:2 }}%</div>
 				<div class="msMeta">
 					<div class="msName">{{ milestone.name }}</div>
@@ -39,13 +39,13 @@
 		<div class="milestonesOnHoldHeader milestonesHeader">On-Hold:</div>
 		<div class="milestonesOnHold milestones">
 		{% for milestone in milestones_onhold %}
-			<div id="milestone{{ milestone.id }}" class="milestoneOnHold floatContainer">
+			<div id="milestone{{ milestone.id }}" class="milestoneOnHold milestone floatContainer">
 				<div class="msPercCompleted" style="background: {% perc_colorizer milestone.perc_completed %}; border-color: {% perc_colorizer_dark milestone.perc_completed 50 %}">{{ milestone.perc_completed|floatformat:2 }}%</div>
 				<div class="msMeta">
 					<div class="msName">{{ milestone.name }}</div>
 					<div class="msDescription">{{ milestone.description }}</div>
 					{% if milestone.last_status_change %}
-					<div class="msDeadline">placed on-hold: <strong>{{ milestone.last_status_change.timestamp|date:"Y-m-d" }}</strong> <em>{{ milestone.last_status_change.reason }}</em></div>
+					<div class="msDeadline">placed on-hold: <strong>{{ milestone.last_status_change.timestamp|date:"Y-m-d" }}</strong> - <em>{{ milestone.last_status_change.reason }}</em></div>
 					{% endif %}
 				</div>
 			</div>
