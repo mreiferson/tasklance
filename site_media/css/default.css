@@ -284,7 +284,7 @@ a:hover {
 	font-weight: bold;
 }
 
-.links li.projectLink {
+.links li.projectLink, .links li.milestoneLink {
 	font-weight: normal;
 }
 

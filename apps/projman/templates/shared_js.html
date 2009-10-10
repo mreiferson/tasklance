@@ -1,0 +1,31 @@
+<script type="text/javascript" language="javascript">
+var sortableOptions_reorder = {
+		handle: '.handle',
+		receive: function(event, ui) {
+		},
+		remove: function(event, ui) {
+		},
+		update: function(event, ui) {
+			var parent = $(ui.item).parent();
+			var type = parent.attr('rel');
+			var order = $('.'+type+'Link', parent);
+			
+			$.each(order, function(i, el) {
+				var match = $('#'+type+$(el).attr('rel'));
+				$(match).parent().append(match);
+			});
+			
+			order = $.makeArray($.map(order, 
+							function(n) { return $(n).attr('rel'); }
+						));
+			
+			if(type == 'category') {
+				var parentId = $('#account').attr('rel');
+			} else if((type == 'project') || (type == 'milestone')) {
+				var parentId = $(ui.item).parents('.categoryLink').attr('rel');
+			}
+			
+			$.post('/pm/prioritize/'+type+'/'+parentId+'/', { 'order': order.join(',') }, function(response) {}, 'json');
+		}
+	};
+</script>
