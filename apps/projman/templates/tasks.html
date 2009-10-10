@@ -160,7 +160,7 @@ var addTask = function(f) {
 										.append($('<div>').addClass('completeInput')
 											.append($('<input>').attr({ 'type': 'checkbox', 'autocomplete': 'off' }).addClass('completeLink').click(toggleCompleteTask))
 											))
-							.append($('<div>').addClass('item').append(response.item).append(' '))
+							.append($('<div>').addClass('item').append(response.item).append(' ').editable(editableOptions))
 							.append($('<div>').addClass('created').text('(0 days)'))
 					)
 					.hide()

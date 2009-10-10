@@ -191,6 +191,9 @@ class Thread(models.Model):
 			self.created = datetime.now()
 
 		super(Thread, self).save()
+		
+	def get_category(self):
+		return Category.objects.get(pk=self.object_id)
 	
 	def __unicode__(self):
 		return self.content_object.__class__.__name__+' '+self.content_object.name

@@ -95,7 +95,33 @@ def perc_colorizer_dark(perc, amount):
 	
 	return "#%02x%02x%02x" % (r,g,b)
 
+
+@register.simple_tag
+def milestone_deadline_color(milestone):
+	days_remaining = milestone.days_remaining().days
 	
+	if not milestone.status == 'complete':
+		if days_remaining <= 0:
+			return '#c00'
+		elif days_remaining < 5:
+			return '#e70'
+		
+		return '#000'
+	
+	return '#080'
+
+
+@register.simple_tag
+def milestone_days_remaining(milestone):
+	days_remaining = milestone.days_remaining().days
+	append = "s" if days_remaining else ""
+	
+	if days_remaining >= 0:
+		return "<strong>%d</strong> day%s remaining" % (days_remaining, append)
+	else:
+		return "OVERDUE!"
+
+
 @register.simple_tag
 def active(request, pattern):
 	import re

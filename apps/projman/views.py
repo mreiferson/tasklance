@@ -12,6 +12,7 @@ from django.views.generic.create_update import delete_object
 from decorators import useracct_required
 from django.contrib.contenttypes.models import ContentType
 from django.template.loader import get_template
+from django.core.mail import send_mail
 
 
 @useracct_required
@@ -336,9 +337,16 @@ def thread_post(request):
 	if request.method == 'POST':
 		f = MessageForm(request.POST)
 		if f.is_valid():
-			t = f.save(commit=False)
-			t.creator = request.user
-			t.save()
+			m = f.save(commit=False)
+			m.creator = request.user
+			m.save()
+			
+			# send notification email to administrators
+			df = DateFormat(m.created)
+			send_mail("[%s]: New Message In '%s' by '%s'" % (request.account.subdomain.upper(), m.thread.get_category().name, m.creator.username), 
+				"%s: %s" % (df.format('Y-m-d g:ia'), m.text), 
+				'admin@tasklance.com', 
+				['snakes@gmail.com', 'appletoast@gmail.com'])
 
 	return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
