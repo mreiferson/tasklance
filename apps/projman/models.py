@@ -146,7 +146,7 @@ class StatusChange(models.Model):
 		super(StatusChange, self).save()
 	
 	def __unicode__(self):
-		return self.milestone.name
+		return self.milestone.name+' ('+self.status+')'
 
 
 class Task(models.Model):
@@ -234,4 +234,4 @@ class UserAccount(models.Model):
 	account = models.ForeignKey(Account)
 	
 	def __unicode__(self):
-		return self.user+':'+self.account
+		return self.user.username+':'+self.account.name

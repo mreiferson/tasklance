@@ -169,6 +169,10 @@ def addmilestone(request):
 		f = MilestoneForm(request.POST)
 		if f.is_valid():
 			milestone = f.save()
+			
+			status_change = StatusChange(milestone=milestone, status=milestone.status, reason='milestone created')
+			status_change.save()
+			
 			df = DateFormat(milestone.deadline)
 			return HttpResponse(simplejson.dumps({ 'id': milestone.id,
 				'name': milestone.name, 'description': milestone.description,
