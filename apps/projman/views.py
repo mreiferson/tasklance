@@ -342,8 +342,7 @@ def thread_post(request):
 		f = MessageForm(request.POST)
 		if f.is_valid():
 			m = f.save(commit=False)
-			if not m.creator:
-				m.creator = request.user
+			m.creator = request.POST.get('creator', request.user)
 			m.save()
 			
 			# send notification email to administrators
