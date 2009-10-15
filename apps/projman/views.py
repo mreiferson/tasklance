@@ -352,7 +352,7 @@ def thread_post(request):
 				'admin@tasklance.com', 
 				['snakes@gmail.com', 'appletoast@gmail.com'])
 
-	return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+		return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 def load(request):
