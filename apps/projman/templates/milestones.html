@@ -5,7 +5,7 @@
 
 {% block content %}
 <style type="text/css">
-	#milestones {
+	.milestones {
 		width: 668px;
 	}
 	
@@ -87,41 +87,46 @@
 <table cellspacing="0" id="overviewContainer">
 	<tr>
 		<td style="vertical-align: top;">
-			<div id="milestones">
-				{% for milestone in category.milestone_set.all %}
-					<div id="milestone{{ milestone.id }}" class="milestone" rel="{{ milestone.id }}">
-						<div class="msMetaBanner floatContainer">
-							<div class="msPercCompleted" style="background: {% perc_colorizer milestone.perc_completed %}; border-color: {% perc_colorizer_dark milestone.perc_completed 50 %}">{{ milestone.perc_completed|floatformat:2 }}%</div>
-							<div class="msDeadline">
-								{{ milestone.days_remaining.days }} day{% ifnotequal milestone.days_remaining.days 1 %}s{% endifnotequal %} remaining ({{ milestone.deadline|date:"Y-m-d" }})
-								<br/>
-								<select>
-									{% for k,v in milestone_status %}
-										<option value="{{ k }}"{% ifequal milestone.status k %} selected{% endifequal %}>{{ v }}</option>
-									{% endfor %}
-								</select>
+			<div class="categoryLink" rel="{{ category.id }}">
+				<ul class="milestones" rel="milestone">
+					{% for milestone in category.milestone_set.all %}
+						<li id="milestone{{ milestone.id }}" class="milestone milestoneLink" rel="{{ milestone.id }}">
+							<div class="msMetaBanner floatContainer">
+								<div class="msPercCompleted" style="background: {% perc_colorizer milestone.perc_completed %}; border-color: {% perc_colorizer_dark milestone.perc_completed 50 %}">{{ milestone.perc_completed|floatformat:2 }}%</div>
+								<div class="msDeadline">
+									{% ifnotequal milestone.status 'complete' %}
+										{{ milestone.days_remaining.days }} day{% ifnotequal milestone.days_remaining.days 1 %}s{% endifnotequal %} remaining ({{ milestone.deadline|date:"Y-m-d" }})
+										<br/>
+									{% endifnotequal %}
+									<select>
+										{% for k,v in milestone_status %}
+											<option value="{{ k }}"{% ifequal milestone.status k %} selected{% endifequal %}>{{ v }}</option>
+										{% endfor %}
+									</select>
+									<span class="handle"><img src="/site_media/images/list_ordered.gif"/></span>
+								</div>
 							</div>
-						</div>
-						<div class="msName">{{ milestone.name }}</div>
-						<div class="msDescription">{{ milestone.description }}</div>
-						<div class="msDependenciesHeader">Dependencies:</div>
-						<div class="msDependencies">
-							{% for project in milestone.projects.all %}
-							<div class="msProject floatContainer" rel="{{ project.id }}">
-								<div class="msProjectLinks"><a href="javascript:;" class="delProjectFromMilestoneLink">x</a></div>
-								<div class="msProjectPercCompleted">{{ project.perc_completed|floatformat:2 }}%</div>
-								<div class="msProjectName">{{ project.name }}</div>
+							<div class="msName">{{ milestone.name }}</div>
+							<div class="msDescription">{{ milestone.description }}</div>
+							<div class="msDependenciesHeader">Dependencies:</div>
+							<div class="msDependencies">
+								{% for project in milestone.projects.all %}
+								<div class="msProject floatContainer" rel="{{ project.id }}">
+									<div class="msProjectLinks"><a href="javascript:;" class="delProjectFromMilestoneLink">x</a></div>
+									<div class="msProjectPercCompleted">{{ project.perc_completed|floatformat:2 }}%</div>
+									<div class="msProjectName">{{ project.name }}</div>
+								</div>
+								{% endfor %}
 							</div>
-							{% endfor %}
-						</div>
-						<select name="project_id">
-							{% for project in category.project_set.all %}
-							<option value="{{ project.id }}">{{ project.name }}</option>
-							{% endfor %}
-						</select>
-						<a href="javascript:;" class="addProjectToMilestoneLink">Add Project As Dependency</a>
-					</div>
-				{% endfor %}
+							<select name="project_id">
+								{% for project in category.project_set.all %}
+								<option value="{{ project.id }}">{{ project.name }}</option>
+								{% endfor %}
+							</select>
+							<a href="javascript:;" class="addProjectToMilestoneLink">Add Project As Dependency</a>
+						</li>
+					{% endfor %}
+				</ul>
 			</div>
 		</td>
 		<td style="vertical-align: top;">
@@ -134,6 +139,7 @@
 		</td>
 	</tr>
 </table>
+{% include "shared_js.html" %}
 <script type="text/javascript" language="javascript">
 	var onclick_delProjectFromMilestone = function() {
 			var project = $(this).parents('.msProject');
@@ -145,6 +151,8 @@
 		};
 	
 	$(document).ready(function() {
+			$('.milestones').sortable(sortableOptions_reorder);
+			
 			$('.addMilestoneContainer :button').click(function() {
 					var f = $(this.form);
 					$(':input[name=priority]', f).val($('.milestone').length);
