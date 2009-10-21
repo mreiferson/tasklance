@@ -142,12 +142,14 @@
 {% include "shared_js.html" %}
 <script type="text/javascript" language="javascript">
 	var onclick_delProjectFromMilestone = function() {
-			var project = $(this).parents('.msProject');
-			var milestone = $(this).parents('.milestone');
-			$.post('{% url pm_delprojectfrommilestone %}', { 'milestone_id': milestone.attr('rel'), 'project_id': project.attr('rel') }, function(response) {
-					project.slideUp('fast');
-					$('.msPercCompleted', milestone).text(response.milestone_perc_completed+'%')
-				}, 'json');
+			if(confirm("Are you sure you want to delete this project from this milestone?")) {
+				var project = $(this).parents('.msProject');
+				var milestone = $(this).parents('.milestone');
+				$.post('{% url pm_delprojectfrommilestone %}', { 'milestone_id': milestone.attr('rel'), 'project_id': project.attr('rel') }, function(response) {
+						project.slideUp('fast');
+						$('.msPercCompleted', milestone).text(response.milestone_perc_completed+'%')
+					}, 'json');
+			}
 		};
 	
 	$(document).ready(function() {
