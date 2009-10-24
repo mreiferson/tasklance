@@ -38,7 +38,7 @@ a:hover {
 #header {
 	background: #7c7c7c;
 	height: 34px;
-	border-bottom: 1px dotted #000;
+	border-bottom: 1px solid #000;
 	color: #aaa;
 	font-family: Arial;
 	font-size: 12px;
@@ -152,7 +152,7 @@ a:hover {
 }
 
 .category {
-	border-top: 2px dotted #eee;
+	border-top: 2px solid #eee;
 	padding-top: 5px;
 	margin-bottom: 1em;
 }
@@ -265,7 +265,7 @@ a:hover {
 .addHeader {
 	font-weight: bold;
 	margin-bottom: 5px;
-	border-bottom: 1px dotted #aaa;
+	border-bottom: 1px solid #aaa;
 }
 
 .descriptionEdit {
