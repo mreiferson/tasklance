@@ -14,7 +14,7 @@
 			</div>
 			<div class="item" rel="item">{{ task.item }}</div>
 			<div class="created">({% if task.complete %}{{ task.completed|date:"Y-m-d g:ia" }}{% else %}{{ task.age.days }} days{% endif %})</div>
-			<div style="clear:both;"/>
+			<div style="clear:both;"></div>
 		</li>
 	{% endfor %}
 {% else %}
