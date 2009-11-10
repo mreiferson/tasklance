@@ -43,7 +43,11 @@ class Category(models.Model):
 		super(Category, self).save()
 
 	def __unicode__(self):
-		return self.name+' ('+self.account.name+')'
+		try:
+			acct_name = self.account.name
+		except:
+			acct_name = 'NULL'
+		return self.name+' ('+acct_name+')'
 
 
 class Project(models.Model):
@@ -79,7 +83,11 @@ class Project(models.Model):
 		super(Project, self).save()
 	
 	def __unicode__(self):
-		return self.name+' ('+self.category.name+')'
+		try:
+			cat_name = self.category.name
+		except:
+			cat_name = 'NULL'
+		return self.name+' ('+cat_name+')'
 
 
 class Milestone(models.Model):
@@ -130,7 +138,11 @@ class Milestone(models.Model):
 		super(Milestone, self).save()
 		
 	def __unicode__(self):
-		return self.name+' ('+self.category.name+')'
+		try:
+			cat_name = self.category.name
+		except:
+			cat_name = 'NULL'
+		return self.name+' ('+cat_name+')'
 		
 		
 class StatusChange(models.Model):
@@ -146,7 +158,11 @@ class StatusChange(models.Model):
 		super(StatusChange, self).save()
 	
 	def __unicode__(self):
-		return self.milestone.name+' ('+self.status+')'
+		try:
+			milestone_name = self.milestone.name
+		except:
+			milestone_name = 'NULL'
+		return milestone_name+' ('+self.status+')'
 
 
 class Task(models.Model):
@@ -176,7 +192,14 @@ class Task(models.Model):
 		super(Task, self).save()
 	
 	def __unicode__(self):
-		return self.item+' ('+self.project.category.name+' => '+self.project.name+')'
+		try:
+			project = self.category
+			proj_name = project.name
+			cat_name = project.category.name
+		except:
+			proj_name = 'NULL'
+			cat_name = 'NULL'
+		return self.item+' ('+cat_name+' => '+proj_name+')'
 
 
 class Thread(models.Model):
