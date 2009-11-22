@@ -75,23 +75,20 @@
 		text-decoration: line-through;
 	}
 	
-	#chronologyHeader {
-		font-size: 14px;
-		font-weight: bold;
-		margin-bottom:1em;
-	}
-	
 	#chronology {
 		margin: 0 35px 1em 35px;
 	}
-	
+
+	.milestonesContainer {
+		width: 643px;
+	}
 	.msMeta {
-		width: 750px;
+		width: 470px;
 	}
 </style>
 {% include "milestones_css.html" %}
 {% show_milestones category %}
-<div id="chronologyHeader">Chronology:</div>
+<div class="homeHeader">Chronology:</div>
 <div id="chronology">
 	{% for datelist in items %}
 		<div class="date">
@@ -100,7 +97,7 @@
 				{% for e in datelist.1 %}
 					{% ifequal e.2 'task' %}
 						<div class="item floatContainer">
-							<div class="itemType {{ e.2 }} {% if e.3.complete %} complete{% endif %}">{% if e.3.complete %}<img src="/site_media/images/accept.gif"/> {% endif %}{{ e.2|capfirst }}</div>
+							<div class="itemType {{ e.2 }} {% if e.3.complete %} complete{% endif %}">{{ e.2|capfirst }}</div>
 							<div class="itemStamp">{{ e.1 }}</div>
 							<div class="itemText{% if e.3.completed %} completed{% endif %}">{{ e.3.item }} (<span class="itemProject">{{ e.3.project.name }}</span>)</div>
 						</div>
