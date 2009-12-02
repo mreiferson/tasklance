@@ -6,7 +6,6 @@ var sortableOptions_reorder = {
 		remove: function(event, ui) {
 		},
 		update: function(event, ui) {
-			debugger;
 			var parent = $(ui.item).parent();
 			var type = parent.attr('rel');
 			var order = $('.'+type+'Link', parent);
