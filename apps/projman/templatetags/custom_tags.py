@@ -1,5 +1,6 @@
 from projman.models import Task
 from django import template
+from datetime import datetime, timedelta
 
 register = template.Library()
 
@@ -15,11 +16,17 @@ def show_tasks(project, complete=0):
 
 @register.inclusion_tag('show_milestones.html')
 def show_milestones(category):
+	min_date = datetime.today() + timedelta(days=-7)
 	milestones_active = category.milestone_set.filter(status__exact='active')
 	milestones_onhold = category.milestone_set.filter(status__exact='onhold')
-	milestones_complete = category.milestone_set.filter(status__exact='complete')
-	
-	any_milestones = (milestones_active.count() or milestones_onhold.count() or milestones_complete.count())
+	mc = category.milestone_set.filter(status__exact='complete')
+
+	milestones_complete = []
+	for m in mc:
+		if m.last_status_change().timestamp > min_date:
+			milestones_complete.append(m)
+
+	any_milestones = (milestones_active.count() or milestones_onhold.count() or len(milestones_complete))
 	
 	return locals()
 

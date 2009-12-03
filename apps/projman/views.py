@@ -102,8 +102,10 @@ def thread_view(request, content_object, content_id):
 def milestones(request, category_id):
 	category = get_object_or_404(Category, pk=category_id)
 	milestone_form = MilestoneForm()
+	milestones = category.milestone_set.all().exclude(status__exact='complete')
 	
 	return render_to_response('milestones.html', { 'category': category, 
+		'milestones': milestones,
 		'milestone_status': (('onhold', 'On Hold'), ('active', 'Active'), ('complete', 'Complete')),
 		'milestone_form': milestone_form }, context_instance=RequestContext(request))
 

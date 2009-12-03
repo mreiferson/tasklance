@@ -101,7 +101,7 @@ class Milestone(models.Model):
 	priority = models.PositiveIntegerField(default=0)
 	
 	class Meta:
-		ordering = ('priority', 'created')
+		ordering = ('deadline',)
 		
 	def days_remaining(self):
 		return self.deadline - datetime.now()

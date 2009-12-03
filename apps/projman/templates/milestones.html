@@ -89,7 +89,7 @@
 		<td style="vertical-align: top;">
 			<div class="categoryLink" rel="{{ category.id }}">
 				<ul class="milestones" rel="milestone">
-					{% for milestone in category.milestone_set.all %}
+					{% for milestone in milestones %}
 						<li id="milestone{{ milestone.id }}" class="milestone milestoneLink" rel="{{ milestone.id }}">
 							<div class="msMetaBanner floatContainer">
 								<div class="msPercCompleted" style="background: {% perc_colorizer milestone.perc_completed %}; border-color: {% perc_colorizer_dark milestone.perc_completed 50 %}">{{ milestone.perc_completed|floatformat:2 }}%</div>

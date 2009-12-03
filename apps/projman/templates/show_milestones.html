@@ -25,30 +25,6 @@
 		</table>
 		<div style="clear: both;"></div>
 	{% endif %}
-	{% if milestones_complete.count %}
-		<table cellspacing="0">
-			<tr>
-				<td class="milestonesCompleteHeader milestonesHeader"><img src="/site_media/images/completed.gif"/></td>
-				<td style="vertical-align: top; padding-left: 10px;">
-					<div class="milestonesComplete milestones">
-					{% for milestone in milestones_complete %}
-						<div id="milestone{{ milestone.id }}" class="milestoneComplete milestone floatContainer">
-							<div class="msPercCompleted" style="background: {% perc_colorizer milestone.perc_completed %}; border-color: {% perc_colorizer_dark milestone.perc_completed 50 %}">{{ milestone.perc_completed|floatformat:2 }}%</div>
-							<div class="msMeta">
-								<div class="msName"><a href="{% url pm_milestones category.id %}">{{ milestone.name }}</a></div>
-								<div class="msDescription">{{ milestone.description }}</div>
-								{% if milestone.last_status_change %}
-								<div class="msDeadline" style="color: {% milestone_deadline_color milestone %}">completed: <strong>{{ milestone.last_status_change.timestamp|date:"Y-m-d" }}</strong></div>
-								{% endif %}
-							</div>
-						</div>
-					{% endfor %}
-					</div>
-				</td>
-			</tr>
-		</table>
-		<div style="clear: both;"></div>
-	{% endif %}
 	{% if milestones_onhold.count %}
 		<table cellspacing="0">
 			<tr>
@@ -63,6 +39,30 @@
 								<div class="msDescription">{{ milestone.description }}</div>
 								{% if milestone.last_status_change %}
 								<div class="msDeadline" style="color: {% milestone_deadline_color milestone %}">placed on-hold: <strong>{{ milestone.last_status_change.timestamp|date:"Y-m-d" }}</strong> - <em>{{ milestone.last_status_change.reason }}</em></div>
+								{% endif %}
+							</div>
+						</div>
+					{% endfor %}
+					</div>
+				</td>
+			</tr>
+		</table>
+		<div style="clear: both;"></div>
+	{% endif %}
+	{% if milestones_complete|length %}
+		<table cellspacing="0">
+			<tr>
+				<td class="milestonesCompleteHeader milestonesHeader"><img src="/site_media/images/completed.gif"/></td>
+				<td style="vertical-align: top; padding-left: 10px;">
+					<div class="milestonesComplete milestones">
+					{% for milestone in milestones_complete %}
+						<div id="milestone{{ milestone.id }}" class="milestoneComplete milestone floatContainer">
+							<div class="msPercCompleted" style="background: {% perc_colorizer milestone.perc_completed %}; border-color: {% perc_colorizer_dark milestone.perc_completed 50 %}">{{ milestone.perc_completed|floatformat:2 }}%</div>
+							<div class="msMeta">
+								<div class="msName"><a href="{% url pm_milestones category.id %}">{{ milestone.name }}</a></div>
+								<div class="msDescription">{{ milestone.description }}</div>
+								{% if milestone.last_status_change %}
+								<div class="msDeadline" style="color: {% milestone_deadline_color milestone %}">completed: <strong>{{ milestone.last_status_change.timestamp|date:"Y-m-d" }}</strong></div>
 								{% endif %}
 							</div>
 						</div>
