@@ -23,7 +23,6 @@
 						<h1><a href="{% url pm_delcategory category.id %}"><img src="/site_media/images/report_delete.gif" alt="Delete Category"/></a> <a href="{% url pm_overview category.id %}"><span class="categoryName" rel="name">{{ category.name }}</span></a></h1>
 						<div class="categoryDescription" rel="description">{{ category.description }}</div>
 						{% show_milestones category %}
-						{% show_history category %}
 					</div>
 					{% endfor %}
 				</div>
@@ -42,7 +41,11 @@
 						<li class="categoryLink" rel="{{ category.id }}"><span class="handle"><img src="/site_media/images/list_ordered.gif"/></span> <a href="#category{{ category.id }}">{{ category.name }}</a>
 							<ul class="milestoneLinks" rel="milestone">
 							{% for milestone in category.milestone_set.all %}
-								<li class="milestoneLink" rel="{{ milestone.id }}"><span class="handle"><img src="/site_media/images/list_ordered.gif"/></span> <a href="#milestone{{ milestone.id }}">{{ milestone.name }}</a></li>
+								<li class="milestoneLink" rel="{{ milestone.id }}">
+									<div style="float: left; padding-top:3px;"><span class="handle"><img src="/site_media/images/list_ordered.gif"/></span></div>
+									<div style="float: left; margin-left: 5px; width: 215px;"><a href="#milestone{{ milestone.id }}">{{ milestone.name }}</a></div>
+									<div style="clear: both;"></div>
+								</li>
 							{% endfor %}
 							</ul>
 						</li>

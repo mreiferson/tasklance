@@ -95,7 +95,7 @@
 								<div class="msPercCompleted" style="background: {% perc_colorizer milestone.perc_completed %}; border-color: {% perc_colorizer_dark milestone.perc_completed 50 %}">{{ milestone.perc_completed|floatformat:2 }}%</div>
 								<div class="msDeadline">
 									{% ifnotequal milestone.status 'complete' %}
-										{{ milestone.days_remaining.days }} day{% ifnotequal milestone.days_remaining.days 1 %}s{% endifnotequal %} remaining ({{ milestone.deadline|date:"Y-m-d" }})
+										{{ milestone.days_remaining }} day{% ifnotequal milestone.days_remaining 1 %}s{% endifnotequal %} remaining ({{ milestone.deadline|date:"Y-m-d" }})
 										<br/>
 									{% endifnotequal %}
 									<select>

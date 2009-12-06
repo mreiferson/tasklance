@@ -104,7 +104,9 @@ class Milestone(models.Model):
 		ordering = ('deadline',)
 		
 	def days_remaining(self):
-		return self.deadline - datetime.now()
+		diff = self.deadline - datetime.now()
+		
+		return (diff.days + 1)
 		
 	def perc_completed(self):
 		l = self.projects.all()

@@ -105,7 +105,7 @@ def perc_colorizer_dark(perc, amount):
 
 @register.simple_tag
 def milestone_deadline_color(milestone):
-	days_remaining = milestone.days_remaining().days
+	days_remaining = milestone.days_remaining()
 	
 	if not milestone.status == 'complete':
 		if days_remaining <= 0:
@@ -120,7 +120,7 @@ def milestone_deadline_color(milestone):
 
 @register.simple_tag
 def milestone_days_remaining(milestone):
-	days_remaining = milestone.days_remaining().days
+	days_remaining = milestone.days_remaining()
 	append = "s" if days_remaining else ""
 	
 	if days_remaining >= 0:
