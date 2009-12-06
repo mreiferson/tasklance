@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from datetime import datetime
+from datetime import datetime, timedelta
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 
@@ -35,6 +35,19 @@ class Category(models.Model):
 	def get_thread(self):
 		ctype = ContentType.objects.get_for_model(self)
 		return Thread.objects.get(content_type__pk=ctype.id, object_id=self.id)
+		
+	def any_milestones(self):
+		min_date = datetime.today() + timedelta(days=-7)
+		milestones_active = self.milestone_set.filter(status__exact='active')
+		milestones_onhold = self.milestone_set.filter(status__exact='onhold')
+		mc = self.milestone_set.filter(status__exact='complete')
+
+		milestones_complete = []
+		for m in mc:
+			if m.last_status_change().timestamp > min_date:
+				milestones_complete.append(m)
+
+		return (milestones_active.count() or milestones_onhold.count() or len(milestones_complete))
 		
 	def save(self):
 		if not self.created:
