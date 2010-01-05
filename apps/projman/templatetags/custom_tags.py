@@ -106,7 +106,10 @@ def perc_colorizer_dark(perc, amount):
 @register.simple_tag
 def milestone_deadline_color(milestone):
 	days_remaining = milestone.days_remaining()
-	
+
+	if milestone.status == 'onhold':
+		return '#888'
+
 	if not milestone.status == 'complete':
 		if days_remaining <= 0:
 			return '#c00'
