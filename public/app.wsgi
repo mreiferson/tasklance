@@ -1,7 +1,7 @@
 import os
 import sys
 
-appdir = os.path.normpath(os.path.join(os.realpath(os.path.dirname(__file__)), '..'))
+appdir = os.path.normpath(os.path.join(os.path.realpath(os.path.dirname(__file__)), '..'))
 sys.path.insert(0, appdir)
 os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
 os.environ['PYTHON_EGG_CACHE'] = os.path.join(appdir, '.python-eggs')
