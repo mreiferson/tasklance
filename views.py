@@ -37,7 +37,7 @@ def login(request):
 	return render_to_response('login.html', { 'login_form': f },
 		context_instance=RequestContext(request))
 
-		
+
 def logout(request):
 	auth.logout(request)
 	

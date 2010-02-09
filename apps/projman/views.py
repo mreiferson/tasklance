@@ -99,6 +99,7 @@ def thread_view(request, content_object, content_id):
 		'thread': thread, 'msg_form': msg_form }, context_instance=RequestContext(request))
 
 
+@useracct_required
 def milestones(request, category_id):
 	category = get_object_or_404(Category, pk=category_id)
 	milestone_form = MilestoneForm()
@@ -110,6 +111,7 @@ def milestones(request, category_id):
 		'milestone_form': milestone_form }, context_instance=RequestContext(request))
 
 
+@useracct_required
 def milestonestatus(request):
 	if request.method == 'POST':
 		milestone = get_object_or_404(Milestone, pk=request.POST['milestone_id'])
@@ -120,6 +122,7 @@ def milestonestatus(request):
 	raise Http404(None)
 
 
+@useracct_required
 def delete_object_referer(request, object_id, **kwargs):
 	backup = reverse('pm_home')
 	
@@ -134,6 +137,7 @@ def delete_object_referer(request, object_id, **kwargs):
 		**kwargs)
 
 
+@useracct_required
 def create(request):
 	usercreation_form = UserCreationForm(prefix='user')
 	account_form = AccountForm(prefix='acct')
@@ -155,6 +159,7 @@ def create(request):
 		'account_form': account_form }, context_instance=RequestContext(request))
 
 
+@useracct_required
 def addcategory(request):
 	if request.method == 'POST':
 		f = CategoryForm(request.POST)
@@ -164,8 +169,9 @@ def addcategory(request):
 				'name': category.name, 'description': category.description }))
 		
 	raise Http404(repr(f.errors) if f else None)
-	
-	
+
+
+@useracct_required
 def addmilestone(request):
 	if request.method == 'POST':
 		f = MilestoneForm(request.POST)
@@ -181,8 +187,9 @@ def addmilestone(request):
 				'deadline': df.format('Y-m-d') }))
 					
 	raise Http404(repr(f.errors) if f else None)
-	
-	
+
+
+@useracct_required
 def delmilestone(request, milestone_id):
 	if request.method == 'POST':
 		milestone = get_object_or_404(Milestone, pk=milestone_id)
@@ -191,8 +198,9 @@ def delmilestone(request, milestone_id):
 		return HttpResponse(simplejson.dumps({ 'return': True }))
 		
 	raise Http404(None)
-	
-	
+
+
+@useracct_required
 def addprojecttomilestone(request):
 	if request.method == 'POST':
 		milestone = get_object_or_404(Milestone, pk=request.POST['milestone_id'])
@@ -205,8 +213,9 @@ def addprojecttomilestone(request):
 			'perc_completed': "%.2f" % project.perc_completed(), 'milestone_perc_completed': "%.2f" % milestone.perc_completed() }))
 		
 	raise Http404(None)
-	
-	
+
+
+@useracct_required
 def delprojectfrommilestone(request):
 	if request.method == 'POST':
 		project = get_object_or_404(Project, pk=request.POST['project_id'])
@@ -219,6 +228,7 @@ def delprojectfrommilestone(request):
 	raise Http404(None)
 
 
+@useracct_required
 def addproject(request):
 	if request.method == 'POST':
 		f = ProjectForm(request.POST)
@@ -230,6 +240,7 @@ def addproject(request):
 	raise Http404(repr(f.errors) if f else None)
 
 
+@useracct_required
 def addtask(request):
 	if request.method == 'POST':
 		f = TaskForm(request.POST)
@@ -242,6 +253,7 @@ def addtask(request):
 	raise Http404(repr(f.errors) if f else None)
 
 
+@useracct_required
 def updatecategory(request, category_id):
 	if request.method == 'POST':
 		category = get_object_or_404(Category, pk=category_id)
@@ -260,6 +272,7 @@ def updatecategory(request, category_id):
 	raise Http404(None)
 
 
+@useracct_required
 def updateproject(request, project_id):
 	if request.method == 'POST':
 		project = get_object_or_404(Project, pk=project_id)
@@ -276,8 +289,9 @@ def updateproject(request, project_id):
 			'description': project.description }))
 	
 	raise Http404(None)
-	
 
+
+@useracct_required
 def deletetask(request, task_id):
 	if request.method == 'POST':
 		task = get_object_or_404(Task, pk=task_id)
@@ -288,6 +302,7 @@ def deletetask(request, task_id):
 	raise Http404(None)
 
 
+@useracct_required
 def completetask(request, task_id, complete):
 	if request.method == 'POST':
 		task = get_object_or_404(Task, pk=task_id)
@@ -302,8 +317,9 @@ def completetask(request, task_id, complete):
 			'age': task.age().days }))
 	
 	raise Http404(None)
-	
 
+
+@useracct_required
 def updatetask(request, task_id):
 	if request.method == 'POST':
 		task = get_object_or_404(Task, pk=task_id)
@@ -320,8 +336,9 @@ def updatetask(request, task_id):
 		return HttpResponse(simplejson.dumps({ 'id': task.id, 'project': task.project.id, 'item': task.item }))
 	
 	raise Http404(None)
-	
 
+
+@useracct_required
 def prioritize(request, obj_type, id):
 	if request.method == 'POST':
 		parent_mapping = { 'category': Account, 'milestone': Category, 'project': Category, 'task': Project }
@@ -335,7 +352,7 @@ def prioritize(request, obj_type, id):
 			if getattr(obj, parent.__class__.__name__.lower()).id == parent.id:
 				obj.priority = i
 				obj.save()
-
+				
 	return HttpResponse(simplejson.dumps({ 'id': parent.id, 'order': order }))
 
 
@@ -353,10 +370,11 @@ def thread_post(request):
 				"%s: %s" % (df.format('Y-m-d g:ia'), m.text), 
 				'admin@tasklance.com', 
 				['snakes@gmail.com', 'appletoast@gmail.com'])
-
+				
 		return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
+@useracct_required
 def load(request):
 	if request.method == 'POST':
 		f = LoadForm(request.POST, request.FILES)
@@ -396,8 +414,9 @@ def load(request):
 		return HttpResponseRedirect(request.META.get('HTTP_REFERER', reverse('pm_home')))
 	
 	return render_to_response('load.html')
-	
-	
+
+
+@useracct_required
 def report_weekly(request):
 	t = get_template('report_weekly.html')
 	html = t.render(RequestContext(request))
