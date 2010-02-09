@@ -137,7 +137,6 @@ def delete_object_referer(request, object_id, **kwargs):
 		**kwargs)
 
 
-@useracct_required
 def create(request):
 	usercreation_form = UserCreationForm(prefix='user')
 	account_form = AccountForm(prefix='acct')
