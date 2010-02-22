@@ -41,11 +41,13 @@
 						<li class="categoryLink" rel="{{ category.id }}"><span class="handle"><img src="/site_media/images/list_ordered.gif"/></span> <a href="#category{{ category.id }}">{{ category.name }}</a>
 							<ul class="milestoneLinks" rel="milestone">
 							{% for milestone in category.milestone_set.all %}
+								{% ifnotequal milestone.status 'complete' %}
 								<li class="milestoneLink" rel="{{ milestone.id }}">
 									<div style="float: left; padding-top:3px;"><span class="handle"><img src="/site_media/images/list_ordered.gif"/></span></div>
 									<div style="float: left; margin-left: 5px; width: 215px;"><a href="#milestone{{ milestone.id }}">{{ milestone.name }}</a></div>
 									<div style="clear: both;"></div>
 								</li>
+								{% endifnotequal %}
 							{% endfor %}
 							</ul>
 						</li>

@@ -32,8 +32,10 @@ urlpatterns = patterns('',
 	url(r'^milestone/add/$', views.addmilestone, name='pm_addmilestone'),
 	url(r'^milestone/addproject/$', views.addprojecttomilestone, name='pm_addprojecttomilestone'),
 	url(r'^milestone/delproject/$', views.delprojectfrommilestone, name='pm_delprojectfrommilestone'),
-	url(r'^milestone/delete/$', views.delmilestone, name='pm_delmilestone'),
+	url(r'^milestone/delete/(?P<object_id>\d+)/$', views.delete_object_referer, 
+		{ 'model': Milestone, 'template_name': 'milestone_confirm_delete.html' }, name='pm_delmilestone'),
 	url(r'^milestone/status/$', views.milestonestatus, name='pm_milestonestatus'),
+	url(r'^milestone/update/(?P<milestone_id>\d+)/$', views.updatemilestone, name='pm_updatemilestone'),
 	
 	url(r'^report/weekly/$', views.report_weekly, name='pm_report_weekly'),
 )

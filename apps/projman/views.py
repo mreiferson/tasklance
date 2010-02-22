@@ -189,17 +189,6 @@ def addmilestone(request):
 
 
 @useracct_required
-def delmilestone(request, milestone_id):
-	if request.method == 'POST':
-		milestone = get_object_or_404(Milestone, pk=milestone_id)
-		milestone.delete()
-		
-		return HttpResponse(simplejson.dumps({ 'return': True }))
-		
-	raise Http404(None)
-
-
-@useracct_required
 def addprojecttomilestone(request):
 	if request.method == 'POST':
 		milestone = get_object_or_404(Milestone, pk=request.POST['milestone_id'])
@@ -226,6 +215,25 @@ def delprojectfrommilestone(request):
 		
 	raise Http404(None)
 
+@useracct_required
+def updatemilestone(request, milestone_id):
+	if request.method == 'POST':
+		milestone = get_object_or_404(Milestone, pk=milestone_id)
+		
+		if 'deadline' in request.POST:
+			milestone.deadline = request.POST['deadline']
+		
+		if 'description' in request.POST:
+			milestone.description = request.POST['description']
+		
+		if 'name' in request.POST:
+			milestone.name = request.POST['name']
+		
+		milestone.save()
+		
+		return HttpResponse(simplejson.dumps({ 'return': True }))
+			
+	raise Http404(None)
 
 @useracct_required
 def addproject(request):

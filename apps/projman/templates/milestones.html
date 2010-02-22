@@ -30,12 +30,16 @@
 		float: left;
 		width: 75px;
 	}
-	.milestone .msDeadline {
+	.milestone .msRightStuff {
 		float: right;
 		text-align: right;
 		font-weight: bold;
 		font-size: 12px;
 		color: #666;
+	}
+	
+	.milestone .msRightStuff > div {
+		margin-bottom: 5px;
 	}
 	
 	.milestone .msName {
@@ -62,6 +66,7 @@
 	}
 	
 	.msProject {
+		margin-bottom: 5px;
 		clear: both;
 	}
 	
@@ -93,28 +98,34 @@
 						<li id="milestone{{ milestone.id }}" class="milestone milestoneLink" rel="{{ milestone.id }}">
 							<div class="msMetaBanner floatContainer">
 								<div class="msPercCompleted" style="background: {% perc_colorizer milestone.perc_completed %}; border-color: {% perc_colorizer_dark milestone.perc_completed 50 %}">{{ milestone.perc_completed|floatformat:2 }}%</div>
-								<div class="msDeadline">
-									{% ifnotequal milestone.status 'complete' %}
-										{{ milestone.days_remaining }} day{% ifnotequal milestone.days_remaining 1 %}s{% endifnotequal %} remaining ({{ milestone.deadline|date:"Y-m-d" }})
-										<br/>
-									{% endifnotequal %}
-									<select>
-										{% for k,v in milestone_status %}
-											<option value="{{ k }}"{% ifequal milestone.status k %} selected{% endifequal %}>{{ v }}</option>
-										{% endfor %}
-									</select>
-									<span class="handle"><img src="/site_media/images/list_ordered.gif"/></span>
+								<div class="msRightStuff">
+									<div class="msDeadline">
+										{% ifnotequal milestone.status 'complete' %}
+											{{ milestone.days_remaining }} day{% ifnotequal milestone.days_remaining 1 %}s{% endifnotequal %} remaining (<a href="javascript:;" class="changeDeadlineLink">{{ milestone.deadline|date:"Y-m-d" }}</a>)
+										{% endifnotequal %}
+									</div>
+									<div class="msStatus">
+										<select>
+											{% for k,v in milestone_status %}
+												<option value="{{ k }}"{% ifequal milestone.status k %} selected{% endifequal %}>{{ v }}</option>
+											{% endfor %}
+										</select>
+										<span class="handle"><img src="/site_media/images/list_ordered.gif"/></span>
+									</div>
+									<div class="msLinks">
+										<a href="{% url pm_delmilestone milestone.id %}" class="delMilestoneLink">Delete</a>
+									</div>
 								</div>
 							</div>
-							<div class="msName">{{ milestone.name }}</div>
-							<div class="msDescription">{{ milestone.description }}</div>
+							<div class="msName" rel="name">{{ milestone.name }}</div>
+							<div class="msDescription" rel="description">{{ milestone.description }}</div>
 							<div class="msDependenciesHeader">Dependencies:</div>
 							<div class="msDependencies">
 								{% for project in milestone.projects.all %}
 								<div class="msProject floatContainer" rel="{{ project.id }}">
 									<div class="msProjectLinks"><a href="javascript:;" class="delProjectFromMilestoneLink">x</a></div>
 									<div class="msProjectPercCompleted">{{ project.perc_completed|floatformat:2 }}%</div>
-									<div class="msProjectName">{{ project.name }}</div>
+									<div class="msProjectName"><a href="{% url pm_tasks category.id %}#project{{ project.id }}">{{ project.name }}</a></div>
 								</div>
 								{% endfor %}
 							</div>
@@ -166,7 +177,7 @@
 				
 			$('.delProjectFromMilestoneLink').click(onclick_delProjectFromMilestone);
 			
-			$('.milestone .msDeadline :select').change(function() {
+			$('.milestone .msRightStuff select').change(function() {
 					var milestone = $(this).parents('.milestone');
 					var status = $(this).val();
 					var reason = (status == 'onhold') ? prompt('Please enter a reason for this change in status:') : '';
@@ -204,6 +215,31 @@
 							el.hide().appendTo($('.msDependencies', milestone)).slideDown('fast');
 						}, 'json');
 				});
+			
+			$('.changeDeadlineLink').click(function() {
+					var link = $(this);
+					var newDeadline = prompt('Please enter a new deadline YYYY-MM-DD:', link.text());
+					if(newDeadline) {
+						var milestone = $(this).parents('.milestone');
+						$.post('/pm/milestone/update/'+milestone.attr('rel')+'/', { 'deadline': newDeadline },
+							function(response) {
+								link.text(newDeadline);
+							}, 'json');
+					}
+				});
+			
+			var editableOptions = { 'editBy': 'dblclick', 'submit': 'Update', 'cancel': 'Cancel', 'editClass': 'descriptionEdit', 'onSubmit': function(content) {
+						if(content.current != content.previous) {
+							var parent = $(this).parents('.milestone');
+							var params = {};
+							params[$(this).attr('rel')] = content.current;
+							$.post('/pm/milestone/update/'+parent.attr('rel')+'/', params, function() {}, 'json');
+						}
+					}
+				};
+				
+			$('.msName').editable(editableOptions);
+			$('.msDescription').editable(editableOptions);
 		});
 </script>
 {% endblock %}
