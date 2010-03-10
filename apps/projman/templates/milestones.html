@@ -188,7 +188,7 @@
 			
 			$('.addProjectToMilestoneLink').click(function() {
 					var milestone = $(this).parents('.milestone');
-					$.post('{% url pm_addprojecttomilestone %}', { 'milestone_id': milestone.attr('rel'), 'project_id': $(':select[name=project_id]', milestone).val() }, 
+					$.post('{% url pm_addprojecttomilestone %}', { 'milestone_id': milestone.attr('rel'), 'project_id': $('select[name=project_id]', milestone).val() }, 
 						function(response) {
 							$('.msPercCompleted', milestone).text(response.milestone_perc_completed+'%');
 							var el = $('<div>')
