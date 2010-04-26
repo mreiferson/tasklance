@@ -14,10 +14,10 @@
 {% url pm_thread category.id as thread %}
 {% url pm_milestones category.id as milestones %}
 <ul id="navMenuList">
-	<li><a href="{{ overview }}" class="{% active request overview %}">Overview</a></li>
-	<li><a href="{{ tasks }}" class="{% active request tasks %}">Tasks</a></li>
-	<li><a href="{{ thread }}" class="{% active request thread %}">Messages</a></li>
-	<li><a href="{{ milestones }}" class="{% active request milestones %}">Milestones</a></li>
+    <li><a href="{{ overview }}" class="{% active request overview %}">Overview</a></li>
+    <li><a href="{{ tasks }}" class="{% active request tasks %}">Tasks</a></li>
+    <li><a href="{{ thread }}" class="{% active request thread %}">Messages</a></li>
+    <li><a href="{{ milestones }}" class="{% active request milestones %}">Milestones</a></li>
 </ul>
 <div style="clear: both"></div>
 {% endblock %}

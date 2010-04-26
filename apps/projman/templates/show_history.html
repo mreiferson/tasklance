@@ -1,13 +1,13 @@
 {% load custom_tags %}
 
 {% if tasks.count %}
-	<div class="homeHeader">Recently Completed Tasks:</div>
-	<table class="categoryHistory" cellspacing="0">
-	{% for task in tasks %}
-		<tr class="" style="color: {% colorizer forloop.counter tasks.count %};">
-			<td class="historyLineDate">{{ task.completed|date:"M j" }}</td>
-			<td class="historyLineItem">{{ task.item }}</td>
-		</tr>
-	{% endfor %}
-	</table>
+    <div class="homeHeader">Recently Completed Tasks:</div>
+    <table class="categoryHistory" cellspacing="0">
+    {% for task in tasks %}
+        <tr class="" style="color: {% colorizer forloop.counter tasks.count %};">
+            <td class="historyLineDate">{{ task.completed|date:"M j" }}</td>
+            <td class="historyLineItem">{{ task.item }}</td>
+        </tr>
+    {% endfor %}
+    </table>
 {% endif %}

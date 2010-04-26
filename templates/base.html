@@ -2,33 +2,33 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-	<title>{% block title %}TaskLance - A Project Manager That "Just Works."{% endblock %}</title>
-	<script type="text/javascript" language="javascript" src="/site_media/js/jquery.min.js"></script>
-	<script type="text/javascript" language="javascript" src="/site_media/js/jquery-ui.min.js"></script>
-	<script type="text/javascript" language="javascript" src="/site_media/js/jquery.editable.js"></script>
-	<script type="text/javascript" language="javascript" src="/site_media/js/default.js"></script>
-	<link rel="stylesheet" type="text/css" href="/site_media/css/reset.css">
-	<link rel="stylesheet" type="text/css" href="/site_media/css/default.css">
-	<link rel="stylesheet" type="text/css" href="/site_media/css/form.css">
+    <title>{% block title %}TaskLance - A Project Manager That "Just Works."{% endblock %}</title>
+    <script type="text/javascript" language="javascript" src="/site_media/js/jquery.min.js"></script>
+    <script type="text/javascript" language="javascript" src="/site_media/js/jquery-ui.min.js"></script>
+    <script type="text/javascript" language="javascript" src="/site_media/js/jquery.editable.js"></script>
+    <script type="text/javascript" language="javascript" src="/site_media/js/default.js"></script>
+    <link rel="stylesheet" type="text/css" href="/site_media/css/reset.css">
+    <link rel="stylesheet" type="text/css" href="/site_media/css/default.css">
+    <link rel="stylesheet" type="text/css" href="/site_media/css/form.css">
 </head>
 <body>
-	<div id="header">
-		<div id="left">
-			{% if request.account.name %}<strong>{{ request.account.name }}</strong>: {% endif %}{% if request.user.is_authenticated %}<a href="{% url pm_home %}">Home</a> | <a href="/logout">Logout</a>{% else %}<a href="/">Home</a> | <a href="http://blog.perplexedlabs.com/">Blog</a> - <a href="/pm/create">Register</a> | <a href="/login">Login</a>{% endif %}
-		</div>
-		<div id="right">
-			<img src="/site_media/images/plabs_logo.gif" alt="Perplexed Labs, Inc."/>
-		</div>
-	</div>
-	{% block main %}{% endblock %}
-	<script type="text/javascript">
-	var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-	document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-	</script>
-	<script type="text/javascript">
-	try {
-	var pageTracker = _gat._getTracker("UA-69624-4");
-	pageTracker._trackPageview();
-	} catch(err) {}</script>
+    <div id="header">
+        <div id="left">
+            {% if request.account.name %}<strong>{{ request.account.name }}</strong>: {% endif %}{% if request.user.is_authenticated %}<a href="{% url pm_home %}">Home</a> | <a href="/logout">Logout</a>{% else %}<a href="/">Home</a> | <a href="http://blog.perplexedlabs.com/">Blog</a> - <a href="/pm/create">Register</a> | <a href="/login">Login</a>{% endif %}
+        </div>
+        <div id="right">
+            <img src="/site_media/images/plabs_logo.gif" alt="Perplexed Labs, Inc."/>
+        </div>
+    </div>
+    {% block main %}{% endblock %}
+    <script type="text/javascript">
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+    try {
+    var pageTracker = _gat._getTracker("UA-69624-4");
+    pageTracker._trackPageview();
+    } catch(err) {}</script>
 </body>
 </html>

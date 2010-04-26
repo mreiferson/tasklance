@@ -2,38 +2,38 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-	<title>{% block title %}TaskLance - A Project Manager That "Just Works."{% endblock %}</title>
-	<script type="text/javascript" language="javascript" src="/site_media/js/jquery.min.js"></script>
-	<script type="text/javascript" language="javascript" src="/site_media/js/jquery-ui.min.js"></script>
-	<script type="text/javascript" language="javascript" src="/site_media/js/jquery.editable.js"></script>
-	<script type="text/javascript" language="javascript" src="/site_media/js/default.js"></script>
-	<link rel="stylesheet" type="text/css" href="/site_media/css/reset.css">
-	<link rel="stylesheet" type="text/css" href="/site_media/css/default.css">
-	<link rel="stylesheet" type="text/css" href="/site_media/css/form.css">
+    <title>{% block title %}TaskLance - A Project Manager That "Just Works."{% endblock %}</title>
+    <script type="text/javascript" language="javascript" src="/site_media/js/jquery.min.js"></script>
+    <script type="text/javascript" language="javascript" src="/site_media/js/jquery-ui.min.js"></script>
+    <script type="text/javascript" language="javascript" src="/site_media/js/jquery.editable.js"></script>
+    <script type="text/javascript" language="javascript" src="/site_media/js/default.js"></script>
+    <link rel="stylesheet" type="text/css" href="/site_media/css/reset.css">
+    <link rel="stylesheet" type="text/css" href="/site_media/css/default.css">
+    <link rel="stylesheet" type="text/css" href="/site_media/css/form.css">
 </head>
 <style type="text/css">
 body {
-	background: #fff;
+    background: #fff;
 }
 
 #categories {
-	margin: 20px auto;
+    margin: 20px auto;
 }
 
 .category {
-	margin: 1.25em 0;
-	padding: 1.25em 0;
+    margin: 1.25em 0;
+    padding: 1.25em 0;
 }
 </style>
 <body>
-	<div id="header">
-		<div id="left">
-			{% if request.account.name %}<strong>{{ request.account.name }}</strong>: {% endif %}Weekly Report {% now "Y-m-d" %}
-		</div>
-		<div id="right">
-			<img src="/site_media/images/plabs_logo.gif" alt="Perplexed Labs, Inc."/>
-		</div>
-	</div>
-	{% block content %}{% endblock %}
+    <div id="header">
+        <div id="left">
+            {% if request.account.name %}<strong>{{ request.account.name }}</strong>: {% endif %}Weekly Report {% now "Y-m-d" %}
+        </div>
+        <div id="right">
+            <img src="/site_media/images/plabs_logo.gif" alt="Perplexed Labs, Inc."/>
+        </div>
+    </div>
+    {% block content %}{% endblock %}
 </body>
 </html>

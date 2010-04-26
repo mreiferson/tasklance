@@ -1,162 +1,162 @@
 fieldset {
-	border: 2px solid #ddd;
-	margin: 0 auto 1em auto;
-	width: 425px;
-	background: #fafafa;
+    border: 2px solid #ddd;
+    margin: 0 auto 1em auto;
+    width: 425px;
+    background: #fafafa;
 }
 
 legend {
-	text-align: left;
-	margin-left: 15px;
-	padding: 5px 15px;
-	border: 2px solid #ccc;
-	color: #888;
-	background: #f4f4f4;
-	font-size: 14px;
-	font-weight: bold;
-	font-variant: small-caps;
+    text-align: left;
+    margin-left: 15px;
+    padding: 5px 15px;
+    border: 2px solid #ccc;
+    color: #888;
+    background: #f4f4f4;
+    font-size: 14px;
+    font-weight: bold;
+    font-variant: small-caps;
 }
 
 form { display: inline; }
 
 form fieldset > div {
-	display: block;
-	clear: left;
-	width: 395px;
-	padding: 0 15px;
-	margin: 5px 0;
-	height: 1%;
+    display: block;
+    clear: left;
+    width: 395px;
+    padding: 0 15px;
+    margin: 5px 0;
+    height: 1%;
 }
 
 form fieldset > div > div {
-	padding-top: 5px;
-	margin-left: 118px;
-	text-align: left;
+    padding-top: 5px;
+    margin-left: 118px;
+    text-align: left;
 }
 
 form fieldset > div.description {
-	margin: 10px 0;
-	color: #444;
+    margin: 10px 0;
+    color: #444;
 }
 
 form fieldset > div.section {
-	margin: 10px 15px;
-	padding: 0 0 5px 0;
-	font-size: 12px;
-	font-weight: bold;
-	color: #36c;
-	border-bottom: 1px dotted #aaa;
+    margin: 10px 15px;
+    padding: 0 0 5px 0;
+    font-size: 12px;
+    font-weight: bold;
+    color: #36c;
+    border-bottom: 1px dotted #aaa;
 }
 
 form fieldset ul.errorlist {
-	margin-bottom: 5px;
-	font-weight: bold;
-	color: #c00;
-	background: #fff0f0;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #c00;
+    background: #fff0f0;
 }
 
 form fieldset ul.errorlist li {
-	margin-left: 125px;
-	text-align: left;
+    margin-left: 125px;
+    text-align: left;
 }
 
 form fieldset > div.submit {
-	text-align: right;
+    text-align: right;
 }
 
 form fieldset > div.example {
-	margin: 0 0 5px 125px;
-	padding: 0;
-	text-align: left;
-	color: #999;
-	width: 275px;
+    margin: 0 0 5px 125px;
+    padding: 0;
+    text-align: left;
+    color: #999;
+    width: 275px;
 }
 
 form fieldset > div > label {
-	display: block;
-	float: left;
-	width: 100px;
-	padding: 3px 5px 2px 5px;
-	margin: 0 0 5px 0;
-	text-align: right;
-	font-size: 12px;
-	font-weight: bold;
-	color: #444;
+    display: block;
+    float: left;
+    width: 100px;
+    padding: 3px 5px 2px 5px;
+    margin: 0 0 5px 0;
+    text-align: right;
+    font-size: 12px;
+    font-weight: bold;
+    color: #444;
 }
 
 input, .textarea {
-	padding-left: 4px;
-	padding-top: 1px;
-	padding-bottom: 1px;
+    padding-left: 4px;
+    padding-top: 1px;
+    padding-bottom: 1px;
 }
 
 select option {
-	padding-right: 6px;
+    padding-right: 6px;
 }
 
 .checkbox {
-	border: 0;
-	padding: 0;
-	margin: 0;
-	width: 13px;
-	height: 13px;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    width: 13px;
+    height: 13px;
 }
 
 .text, .password, .select, .textarea {
-	font-family: Verdana;
-	font-size: 12px;
-	border: 2px solid #ddd;
+    font-family: Verdana;
+    font-size: 12px;
+    border: 2px solid #ddd;
 }
 
 /* remove auto scrollbar from ie and resize in safari */
 .textarea {
-	overflow: auto;
-	resize: none;
+    overflow: auto;
+    resize: none;
 }
 
 form fieldset  .text, form fieldset .password, form fieldset .textarea {
-	width: 262px;
+    width: 262px;
 }
 
 form fieldset .select {
-	width: 270px;
+    width: 270px;
 }
 
 .text:focus, .password:focus, .select:focus, .textarea:focus {
-	background-color: #eff;
+    background-color: #eff;
 }
 
 .text:hover, .password:hover, .select:hover, .textarea:hover {
-	background-color: #ffc;
+    background-color: #ffc;
 }
 
 form .spacer {
-	height: 20px;
+    height: 20px;
 }
 
 form .divider {
-	width: 80%;
-	margin: 10px auto;
-	border-bottom: 2px dotted #ccc;
+    width: 80%;
+    margin: 10px auto;
+    border-bottom: 2px dotted #ccc;
 }
 
 form .cancel {
-	font-weight: bold;
-	text-decoration: underline;
+    font-weight: bold;
+    text-decoration: underline;
 }
 
 form .cancel:link {
-	color: #f00;
+    color: #f00;
 }
 
 form .cancel:visited {
-	color: #f00;
+    color: #f00;
 }
 
 form .cancel:active {
-	color: #f00;
+    color: #f00;
 }
 
 form .cancel:hover {
-	color: #fa2;
+    color: #fa2;
 }

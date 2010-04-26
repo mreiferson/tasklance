@@ -5,241 +5,241 @@
 
 {% block content %}
 <style type="text/css">
-	.milestones {
-		width: 668px;
-	}
-	
-	.milestone {
-		margin-bottom: 1em;
-		background: #f0f0f0;
-		padding: 10px;
-	}
-	
-	.milestone .msMetaBanner {
-		margin-bottom: 5px;
-	}
-	.milestone .msPercCompleted {
-		border: 2px solid #000;
-		text-align: center;
-		font-size: 18px;
-		font-weight: bold;
-		font-family: Georgia;
-		color: #fff;
-		padding: 8px;
-		background: #DE70AA;
-		float: left;
-		width: 75px;
-	}
-	.milestone .msRightStuff {
-		float: right;
-		text-align: right;
-		font-weight: bold;
-		font-size: 12px;
-		color: #666;
-	}
-	
-	.milestone .msRightStuff > div {
-		margin-bottom: 5px;
-	}
-	
-	.milestone .msName {
-		clear: both;
-		font-weight: bold;
-		font-size: 12px;
-		color: #C62D7D;
-	}
-	
-	.milestone .msDescription {
-		clear: both;
-		padding: 5px 0;
-		color: #666;
-	}
-	
-	.milestone .msDependenciesHeader {
-		font-weight: bold;
-		margin-bottom: 5px;
-	}
-	
-	.milestone .msDependencies {
-		margin-left: 25px;
-		margin-bottom: 5px;
-	}
-	
-	.msProject {
-		margin-bottom: 5px;
-		clear: both;
-	}
-	
-	.msProject .msProjectLinks {
-		float: left;
-		margin-right: 3px;
-	}
-	
-	.msProject .msProjectPercCompleted {
-		font-weight: bold;
-		color: #080;
-		float: left;
-		width: 65px;
-		text-align: right;
-		margin-right: 10px;
-	}
-	
-	.msProject .msProjectName {
-		font-weight: bold;
-		float: left;
-	}
+    .milestones {
+        width: 668px;
+    }
+    
+    .milestone {
+        margin-bottom: 1em;
+        background: #f0f0f0;
+        padding: 10px;
+    }
+    
+    .milestone .msMetaBanner {
+        margin-bottom: 5px;
+    }
+    .milestone .msPercCompleted {
+        border: 2px solid #000;
+        text-align: center;
+        font-size: 18px;
+        font-weight: bold;
+        font-family: Georgia;
+        color: #fff;
+        padding: 8px;
+        background: #DE70AA;
+        float: left;
+        width: 75px;
+    }
+    .milestone .msRightStuff {
+        float: right;
+        text-align: right;
+        font-weight: bold;
+        font-size: 12px;
+        color: #666;
+    }
+    
+    .milestone .msRightStuff > div {
+        margin-bottom: 5px;
+    }
+    
+    .milestone .msName {
+        clear: both;
+        font-weight: bold;
+        font-size: 12px;
+        color: #C62D7D;
+    }
+    
+    .milestone .msDescription {
+        clear: both;
+        padding: 5px 0;
+        color: #666;
+    }
+    
+    .milestone .msDependenciesHeader {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+    
+    .milestone .msDependencies {
+        margin-left: 25px;
+        margin-bottom: 5px;
+    }
+    
+    .msProject {
+        margin-bottom: 5px;
+        clear: both;
+    }
+    
+    .msProject .msProjectLinks {
+        float: left;
+        margin-right: 3px;
+    }
+    
+    .msProject .msProjectPercCompleted {
+        font-weight: bold;
+        color: #080;
+        float: left;
+        width: 65px;
+        text-align: right;
+        margin-right: 10px;
+    }
+    
+    .msProject .msProjectName {
+        font-weight: bold;
+        float: left;
+    }
 </style>
 <table cellspacing="0" id="overviewContainer">
-	<tr>
-		<td style="vertical-align: top;">
-			<div class="categoryLink" rel="{{ category.id }}">
-				<ul class="milestones" rel="milestone">
-					{% for milestone in milestones %}
-						<li id="milestone{{ milestone.id }}" class="milestone milestoneLink" rel="{{ milestone.id }}">
-							<div class="msMetaBanner floatContainer">
-								<div class="msPercCompleted" style="background: {% perc_colorizer milestone.perc_completed %}; border-color: {% perc_colorizer_dark milestone.perc_completed 50 %}">{{ milestone.perc_completed|floatformat:2 }}%</div>
-								<div class="msRightStuff">
-									<div class="msDeadline">
-										{% ifnotequal milestone.status 'complete' %}
-											{{ milestone.days_remaining }} day{% ifnotequal milestone.days_remaining 1 %}s{% endifnotequal %} remaining (<a href="javascript:;" class="changeDeadlineLink">{{ milestone.deadline|date:"Y-m-d" }}</a>)
-										{% endifnotequal %}
-									</div>
-									<div class="msStatus">
-										<select>
-											{% for k,v in milestone_status %}
-												<option value="{{ k }}"{% ifequal milestone.status k %} selected{% endifequal %}>{{ v }}</option>
-											{% endfor %}
-										</select>
-										<span class="handle"><img src="/site_media/images/list_ordered.gif"/></span>
-									</div>
-									<div class="msLinks">
-										<a href="{% url pm_delmilestone milestone.id %}" class="delMilestoneLink">Delete</a>
-									</div>
-								</div>
-							</div>
-							<div class="msName" rel="name">{{ milestone.name }}</div>
-							<div class="msDescription" rel="description">{{ milestone.description }}</div>
-							<div class="msDependenciesHeader">Dependencies:</div>
-							<div class="msDependencies">
-								{% for project in milestone.projects.all %}
-								<div class="msProject floatContainer" rel="{{ project.id }}">
-									<div class="msProjectLinks"><a href="javascript:;" class="delProjectFromMilestoneLink">x</a></div>
-									<div class="msProjectPercCompleted">{{ project.perc_completed|floatformat:2 }}%</div>
-									<div class="msProjectName"><a href="{% url pm_tasks category.id %}#project{{ project.id }}">{{ project.name }}</a></div>
-								</div>
-								{% endfor %}
-							</div>
-							<select name="project_id">
-								{% for project in category.project_set.all %}
-								<option value="{{ project.id }}">{{ project.name }}</option>
-								{% endfor %}
-							</select>
-							<a href="javascript:;" class="addProjectToMilestoneLink">Add Project As Dependency</a>
-						</li>
-					{% endfor %}
-				</ul>
-			</div>
-		</td>
-		<td style="vertical-align: top;">
-			<div id="manage">
-				<div class="addMilestoneContainer">
-					<div class="addHeader">Add Milestone</div>
-					{% include "addmilestone.html" %}
-				</div>
-			</div>
-		</td>
-	</tr>
+    <tr>
+        <td style="vertical-align: top;">
+            <div class="categoryLink" rel="{{ category.id }}">
+                <ul class="milestones" rel="milestone">
+                    {% for milestone in milestones %}
+                        <li id="milestone{{ milestone.id }}" class="milestone milestoneLink" rel="{{ milestone.id }}">
+                            <div class="msMetaBanner floatContainer">
+                                <div class="msPercCompleted" style="background: {% perc_colorizer milestone.perc_completed %}; border-color: {% perc_colorizer_dark milestone.perc_completed 50 %}">{{ milestone.perc_completed|floatformat:2 }}%</div>
+                                <div class="msRightStuff">
+                                    <div class="msDeadline">
+                                        {% ifnotequal milestone.status 'complete' %}
+                                            {{ milestone.days_remaining }} day{% ifnotequal milestone.days_remaining 1 %}s{% endifnotequal %} remaining (<a href="javascript:;" class="changeDeadlineLink">{{ milestone.deadline|date:"Y-m-d" }}</a>)
+                                        {% endifnotequal %}
+                                    </div>
+                                    <div class="msStatus">
+                                        <select>
+                                            {% for k,v in milestone_status %}
+                                                <option value="{{ k }}"{% ifequal milestone.status k %} selected{% endifequal %}>{{ v }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <span class="handle"><img src="/site_media/images/list_ordered.gif"/></span>
+                                    </div>
+                                    <div class="msLinks">
+                                        <a href="{% url pm_delmilestone milestone.id %}" class="delMilestoneLink">Delete</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="msName" rel="name">{{ milestone.name }}</div>
+                            <div class="msDescription" rel="description">{{ milestone.description }}</div>
+                            <div class="msDependenciesHeader">Dependencies:</div>
+                            <div class="msDependencies">
+                                {% for project in milestone.projects.all %}
+                                <div class="msProject floatContainer" rel="{{ project.id }}">
+                                    <div class="msProjectLinks"><a href="javascript:;" class="delProjectFromMilestoneLink">x</a></div>
+                                    <div class="msProjectPercCompleted">{{ project.perc_completed|floatformat:2 }}%</div>
+                                    <div class="msProjectName"><a href="{% url pm_tasks category.id %}#project{{ project.id }}">{{ project.name }}</a></div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <select name="project_id">
+                                {% for project in category.project_set.all %}
+                                <option value="{{ project.id }}">{{ project.name }}</option>
+                                {% endfor %}
+                            </select>
+                            <a href="javascript:;" class="addProjectToMilestoneLink">Add Project As Dependency</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </td>
+        <td style="vertical-align: top;">
+            <div id="manage">
+                <div class="addMilestoneContainer">
+                    <div class="addHeader">Add Milestone</div>
+                    {% include "addmilestone.html" %}
+                </div>
+            </div>
+        </td>
+    </tr>
 </table>
 {% include "shared_js.html" %}
 <script type="text/javascript" language="javascript">
-	var onclick_delProjectFromMilestone = function() {
-			if(confirm("Are you sure you want to delete this project from this milestone?")) {
-				var project = $(this).parents('.msProject');
-				var milestone = $(this).parents('.milestone');
-				$.post('{% url pm_delprojectfrommilestone %}', { 'milestone_id': milestone.attr('rel'), 'project_id': project.attr('rel') }, function(response) {
-						project.slideUp('fast');
-						$('.msPercCompleted', milestone).text(response.milestone_perc_completed+'%')
-					}, 'json');
-			}
-		};
-	
-	$(document).ready(function() {
-			$('.milestones').sortable(sortableOptions_reorder);
-			
-			$('.addMilestoneContainer :button').click(function() {
-					var f = $(this.form);
-					$(':input[name=priority]', f).val($('.milestone').length);
-					$.post('{% url pm_addmilestone %}', f.serialize(), function(response) {
-							
-							f.get(0).reset();
-						}, 'json');
-				});
-				
-			$('.delProjectFromMilestoneLink').click(onclick_delProjectFromMilestone);
-			
-			$('.milestone .msRightStuff select').change(function() {
-					var milestone = $(this).parents('.milestone');
-					var status = $(this).val();
-					var reason = (status == 'onhold') ? prompt('Please enter a reason for this change in status:') : '';
-					$.post('{% url pm_milestonestatus %}', { 'milestone_id': milestone.attr('rel'), 'status': status, 'reason': reason }, function(response) {
-							alert('Status Updated!');
-						});
-				});
-			
-			$('.addProjectToMilestoneLink').click(function() {
-					var milestone = $(this).parents('.milestone');
-					$.post('{% url pm_addprojecttomilestone %}', { 'milestone_id': milestone.attr('rel'), 'project_id': $('select[name=project_id]', milestone).val() }, 
-						function(response) {
-							$('.msPercCompleted', milestone).text(response.milestone_perc_completed+'%');
-							var el = $('<div>')
-									.addClass('msProject')
-									.addClass('floatContainer')
-									.attr('rel', response.project_id)
-									.append(
-										$('<div>')
-											.addClass('msProjectLinks')
-											.append(
-												$('<a>').addClass('delProjectFromMilestoneLink').attr('href', 'javascript:;').text('x').click(onclick_delProjectFromMilestone)
-												)
-										)
-									.append(
-										$('<div>')
-											.addClass('msProjectPercCompleted')
-											.text(response.perc_completed+'%')
-										)
-									.append(
-										$('<div>')
-											.addClass('msProjectName')
-											.text(response.name)
-										);
-							el.hide().appendTo($('.msDependencies', milestone)).slideDown('fast');
-						}, 'json');
-				});
-			
-			$('.changeDeadlineLink').click(function() {
-					var link = $(this);
-					var newDeadline = prompt('Please enter a new deadline YYYY-MM-DD:', link.text());
-					if(newDeadline) {
-						var milestone = $(this).parents('.milestone');
-						$.post('/pm/milestone/update/'+milestone.attr('rel')+'/', { 'deadline': newDeadline },
-							function(response) {
-								link.text(newDeadline);
-							}, 'json');
-					}
-				});
-			
-			var editableOptions = { 'editBy': 'dblclick', 'submit': 'Update', 'cancel': 'Cancel', 'editClass': 'descriptionEdit', 'onSubmit': function(content) {
-						if(content.current != content.previous) {
-							var parent = $(this).parents('.milestone');
-							var params = {};
-							params[$(this).attr('rel')] = content.current;
-							$.post('/pm/milestone/update/'+parent.attr('rel')+'/', params, function() {}, 'json');
-						}
-					}
-				};
-				
-			$('.msName').editable(editableOptions);
-			$('.msDescription').editable(editableOptions);
-		});
+    var onclick_delProjectFromMilestone = function() {
+            if(confirm("Are you sure you want to delete this project from this milestone?")) {
+                var project = $(this).parents('.msProject');
+                var milestone = $(this).parents('.milestone');
+                $.post('{% url pm_delprojectfrommilestone %}', { 'milestone_id': milestone.attr('rel'), 'project_id': project.attr('rel') }, function(response) {
+                        project.slideUp('fast');
+                        $('.msPercCompleted', milestone).text(response.milestone_perc_completed+'%')
+                    }, 'json');
+            }
+        };
+    
+    $(document).ready(function() {
+            $('.milestones').sortable(sortableOptions_reorder);
+            
+            $('.addMilestoneContainer :button').click(function() {
+                    var f = $(this.form);
+                    $(':input[name=priority]', f).val($('.milestone').length);
+                    $.post('{% url pm_addmilestone %}', f.serialize(), function(response) {
+                            
+                            f.get(0).reset();
+                        }, 'json');
+                });
+                
+            $('.delProjectFromMilestoneLink').click(onclick_delProjectFromMilestone);
+            
+            $('.milestone .msRightStuff select').change(function() {
+                    var milestone = $(this).parents('.milestone');
+                    var status = $(this).val();
+                    var reason = (status == 'onhold') ? prompt('Please enter a reason for this change in status:') : '';
+                    $.post('{% url pm_milestonestatus %}', { 'milestone_id': milestone.attr('rel'), 'status': status, 'reason': reason }, function(response) {
+                            alert('Status Updated!');
+                        });
+                });
+            
+            $('.addProjectToMilestoneLink').click(function() {
+                    var milestone = $(this).parents('.milestone');
+                    $.post('{% url pm_addprojecttomilestone %}', { 'milestone_id': milestone.attr('rel'), 'project_id': $('select[name=project_id]', milestone).val() }, 
+                        function(response) {
+                            $('.msPercCompleted', milestone).text(response.milestone_perc_completed+'%');
+                            var el = $('<div>')
+                                    .addClass('msProject')
+                                    .addClass('floatContainer')
+                                    .attr('rel', response.project_id)
+                                    .append(
+                                        $('<div>')
+                                            .addClass('msProjectLinks')
+                                            .append(
+                                                $('<a>').addClass('delProjectFromMilestoneLink').attr('href', 'javascript:;').text('x').click(onclick_delProjectFromMilestone)
+                                                )
+                                        )
+                                    .append(
+                                        $('<div>')
+                                            .addClass('msProjectPercCompleted')
+                                            .text(response.perc_completed+'%')
+                                        )
+                                    .append(
+                                        $('<div>')
+                                            .addClass('msProjectName')
+                                            .text(response.name)
+                                        );
+                            el.hide().appendTo($('.msDependencies', milestone)).slideDown('fast');
+                        }, 'json');
+                });
+            
+            $('.changeDeadlineLink').click(function() {
+                    var link = $(this);
+                    var newDeadline = prompt('Please enter a new deadline YYYY-MM-DD:', link.text());
+                    if(newDeadline) {
+                        var milestone = $(this).parents('.milestone');
+                        $.post('/pm/milestone/update/'+milestone.attr('rel')+'/', { 'deadline': newDeadline },
+                            function(response) {
+                                link.text(newDeadline);
+                            }, 'json');
+                    }
+                });
+            
+            var editableOptions = { 'editBy': 'dblclick', 'submit': 'Update', 'cancel': 'Cancel', 'editClass': 'descriptionEdit', 'onSubmit': function(content) {
+                        if(content.current != content.previous) {
+                            var parent = $(this).parents('.milestone');
+                            var params = {};
+                            params[$(this).attr('rel')] = content.current;
+                            $.post('/pm/milestone/update/'+parent.attr('rel')+'/', params, function() {}, 'json');
+                        }
+                    }
+                };
+                
+            $('.msName').editable(editableOptions);
+            $('.msDescription').editable(editableOptions);
+        });
 </script>
 {% endblock %}

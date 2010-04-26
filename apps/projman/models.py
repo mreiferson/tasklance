@@ -6,270 +6,270 @@ from django.contrib.contenttypes import generic
 
 
 class Account(models.Model):
-	name = models.CharField(max_length=255)
-	description = models.CharField(max_length=255)
-	subdomain = models.CharField(max_length=25)
-	created = models.DateTimeField()
-	
-	def save(self):
-		if not self.created:
-			self.created = datetime.now()
-		
-		super(Account, self).save()
-	
-	def __unicode__(self):
-		return self.name
+    name = models.CharField(max_length=255)
+    description = models.CharField(max_length=255)
+    subdomain = models.CharField(max_length=25)
+    created = models.DateTimeField()
+    
+    def save(self):
+        if not self.created:
+            self.created = datetime.now()
+        
+        super(Account, self).save()
+    
+    def __unicode__(self):
+        return self.name
 
 
 class Category(models.Model):
-	account = models.ForeignKey(Account)
-	name = models.CharField(max_length=255)
-	description = models.CharField(max_length=255)
-	created = models.DateTimeField()
-	priority = models.PositiveIntegerField(default=0)
+    account = models.ForeignKey(Account)
+    name = models.CharField(max_length=255)
+    description = models.CharField(max_length=255)
+    created = models.DateTimeField()
+    priority = models.PositiveIntegerField(default=0)
 
-	class Meta:
-		ordering = ('priority', 'created')
-		verbose_name_plural = 'categories'
-		
-	def get_thread(self):
-		ctype = ContentType.objects.get_for_model(self)
-		return Thread.objects.get(content_type__pk=ctype.id, object_id=self.id)
-		
-	def any_milestones(self):
-		min_date = datetime.today() + timedelta(days=-7)
-		milestones_active = self.milestone_set.filter(status__exact='active')
-		milestones_onhold = self.milestone_set.filter(status__exact='onhold')
-		mc = self.milestone_set.filter(status__exact='complete')
+    class Meta:
+        ordering = ('priority', 'created')
+        verbose_name_plural = 'categories'
+        
+    def get_thread(self):
+        ctype = ContentType.objects.get_for_model(self)
+        return Thread.objects.get(content_type__pk=ctype.id, object_id=self.id)
+        
+    def any_milestones(self):
+        min_date = datetime.today() + timedelta(days=-7)
+        milestones_active = self.milestone_set.filter(status__exact='active')
+        milestones_onhold = self.milestone_set.filter(status__exact='onhold')
+        mc = self.milestone_set.filter(status__exact='complete')
 
-		milestones_complete = []
-		for m in mc:
-			if m.last_status_change().timestamp > min_date:
-				milestones_complete.append(m)
+        milestones_complete = []
+        for m in mc:
+            if m.last_status_change().timestamp > min_date:
+                milestones_complete.append(m)
 
-		return (milestones_active.count() or milestones_onhold.count() or len(milestones_complete))
-		
-	def save(self):
-		if not self.created:
-			self.created = datetime.now()
-		
-		super(Category, self).save()
+        return (milestones_active.count() or milestones_onhold.count() or len(milestones_complete))
+        
+    def save(self):
+        if not self.created:
+            self.created = datetime.now()
+        
+        super(Category, self).save()
 
-	def __unicode__(self):
-		try:
-			acct_name = self.account.name
-		except:
-			acct_name = 'NULL'
-		return self.name+' ('+acct_name+')'
+    def __unicode__(self):
+        try:
+            acct_name = self.account.name
+        except:
+            acct_name = 'NULL'
+        return self.name+' ('+acct_name+')'
 
 
 class Project(models.Model):
-	category = models.ForeignKey(Category)
-	name = models.CharField(max_length=255)
-	description = models.CharField(max_length=255)
-	created = models.DateTimeField()
-	priority = models.PositiveIntegerField(default=0)
-	
-	class Meta:
-		ordering = ('priority', 'created')
-		
-	def visible(self):
-		if self.milestone_set.all().count():
-			for milestone in self.milestone_set.all():
-				if milestone.status != 'complete':
-					return True
-		
-			return False
-		else:
-			return True
-	
-	def perc_completed(self):
-		l = self.task_set.all()
-		c = l.count()
-		n = len([t for t in l if t.complete])
-		
-		return float((float(n) / float(c) * 100.00) if c else 0.0)
-	
-	def save(self):
-		if not self.created:
-			self.created = datetime.now()
-		super(Project, self).save()
-	
-	def __unicode__(self):
-		try:
-			cat_name = self.category.name
-		except:
-			cat_name = 'NULL'
-		return self.name+' ('+cat_name+')'
+    category = models.ForeignKey(Category)
+    name = models.CharField(max_length=255)
+    description = models.CharField(max_length=255)
+    created = models.DateTimeField()
+    priority = models.PositiveIntegerField(default=0)
+    
+    class Meta:
+        ordering = ('priority', 'created')
+        
+    def visible(self):
+        if self.milestone_set.all().count():
+            for milestone in self.milestone_set.all():
+                if milestone.status != 'complete':
+                    return True
+        
+            return False
+        else:
+            return True
+    
+    def perc_completed(self):
+        l = self.task_set.all()
+        c = l.count()
+        n = len([t for t in l if t.complete])
+        
+        return float((float(n) / float(c) * 100.00) if c else 0.0)
+    
+    def save(self):
+        if not self.created:
+            self.created = datetime.now()
+        super(Project, self).save()
+    
+    def __unicode__(self):
+        try:
+            cat_name = self.category.name
+        except:
+            cat_name = 'NULL'
+        return self.name+' ('+cat_name+')'
 
 
 class Milestone(models.Model):
-	category = models.ForeignKey(Category)
-	projects = models.ManyToManyField(Project)
-	name = models.CharField(max_length=255)
-	description = models.TextField()
-	deadline = models.DateTimeField()
-	status = models.CharField(max_length=15)
-	created = models.DateTimeField()
-	priority = models.PositiveIntegerField(default=0)
-	
-	class Meta:
-		ordering = ('deadline',)
-		
-	def days_remaining(self):
-		diff = self.deadline - datetime.now()
-		
-		return (diff.days + 1)
-		
-	def perc_completed(self):
-		l = self.projects.all()
-		c = l.count()
-		n = sum([p.perc_completed() for p in l])
-		
-		return float((float(n) / float(c)) if c else 0.0)
-		
-	def update_status(self, status, reason):
-		self.status = status
-		r1 = self.save()
-		
-		status_change = StatusChange(milestone=self, status=self.status, reason=reason)
-		r2 = status_change.save()
-		
-		return (r1 and r2)
+    category = models.ForeignKey(Category)
+    projects = models.ManyToManyField(Project)
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+    deadline = models.DateTimeField()
+    status = models.CharField(max_length=15)
+    created = models.DateTimeField()
+    priority = models.PositiveIntegerField(default=0)
+    
+    class Meta:
+        ordering = ('deadline',)
+        
+    def days_remaining(self):
+        diff = self.deadline - datetime.now()
+        
+        return (diff.days + 1)
+        
+    def perc_completed(self):
+        l = self.projects.all()
+        c = l.count()
+        n = sum([p.perc_completed() for p in l])
+        
+        return float((float(n) / float(c)) if c else 0.0)
+        
+    def update_status(self, status, reason):
+        self.status = status
+        r1 = self.save()
+        
+        status_change = StatusChange(milestone=self, status=self.status, reason=reason)
+        r2 = status_change.save()
+        
+        return (r1 and r2)
 
-	def last_status_change(self):
-		try:
-			return self.statuschange_set.all().order_by('-timestamp')[0]
-		except IndexError:
-			return None
-	
-	def save(self):
-		if not self.created:
-			self.created = datetime.now()
-			
-		if not self.status:
-			self.status = 'onhold'
-		
-		super(Milestone, self).save()
-		
-	def __unicode__(self):
-		try:
-			cat_name = self.category.name
-		except:
-			cat_name = 'NULL'
-		return self.name+' ('+cat_name+')'
-		
-		
+    def last_status_change(self):
+        try:
+            return self.statuschange_set.all().order_by('-timestamp')[0]
+        except IndexError:
+            return None
+    
+    def save(self):
+        if not self.created:
+            self.created = datetime.now()
+            
+        if not self.status:
+            self.status = 'onhold'
+        
+        super(Milestone, self).save()
+        
+    def __unicode__(self):
+        try:
+            cat_name = self.category.name
+        except:
+            cat_name = 'NULL'
+        return self.name+' ('+cat_name+')'
+        
+        
 class StatusChange(models.Model):
-	milestone = models.ForeignKey(Milestone)
-	status = models.CharField(max_length=15)
-	reason = models.TextField(blank=True)
-	timestamp = models.DateTimeField()
-	
-	def save(self):
-		if not self.timestamp:
-			self.timestamp = datetime.now()
-		
-		super(StatusChange, self).save()
-	
-	def __unicode__(self):
-		try:
-			milestone_name = self.milestone.name
-		except:
-			milestone_name = 'NULL'
-		return milestone_name+' ('+self.status+')'
+    milestone = models.ForeignKey(Milestone)
+    status = models.CharField(max_length=15)
+    reason = models.TextField(blank=True)
+    timestamp = models.DateTimeField()
+    
+    def save(self):
+        if not self.timestamp:
+            self.timestamp = datetime.now()
+        
+        super(StatusChange, self).save()
+    
+    def __unicode__(self):
+        try:
+            milestone_name = self.milestone.name
+        except:
+            milestone_name = 'NULL'
+        return milestone_name+' ('+self.status+')'
 
 
 class Task(models.Model):
-	project = models.ForeignKey(Project)
-	item = models.CharField(max_length=255)
-	complete = models.BooleanField(default=False)
-	priority = models.PositiveIntegerField(default=0)
-	created = models.DateTimeField()
-	completed = models.DateTimeField(null=True)
-	
-	class Meta:
-		ordering = ('priority', 'created')
-		
-	def age(self):
-		return datetime.now() - self.created
-		
-	def save(self):
-		if not self.created:
-			self.created = datetime.now()
-			
-		if self.complete:
-			if not self.completed:
-				self.completed = datetime.now()
-		else:
-			self.completed = None
-			
-		super(Task, self).save()
-	
-	def __unicode__(self):
-		try:
-			project = self.category
-			proj_name = project.name
-			cat_name = project.category.name
-		except:
-			proj_name = 'NULL'
-			cat_name = 'NULL'
-		return self.item+' ('+cat_name+' => '+proj_name+')'
+    project = models.ForeignKey(Project)
+    item = models.CharField(max_length=255)
+    complete = models.BooleanField(default=False)
+    priority = models.PositiveIntegerField(default=0)
+    created = models.DateTimeField()
+    completed = models.DateTimeField(null=True)
+    
+    class Meta:
+        ordering = ('priority', 'created')
+        
+    def age(self):
+        return datetime.now() - self.created
+        
+    def save(self):
+        if not self.created:
+            self.created = datetime.now()
+            
+        if self.complete:
+            if not self.completed:
+                self.completed = datetime.now()
+        else:
+            self.completed = None
+            
+        super(Task, self).save()
+    
+    def __unicode__(self):
+        try:
+            project = self.category
+            proj_name = project.name
+            cat_name = project.category.name
+        except:
+            proj_name = 'NULL'
+            cat_name = 'NULL'
+        return self.item+' ('+cat_name+' => '+proj_name+')'
 
 
 class Thread(models.Model):
-	content_type = models.ForeignKey(ContentType)
-	content_object = generic.GenericForeignKey()
-	object_id = models.PositiveIntegerField()
-	creator = models.ForeignKey(User)
-	created = models.DateTimeField()
+    content_type = models.ForeignKey(ContentType)
+    content_object = generic.GenericForeignKey()
+    object_id = models.PositiveIntegerField()
+    creator = models.ForeignKey(User)
+    created = models.DateTimeField()
 
-	def save(self):
-		if not self.created:
-			self.created = datetime.now()
+    def save(self):
+        if not self.created:
+            self.created = datetime.now()
 
-		super(Thread, self).save()
-		
-	def get_category(self):
-		return Category.objects.get(pk=self.object_id)
-	
-	def __unicode__(self):
-		return self.content_object.__class__.__name__+' '+self.content_object.name
+        super(Thread, self).save()
+        
+    def get_category(self):
+        return Category.objects.get(pk=self.object_id)
+    
+    def __unicode__(self):
+        return self.content_object.__class__.__name__+' '+self.content_object.name
 
 
 class Message(models.Model):
-	thread = models.ForeignKey(Thread)
-	text = models.TextField()
-	creator = models.ForeignKey(User, related_name='msg')
-	created = models.DateTimeField()
-	
-	class Meta:
-		ordering = ('-created',)
+    thread = models.ForeignKey(Thread)
+    text = models.TextField()
+    creator = models.ForeignKey(User, related_name='msg')
+    created = models.DateTimeField()
+    
+    class Meta:
+        ordering = ('-created',)
 
-	def save(self):
-		if not self.created:
-			self.created = datetime.now()
+    def save(self):
+        if not self.created:
+            self.created = datetime.now()
 
-		super(Message, self).save()
-	
-	def __unicode__(self):
-		return self.text
+        super(Message, self).save()
+    
+    def __unicode__(self):
+        return self.text
 
 
 class Dependency(models.Model):
-	task_a = models.ForeignKey(Task, related_name='depends_on')
-	task_b = models.ForeignKey(Task, related_name='dependency_of')
-	
-	class Meta:
-		verbose_name_plural = 'dependencies'
-	
-	def __unicode__(self):
-		return self.task_a.__unicode__()+' ? '+self.task_b.__unicode__();
+    task_a = models.ForeignKey(Task, related_name='depends_on')
+    task_b = models.ForeignKey(Task, related_name='dependency_of')
+    
+    class Meta:
+        verbose_name_plural = 'dependencies'
+    
+    def __unicode__(self):
+        return self.task_a.__unicode__()+' ? '+self.task_b.__unicode__();
 
 
 class UserAccount(models.Model):
-	user = models.ForeignKey(User)
-	account = models.ForeignKey(Account)
-	
-	def __unicode__(self):
-		return self.user.username+':'+self.account.name
+    user = models.ForeignKey(User)
+    account = models.ForeignKey(Account)
+    
+    def __unicode__(self):
+        return self.user.username+':'+self.account.name

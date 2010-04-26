@@ -5,120 +5,120 @@
 
 {% block content %}
 <style type="text/css">
-	.date {
-		margin-bottom: 25px;
-		border-top: 2px solid #eee;
-		clear: both;
-	}
-	
-	.date .dateInnerContainer {
-		margin-left: 20px;
-	}
-	
-	.date .dateHeader {
-		font-weight: bold;
-		color: #444;
-		margin: 2px 0 10px 2px;
-		font-size: 12px;
-	}
-	
-	.item {
-		margin: 2px 0;
-		clear: both;
-	}
-	
-	.item .itemType {
-		font-weight: bold;
-		color: #fff;
-		float: left;
-		margin-right: 5px;
-		padding: 5px;
-		width: 65px;
-		text-align: right;
-	}
-	
-	.itemType.task {
-		background: #C4BCE9;
-	}
-	
-	.itemType.message {
-		background: #DF7500;
-	}
-	
-	.itemType.milestone {
-		background: #C13992;
-	}
-	
-	.itemType.task.complete {
-		background: #7766CC;
-	}
-	
-	.item .itemStamp {
-		color: #888;
-		float: left;
-		margin-right: 5px;
-		padding-top: 4px;
-		width: 65px;
-	}
-	
-	.item .itemText {
-		float: left;
-		padding-top: 4px;
-		width: 600px;
-	}
-	
-	.item .itemProject {
-		font-weight: bold;
-	}
-	
-	.itemText.completed {
-		text-decoration: line-through;
-	}
-	
-	#chronology {
-		margin: 0 35px 1em 35px;
-	}
+    .date {
+        margin-bottom: 25px;
+        border-top: 2px solid #eee;
+        clear: both;
+    }
+    
+    .date .dateInnerContainer {
+        margin-left: 20px;
+    }
+    
+    .date .dateHeader {
+        font-weight: bold;
+        color: #444;
+        margin: 2px 0 10px 2px;
+        font-size: 12px;
+    }
+    
+    .item {
+        margin: 2px 0;
+        clear: both;
+    }
+    
+    .item .itemType {
+        font-weight: bold;
+        color: #fff;
+        float: left;
+        margin-right: 5px;
+        padding: 5px;
+        width: 65px;
+        text-align: right;
+    }
+    
+    .itemType.task {
+        background: #C4BCE9;
+    }
+    
+    .itemType.message {
+        background: #DF7500;
+    }
+    
+    .itemType.milestone {
+        background: #C13992;
+    }
+    
+    .itemType.task.complete {
+        background: #7766CC;
+    }
+    
+    .item .itemStamp {
+        color: #888;
+        float: left;
+        margin-right: 5px;
+        padding-top: 4px;
+        width: 65px;
+    }
+    
+    .item .itemText {
+        float: left;
+        padding-top: 4px;
+        width: 600px;
+    }
+    
+    .item .itemProject {
+        font-weight: bold;
+    }
+    
+    .itemText.completed {
+        text-decoration: line-through;
+    }
+    
+    #chronology {
+        margin: 0 35px 1em 35px;
+    }
 
-	.milestonesContainer {
-		width: 643px;
-	}
-	.msMeta {
-		width: 470px;
-	}
+    .milestonesContainer {
+        width: 643px;
+    }
+    .msMeta {
+        width: 470px;
+    }
 </style>
 {% include "milestones_css.html" %}
 {% show_milestones category %}
 <div class="homeHeader">Chronology:</div>
 <div id="chronology">
-	{% for datelist in items %}
-		<div class="date">
-			<div class="dateHeader">{{ datelist.0 }}</div>
-			<div class="dateInnerContainer">
-				{% for e in datelist.1 %}
-					{% ifequal e.2 'task' %}
-						<div class="item floatContainer">
-							<div class="itemType {{ e.2 }} {% if e.3.complete %} complete{% endif %}">{{ e.2|capfirst }}</div>
-							<div class="itemStamp">{{ e.1 }}</div>
-							<div class="itemText{% if e.3.completed %} completed{% endif %}">{{ e.3.item }} (<span class="itemProject">{{ e.3.project.name }}</span>)</div>
-						</div>
-					{% endifequal %}
-					{% ifequal e.2 'message' %}
-						<div class="item floatContainer">
-							<div class="itemType {{ e.2 }}">{{ e.2|capfirst }}</div>
-							<div class="itemStamp">{{ e.1 }}</div>
-							<div class="itemText"><strong>{{ e.3.creator.username }}</strong>: {{ e.3.text }}</div>
-						</div>
-					{% endifequal %}
-					{% ifequal e.2 'milestone' %}
-						<div class="item floatContainer">
-							<div class="itemType {{ e.2 }}">{{ e.2|capfirst }}</div>
-							<div class="itemStamp">{{ e.1 }}</div>
-							<div class="itemText"><strong>{{ e.3.name }}</strong>: {{ e.3.description }}</div>
-						</div>
-					{% endifequal %}
-				{% endfor %}
-			</div>
-		</div>
-	{% endfor %}
+    {% for datelist in items %}
+        <div class="date">
+            <div class="dateHeader">{{ datelist.0 }}</div>
+            <div class="dateInnerContainer">
+                {% for e in datelist.1 %}
+                    {% ifequal e.2 'task' %}
+                        <div class="item floatContainer">
+                            <div class="itemType {{ e.2 }} {% if e.3.complete %} complete{% endif %}">{{ e.2|capfirst }}</div>
+                            <div class="itemStamp">{{ e.1 }}</div>
+                            <div class="itemText{% if e.3.completed %} completed{% endif %}">{{ e.3.item }} (<span class="itemProject">{{ e.3.project.name }}</span>)</div>
+                        </div>
+                    {% endifequal %}
+                    {% ifequal e.2 'message' %}
+                        <div class="item floatContainer">
+                            <div class="itemType {{ e.2 }}">{{ e.2|capfirst }}</div>
+                            <div class="itemStamp">{{ e.1 }}</div>
+                            <div class="itemText"><strong>{{ e.3.creator.username }}</strong>: {{ e.3.text }}</div>
+                        </div>
+                    {% endifequal %}
+                    {% ifequal e.2 'milestone' %}
+                        <div class="item floatContainer">
+                            <div class="itemType {{ e.2 }}">{{ e.2|capfirst }}</div>
+                            <div class="itemStamp">{{ e.1 }}</div>
+                            <div class="itemText"><strong>{{ e.3.name }}</strong>: {{ e.3.description }}</div>
+                        </div>
+                    {% endifequal %}
+                {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
 </div>
 {% endblock %}

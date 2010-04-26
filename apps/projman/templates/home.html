@@ -6,89 +6,89 @@
 {% block content %}
 {% include "milestones_css.html" %}
 <style type="text/css">
-	/*.milestonesHeader {
-		margin-top: 10px;
-	}*/
-	.msMeta {
-		width: 470px;
-	}
+    /*.milestonesHeader {
+        margin-top: 10px;
+    }*/
+    .msMeta {
+        width: 470px;
+    }
 </style>
 <table cellspacing="0" id="overviewContainer">
-	<tr>
-		<td style="vertical-align: top;">
-			<div id="account" rel="{{ request.account.id }}">
-				<div id="categories">
-					{% for category in request.account.category_set.all %}
-					<div id="category{{ category.id }}" rel="{{ category.id }}" class="category">
-						<h1><a href="{% url pm_delcategory category.id %}"><img src="/site_media/images/report_delete.gif" alt="Delete Category"/></a> <a href="{% url pm_overview category.id %}"><span class="categoryName" rel="name">{{ category.name }}</span></a></h1>
-						<div class="categoryDescription" rel="description">{{ category.description }}</div>
-						{% show_milestones category %}
-					</div>
-					{% endfor %}
-				</div>
-			</div>
-		</td>
-		<td style="vertical-align: top;">
-			<div id="manage">
-				<div class="addCategoryContainer">
-					<div class="addHeader">Add Category</div>
-					{% include "addcategory.html" %}
-				</div>
-				<div class="links">
-					<div class="addHeader">Quick Links / Re-order</div>
-					<ul class="categoryLinks" rel="category">
-						{% for category in request.account.category_set.all %}
-						<li class="categoryLink" rel="{{ category.id }}"><span class="handle"><img src="/site_media/images/list_ordered.gif"/></span> <a href="#category{{ category.id }}">{{ category.name }}</a>
-							<ul class="milestoneLinks" rel="milestone">
-							{% for milestone in category.milestone_set.all %}
-								{% ifnotequal milestone.status 'complete' %}
-								<li class="milestoneLink" rel="{{ milestone.id }}">
-									<div style="float: left; padding-top:3px;"><span class="handle"><img src="/site_media/images/list_ordered.gif"/></span></div>
-									<div style="float: left; margin-left: 5px; width: 215px;"><a href="#milestone{{ milestone.id }}">{{ milestone.name }}</a></div>
-									<div style="clear: both;"></div>
-								</li>
-								{% endifnotequal %}
-							{% endfor %}
-							</ul>
-						</li>
-						{% endfor %}
-					</ul>
-				</div>
-			</div>
-		</td>
-	</tr>
+    <tr>
+        <td style="vertical-align: top;">
+            <div id="account" rel="{{ request.account.id }}">
+                <div id="categories">
+                    {% for category in request.account.category_set.all %}
+                    <div id="category{{ category.id }}" rel="{{ category.id }}" class="category">
+                        <h1><a href="{% url pm_delcategory category.id %}"><img src="/site_media/images/report_delete.gif" alt="Delete Category"/></a> <a href="{% url pm_overview category.id %}"><span class="categoryName" rel="name">{{ category.name }}</span></a></h1>
+                        <div class="categoryDescription" rel="description">{{ category.description }}</div>
+                        {% show_milestones category %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </td>
+        <td style="vertical-align: top;">
+            <div id="manage">
+                <div class="addCategoryContainer">
+                    <div class="addHeader">Add Category</div>
+                    {% include "addcategory.html" %}
+                </div>
+                <div class="links">
+                    <div class="addHeader">Quick Links / Re-order</div>
+                    <ul class="categoryLinks" rel="category">
+                        {% for category in request.account.category_set.all %}
+                        <li class="categoryLink" rel="{{ category.id }}"><span class="handle"><img src="/site_media/images/list_ordered.gif"/></span> <a href="#category{{ category.id }}">{{ category.name }}</a>
+                            <ul class="milestoneLinks" rel="milestone">
+                            {% for milestone in category.milestone_set.all %}
+                                {% ifnotequal milestone.status 'complete' %}
+                                <li class="milestoneLink" rel="{{ milestone.id }}">
+                                    <div style="float: left; padding-top:3px;"><span class="handle"><img src="/site_media/images/list_ordered.gif"/></span></div>
+                                    <div style="float: left; margin-left: 5px; width: 215px;"><a href="#milestone{{ milestone.id }}">{{ milestone.name }}</a></div>
+                                    <div style="clear: both;"></div>
+                                </li>
+                                {% endifnotequal %}
+                            {% endfor %}
+                            </ul>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </td>
+    </tr>
 </table>
 {% include "shared_js.html" %}
 <script type="text/javascript" language="javascript">
 $(document).ready(function() {
-		$('.categoryLinks, .milestoneLinks').sortable(sortableOptions_reorder);
-		
-		$('.addCategoryContainer :button').click(function() {
-				var f = $(this.form);
-				$(':input[name=priority]', f).val($('.category').length);
-				$.post('{% url pm_addcategory %}', f.serialize(), function(response) {
-						var headline = $('<h1>')
-											.append(
-												$('<a>')
-													.attr('href', '/pm/delcategory/'+response.id)
-													.append(
-														$('<img>')
-															.attr('src', '/site_media/images/report_delete.gif')))
-											.append(' ')
-											.append(
-												$('<a>')
-													.attr('href', '/pm/category/view/'+response.id).text(response.name));
-						var cat = $('<div>')
-							.addClass('category')
-							.attr('id', 'category'+response.id)
-							.attr('rel', response.id)
-							.append(headline)
-							.append($('<div>').addClass('categoryDescription').text(response.description))
-							.appendTo('#categories');
-						
-						f.get(0).reset();
-					}, 'json');
-			});
-	});
+        $('.categoryLinks, .milestoneLinks').sortable(sortableOptions_reorder);
+        
+        $('.addCategoryContainer :button').click(function() {
+                var f = $(this.form);
+                $(':input[name=priority]', f).val($('.category').length);
+                $.post('{% url pm_addcategory %}', f.serialize(), function(response) {
+                        var headline = $('<h1>')
+                                            .append(
+                                                $('<a>')
+                                                    .attr('href', '/pm/delcategory/'+response.id)
+                                                    .append(
+                                                        $('<img>')
+                                                            .attr('src', '/site_media/images/report_delete.gif')))
+                                            .append(' ')
+                                            .append(
+                                                $('<a>')
+                                                    .attr('href', '/pm/category/view/'+response.id).text(response.name));
+                        var cat = $('<div>')
+                            .addClass('category')
+                            .attr('id', 'category'+response.id)
+                            .attr('rel', response.id)
+                            .append(headline)
+                            .append($('<div>').addClass('categoryDescription').text(response.description))
+                            .appendTo('#categories');
+                        
+                        f.get(0).reset();
+                    }, 'json');
+            });
+    });
 </script>
 {% endblock %}

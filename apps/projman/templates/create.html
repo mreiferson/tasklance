@@ -4,29 +4,29 @@
 
 {% block content %}
 <form method="POST" action="{% url pm_create %}">
-	<fieldset>
-		<legend>Register</legend>
-		<div>
-			<label for="id_user-username">Username:</label> <input type="text" maxlength="30" name="user-username" id="id_user-username" class="text"/>
-		</div>
-		<div>
-			<label for="id_user-password1">Password:</label> <input type="password" id="id_user-password1" name="user-password1" class="password"/>
-		</div>
-		<div>
-			<label for="id_user-password2">Confirm:</label> <input type="password" id="id_user-password2" name="user-password2" class="password"/>
-		</div>
-		<div>
-			<label for="id_acct-name">Name:</label> <input type="text" maxlength="255" name="acct-name" id="id_acct-name" class="text"/>
-		</div>
-		<div>
-			<label for="id_acct-description">Description:</label> <input type="text" maxlength="255" name="acct-description" id="id_acct-description" class="text"/>
-		</div>
-		<div>
-			<label for="id_acct-subdomain">Subdomain:</label> <input type="text" maxlength="25" name="acct-subdomain" id="id_acct-subdomain" class="text"/>
-		</div>
-		<div class="submit">
-			<input type="submit" value="Register">
-		</div>
-	</fieldset>
+    <fieldset>
+        <legend>Register</legend>
+        <div>
+            <label for="id_user-username">Username:</label> <input type="text" maxlength="30" name="user-username" id="id_user-username" class="text"/>
+        </div>
+        <div>
+            <label for="id_user-password1">Password:</label> <input type="password" id="id_user-password1" name="user-password1" class="password"/>
+        </div>
+        <div>
+            <label for="id_user-password2">Confirm:</label> <input type="password" id="id_user-password2" name="user-password2" class="password"/>
+        </div>
+        <div>
+            <label for="id_acct-name">Name:</label> <input type="text" maxlength="255" name="acct-name" id="id_acct-name" class="text"/>
+        </div>
+        <div>
+            <label for="id_acct-description">Description:</label> <input type="text" maxlength="255" name="acct-description" id="id_acct-description" class="text"/>
+        </div>
+        <div>
+            <label for="id_acct-subdomain">Subdomain:</label> <input type="text" maxlength="25" name="acct-subdomain" id="id_acct-subdomain" class="text"/>
+        </div>
+        <div class="submit">
+            <input type="submit" value="Register">
+        </div>
+    </fieldset>
 </form>
 {% endblock %}

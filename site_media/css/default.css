@@ -1,34 +1,34 @@
 body {
-	font-size: 10px;
-	font-family: Verdana, sans-serif;
-	margin: 0 !important;
-	padding: 0 !important;
-	background: #4b4b4b;
+    font-size: 10px;
+    font-family: Verdana, sans-serif;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #4b4b4b;
 }
 
 body * {
-	margin: 0;
-	padding: 0;
+    margin: 0;
+    padding: 0;
 }
 
 a img {
-	border: none;
+    border: none;
 }
 
 a {
-	/*text-decoration: none;*/
+    /*text-decoration: none;*/
 }
 
 a:link, a:visited, a:active {
-	color: #3179f0;
+    color: #3179f0;
 }
 
 a:hover {
-	color: #3179f0;
+    color: #3179f0;
 }
 
 .floatContainer:after {
-	content: ".";
+    content: ".";
     display: block;
     height: 0;
     clear: both;
@@ -36,284 +36,284 @@ a:hover {
 }
 
 #header {
-	background: #7c7c7c;
-	height: 34px;
-	border-bottom: 1px solid #000;
-	color: #aaa;
-	font-family: Arial;
-	font-size: 12px;
-	padding: 0 5px 0 10px;
+    background: #7c7c7c;
+    height: 34px;
+    border-bottom: 1px solid #000;
+    color: #aaa;
+    font-family: Arial;
+    font-size: 12px;
+    padding: 0 5px 0 10px;
 }
 
 #header #left {
-	float: left;
-	display: block;
-	padding-top: 10px;
+    float: left;
+    display: block;
+    padding-top: 10px;
 }
 
 #header #right {
-	float: right;
+    float: right;
 }
 
 #header a:link, #header a:visited, #header a:active {
-	color: #fff;
+    color: #fff;
 }
 
 #header a:hover {
-	color: #ff0;
+    color: #ff0;
 }
 
 #contentContainer {
-	width: 980px;
-	margin: 10px auto;
-	padding: 0px;
+    width: 980px;
+    margin: 10px auto;
+    padding: 0px;
 }
 
 #headline {
-	margin-bottom: 1em;
+    margin-bottom: 1em;
 }
 
 #navMenu {
-	height: 24px;
+    height: 24px;
 }
 
 #navMenuList {
 }
 
 #navMenuList li {
-	list-style: none;
-	display: inline;
+    list-style: none;
+    display: inline;
 }
 
 #navMenuList li a {
-	float: left;
-	padding: 6px 10px;
-	background: #36c;
-	border-color: #eee #eee #36c #eee;
-	border-style: solid;
-	border-width: 1px;
-	color: #fff;
+    float: left;
+    padding: 6px 10px;
+    background: #36c;
+    border-color: #eee #eee #36c #eee;
+    border-style: solid;
+    border-width: 1px;
+    color: #fff;
 }
 
 #navMenuList li a:hover {
-	background: #69f;
-	border-bottom-color: #69f;
-	color: #ff0;
+    background: #69f;
+    border-bottom-color: #69f;
+    color: #ff0;
 }
 
 #navMenuList li a.active {
-	background: #69f;
-	border-bottom-color: #69f;
-	color: #fff;
-	text-decoration: none;
-	font-weight: bold;
+    background: #69f;
+    border-bottom-color: #69f;
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
 }
 
 #content {
-	background: #fff;
-	padding: 10px;
-	/* border: 1px solid #ddd; */
+    background: #fff;
+    padding: 10px;
+    /* border: 1px solid #ddd; */
 }
 
 .accountDescription {
-	color: #888;
+    color: #888;
 }
 
 .categoryDescription {
-	color: #888;
+    color: #888;
 }
 
 .projectDescription {
-	color: #888;
-	margin-bottom: 8px;
+    color: #888;
+    margin-bottom: 8px;
 }
 
 #categories h1, .categoryHeadline {
-	font-size: 1.75em;
-	font-weight: bold;
-	color: #115FDF;
-	line-height: 1.3em;
+    font-size: 1.75em;
+    font-weight: bold;
+    color: #115FDF;
+    line-height: 1.3em;
 }
 
 #categories h2 {
-	font-size: 1.5em;
-	font-weight: bold;
-	color: #039;
-	margin: 5px 0 2px 0;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #039;
+    margin: 5px 0 2px 0;
 }
 
 #categories li {
-	padding-bottom: 6px;
-	clear: both;
+    padding-bottom: 6px;
+    clear: both;
 }
 
 #categories {
-	width: 668px;
+    width: 668px;
 }
 
 .category {
-	border-top: 2px solid #eee;
-	padding-top: 5px;
-	margin-bottom: 1em;
+    border-top: 2px solid #eee;
+    padding-top: 5px;
+    margin-bottom: 1em;
 }
 
 #manage {
-	margin-left: 10px;
-	border: 1px solid #ddd;
-	width: 280px;
+    margin-left: 10px;
+    border: 1px solid #ddd;
+    width: 280px;
 }
 
 .projects {
 }
 
 .tasks {
-	margin-left: 20px;
+    margin-left: 20px;
 }
 
 .tasks .task {
 }
 
 .handle {
-	cursor: pointer;
+    cursor: pointer;
 }
 
 
 .tasks_active {
-	font-size: 12px;
+    font-size: 12px;
 }
 
 .tasks_active .completeInput {
-	padding-top: 0px;
+    padding-top: 0px;
 }
 
 .tasks_completed {
-	font-size: 10px;
+    font-size: 10px;
 }
 
 .task.complete {
-	color: #aaa;
-	padding-left: 13px;
+    color: #aaa;
+    padding-left: 13px;
 }
 
 .tasks {
-	list-style: none;
+    list-style: none;
 }
 
 .tasks .created {
-	color: #ccc;
-	float: right;
+    color: #ccc;
+    float: right;
 }
 
 .tasks .control {
-	float: left;
+    float: left;
 }
 
 .tasks_completed {
-	margin-top: 5px;
+    margin-top: 5px;
 }
 
 .tasks .icons {
-	float: left;
-	padding-right: 4px;
+    float: left;
+    padding-right: 4px;
 }
 
 .tasks .completeInput {
-	float: left;
-	padding-right: 4px;
+    float: left;
+    padding-right: 4px;
 }
 
 .tasks .completeInput input {
-	width: 14px;
-	height: 14px;
+    width: 14px;
+    height: 14px;
 }
 
 .tasks .item {
-	float: left;
-	line-height: 13px;
-	margin-right: 2px;
+    float: left;
+    line-height: 13px;
+    margin-right: 2px;
 }
 
 .tasks_active .item {
-	width: 440px;
+    width: 440px;
 }
 
 .tasks_completed .item {
-	width: 440px;
+    width: 440px;
 }
 
 .tasks .placeholder {
-	color: #ccc;
+    color: #ccc;
 }
 
 #overviewContainer {
-	width: 100%;
+    width: 100%;
 }
 
 #manage {
-	background: #f4f4f4;
+    background: #f4f4f4;
 }
 
 .addTaskContainer {
-	background: #f4f4f4;
-	clear: both;
+    background: #f4f4f4;
+    clear: both;
 }
 
 .addCategoryContainer, .addMilestoneContainer, .addProjectContainer, .addTaskContainer, .loadContainer, .links {
-	padding: 5px;
+    padding: 5px;
 }
 
 .addHeader {
-	font-weight: bold;
-	margin-bottom: 5px;
-	border-bottom: 1px solid #aaa;
+    font-weight: bold;
+    margin-bottom: 5px;
+    border-bottom: 1px solid #aaa;
 }
 
 .descriptionEdit {
-	width: 500px;
+    width: 500px;
 }
 
 .links ul {
-	margin-left: 20px;
+    margin-left: 20px;
 }
 
 .links li {
-	line-height: 1.3em;
+    line-height: 1.3em;
 }
 
 .links li.categoryLink {
-	font-weight: bold;
+    font-weight: bold;
 }
 
 .links li.projectLink, .links li.milestoneLink {
-	font-weight: normal;
+    font-weight: normal;
 }
 
 .homeHeader {
-	font-size: 13px;
-	font-weight: bold;
-	margin: 1em 0;
+    font-size: 13px;
+    font-weight: bold;
+    margin: 1em 0;
 }
 
 .categoryHistory {
-	margin: 0 35px 1em 35px;
-	font-size: 10px;
+    margin: 0 35px 1em 35px;
+    font-size: 10px;
 }
 
 .categoryHistory td {
-	padding: 3px;
+    padding: 3px;
 }
 
 .historyLineEven {
-	background: #f0f0f0;
+    background: #f0f0f0;
 }
 
 .historyLineOdd {
-	background: #fafafa;
+    background: #fafafa;
 }
 
 .historyLineDate {
-	font-weight: bold;
-	width: 55px;
+    font-weight: bold;
+    width: 55px;
 }
 
 .historyLineItem {
